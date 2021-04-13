@@ -3,7 +3,7 @@ function join() {
     const chkPw2 = checkValidPassword2(form);
     const chkPw = checkValidPassword(form);
     const chkEmail = checkValidEmail(form);
-    const chkId=checkValidId(form);
+    const chkId = checkValidId(form);
     const chkUsername = checkValidUsername(form);
 
     if (chkUsername) {
@@ -16,14 +16,14 @@ function join() {
         document.getElementById('alert_username').style.color = '#FF0000';
     }
 
-    if(chkId){
-        document.getElementById('alert_id').innerText="";
-        form.id.style.border='2px solid';
-        form.id.style.borderColor='#00D000';
+    if (chkId) {
+        document.getElementById('alert_id').innerText = "";
+        form.id.style.border = '2px solid';
+        form.id.style.borderColor = '#00D000';
     } else {
-        form.id.style.border='2px solid';
-        form.id.style.borderColor='#FF0000';
-        document.getElementById('alert_id').style.color='#FF0000';
+        form.id.style.border = '2px solid';
+        form.id.style.borderColor = '#FF0000';
+        document.getElementById('alert_id').style.color = '#FF0000';
     }
 
     if (chkEmail) {
@@ -55,11 +55,18 @@ function join() {
         document.getElementById('alert_password2').style.color = '#FF0000';
     }
 
-    if (chkUsername && chkEmail&& chkId && chkPw && chkPw2) {
-        console.log('complete. form.submit();');
-        const sign_submit='./sign_submit.html';
-        window.location.href=sign_submit;
-        //form.submit();
+    if (chkUsername && chkEmail && chkId && chkPw && chkPw2) {
+
+        /*form 데이터 형식 json으로 바꾸기
+        let formData = new FormData(form);
+        let object = {};
+        formData.forEach((value, key) => { object[key] = value });
+        let json_form = JSON.stringify(object);
+        console.log(json_form);*/
+
+        form.submit();
+        const sign_submit = './sign_submit.html';
+        window.location.href = sign_submit;
     }
 }
 
@@ -73,9 +80,9 @@ function checkValidUsername(form) {
     return true;
 }
 
-function checkValidId(form){
-    if(form.id.value==""){
-        document.getElementById('alert_id').innerText="아이디를 입력하여 주세요.";
+function checkValidId(form) {
+    if (form.id.value == "") {
+        document.getElementById('alert_id').innerText = "아이디를 입력하여 주세요.";
         form.id.focus();
         return false;
     }
@@ -149,7 +156,7 @@ function checkValidPassword2(form) {
     return true;
 }
 
-function back_main(){
-    const back='http://www.naver.com';
-    window.location.href=back;
+function back_main() {
+    const back = 'http://www.naver.com';
+    window.location.href = back;
 }
