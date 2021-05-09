@@ -57,8 +57,8 @@ userSchema.methods.comparePassword = function (plainPassword) {
   //plainPassword를 암호화해서 현재 비밀번호화 비교
   return bcrypt
     .compare(plainPassword, this.password)
-    .then((isMatch) => isMatch)
-    .catch((err) => err);
+    .then((isMatch)=>isMatch)
+    .catch((err)=>err);
 };
 
 userSchema.methods.generateToken = function () {

@@ -39,11 +39,11 @@ app.use('/api/product',require('./routes/product'))
 
 // index.html for all page routes    html or routing and naviagtion
 // 경로와 index.html은 상황에따라 달라질 수 있음
-app.get("*", (req, res) => {
-  res.send({
-    test:"hi"
-  });
-});
+// app.get("*", (req, res) => {
+//   res.send({
+//     test:"hi"
+//   });
+// });
 
 app.use((err,req,res,next)=>{
   console.error(err);

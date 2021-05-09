@@ -26,7 +26,6 @@ router.post('/login', (req, res) => {
                 loginSuccess: false,
                 message: "Auth failed, ID not found"
             });
-
         user.comparePassword(req.body.password, (err, isMatch) => { // ID가 있으면 password 비교
             if (!isMatch)
                 return res.json({ loginSuccess: false, message: "Wrong password" }); // 비밀번호 불일치
@@ -72,27 +71,27 @@ router.get("/logout", auth, (req, res) => {
 });
 
 
-router.post("checkId", (req,res) => {
+router.post("/checkId", (req,res) => {
     User.findOne({id: req.body.id}, (err, user) => {
         if(!user){
             return res.json({ available: true});
         }
         else{
-            return res.json({available: false, err});
+            return res.json({available: false});
         }
-    })
-})
+    });
+});
 
-router.post("checkEmail", (req,res) => {
+router.post("/checkEmail", (req,res) => {
     User.findOne({email: req.body.email}, (err, user) => {
         if(!user){
             return res.json({ available: true});
         }
         else{
-            return res.json({available: false, err});
+            return res.json({available: false});
         }
-    })
-})
+    });
+});
 
 
 module.exports = router;
