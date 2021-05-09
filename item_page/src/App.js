@@ -1,10 +1,12 @@
-import Nav from './Nav';
-import Item from './Item';
-import Category from './Category';
-import Footer from './Footer';
+import Nav from './Common/Nav';
+import Item from './Item/Item';
+import Category from './Item/Category';
+import Footer from './Common/Footer';
+import ItemDetail from './Item/ItemDetail';
 
+import {BrowserRouter as Router,Route} from "react-router-dom";
 import styled from 'styled-components';
-
+import {SEProvider} from './Context/Context';
 
 
 const Box=styled.div`
@@ -14,14 +16,17 @@ height:100%;
 
 function App() {
   return (
-    <>
+    <Router>
+    <SEProvider>
     <Box>
     <Nav/>
       <Category />
-      <Item />
+      <Route path="/" component={Item} exact={true} />
+      <Route path="/Itemdetail" component={ItemDetail} />
     <Footer />
     </Box>
-    </>
+    </SEProvider>
+    </Router>
   );
 }
 
