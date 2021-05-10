@@ -6,6 +6,12 @@ const productSchema = mongoose.Schema({
         type: String,
         maxlength: 50
     },
+    productID: { // 동일한 title을 가진 상품을 내부적으로 구별하기 위해 ID 사용 추가
+        type:String,
+    },
+    category: {
+        type: String,
+    },
     description: {
         type: String,
     },
@@ -22,12 +28,10 @@ const productSchema = mongoose.Schema({
         maxlength: 100,
         default: 0
     },
-
-    continents: {
+    deleted: { // 상품 삭제시, 실제로 DB에서 삭제하는 것이 아닌 보이지않게만 해야 하므로 해당 상품을 관리자가 삭제했는지 표시
         type: Number,
-        default: 1
+        default: 0,
     },
-
     views: {
         type: Number,
         default: 0
