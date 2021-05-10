@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema({
     type : String,
     maxlength: 15,
   },
-  userName: { // 사용자 이름
+  name: { // 사용자 이름
     type: String,
     maxlength: 8,
   },
@@ -31,6 +31,7 @@ const userSchema = mongoose.Schema({
   },
   token: {
     type: String,
+    default: "",
   },
 });
 
