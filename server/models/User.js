@@ -53,21 +53,25 @@ userSchema.pre("save", function (next) {
   }
 });
 
-userSchema.methods.comparePassword = function (plainPassword) {
-  //plainPassword를 암호화해서 현재 비밀번호화 비교
-  return bcrypt
-    .compare(plainPassword, this.password)
-    .then((isMatch)=>isMatch)
-    .catch((err)=>err);
-};
+userSchema.methods.comparePassword = function (plainPassword, cb) {
+  bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
+      if (err) return cb(err);
+      cb(null, isMatch)
+  })
+}
 
-userSchema.methods.generateToken = function () {
-  const token = jwt.sign(this._id.toHexString(), "secretToken");
-  this.token = token;
-  return this.save()
-    .then((user) => user)
-    .catch((err) => err);
-};
+userSchema.methods.generateToken = function (cb) {
+  var user = this;
+  var token = jwt.sign(user._id.toHexString(), 'secret')
+  var oneHour = moment().add(1, 'hour').valueOf();
+
+  user.tokenExp = oneHour;
+  user.token = token;
+  user.save(function (err, user) {
+      if (err) return cb(err)
+      cb(null, user);
+  })
+}
 
 userSchema.statics.findByToken = function (token) {
   let user = this;
