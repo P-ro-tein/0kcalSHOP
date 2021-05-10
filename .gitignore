@@ -2,7 +2,7 @@
 
 /server/config/dev.js
 
-/test.http
 /yarn-error.log
 
 /.vscode
+/yarn.lock
