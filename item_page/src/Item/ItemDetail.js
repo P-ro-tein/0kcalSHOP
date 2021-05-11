@@ -57,7 +57,6 @@ const Box=styled.div`
 `;
 
 const TopBox=styled.div`
-    margin-top:100px;
     width:100%;
     display:inline-flex;
     padding-bottom:200px;

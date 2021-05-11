@@ -1,27 +1,27 @@
 import React,{useState} from "react";
-import CategorySub from './CategorySub';
 import styled from "styled-components";
 
+import Search from "../Common/Search";
+import Login from "../Main/Login";
 
 const BoxCategory=styled.div`
 width:1200px;
+display:flex;
 margin:0 auto;
-display:inline-flex;
 `;
 
 const ContainerCategory=styled.div`
-width:650px;
-height:50px;
-margin:0 0 0 auto;
-padding-top:50px;
-padding-bottom:50px;
+width:550px;
+height:130px;
+padding-left:100px;
+padding-top:15px;
 
 `;
 
 const ContainerLogin=styled.div`
-    width:200px;
+    width:250px;
     height:50px;
-    margin-left:30px;
+    padding:30px;
 `;
 
 
@@ -66,12 +66,12 @@ function Category(){
 
     return(
         <BoxCategory>
-            
+            <div style={{width:'200px'}}></div>
             <ContainerCategory>
-                <CategorySub items={items} onToggle={onToggle} />
+                <Search />
             </ContainerCategory>
             <ContainerLogin>
-                엄유상 고객님 ^~~^
+                <Login />
             </ContainerLogin>
         </BoxCategory>
     );

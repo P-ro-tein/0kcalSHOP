@@ -1,8 +1,9 @@
-import Nav from './Common/Nav';
+import Header from './Common/Header';
 import Item from './Item/Item';
 import Category from './Item/Category';
 import Footer from './Common/Footer';
 import ItemDetail from './Item/ItemDetail';
+import Navbar from "./Common/Navbar"
 
 import {BrowserRouter as Router,Route} from "react-router-dom";
 import styled from 'styled-components';
@@ -19,8 +20,9 @@ function App() {
     <Router>
     <SEProvider>
     <Box>
-    <Nav/>
+    <Header/>
       <Category />
+      <Navbar />
       <Route path="/" component={Item} exact={true} />
       <Route path="/Itemdetail" component={ItemDetail} />
     <Footer />
