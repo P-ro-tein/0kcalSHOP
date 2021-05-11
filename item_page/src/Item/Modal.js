@@ -45,7 +45,7 @@ const Modal = ( props ) => {
                                         <input type="text" class="input" style={{width:"245px"}}></input>
                                         <button>주소 찾기</button>
                                     </div>
-                                    <div class="address">공릉로 232 미래관 304호</div>
+                                    <input class="address"></input>
                                 </div>
                                 </div>
                             <div>

@@ -80,9 +80,9 @@ const DescriptionContainer=styled.div`
     padding-bottom:200px;
 `;
 
-const Destination=styled.select`
-    width:195px;
-    height:30px;
+const Destination=styled.div`
+    width:190px;
+    height:25px;
     margin-right:20px;
     border:2px solid #ff7777;
     border-radius:8px;
@@ -163,11 +163,7 @@ function ItemDetail(){
                 <DetailText>
                     배송지
                 </DetailText>
-                <Destination>
-                    <option value="">집</option>
-                    <option value="">배송지1</option>
-                    <option value="">기숙사</option>
-                </Destination>
+                <Destination>집</Destination>
                 <button onClick={openModal} class="add">추가</button>
                 </Container>
                 <Modal open={modalOpen} close={closeModal} header="배송지">
