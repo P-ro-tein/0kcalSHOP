@@ -12,6 +12,10 @@ router.post('/register',(req, res) => {
     //받아온 정보들을 DB에 넣어 준다.
     const shipAddr = new ShipAddr(req.body);
     shipAddr.shipAddrID = uuidGenerate.uuidv4();
+    shipAddr.shipAddrDetail[0] = req.body.roadAddress;
+    shipAddr.shipAddrDetail[1] = req.body.postcode;
+    shipAddr.shipAddrDetail[2] = req.body.detailAddress;
+
     if(shipAddr.defaultShip == 1){
         // 기본 배송지가 현재 설정되어있는 경우 기존 기본배송지 설정값을 0으로 업데이트하고
         // User의 기본 배송지명을 업데이트 하고, 새로운 기본배송지 설정값을 0으로 설정하여
@@ -55,7 +59,10 @@ router.route('/modifyShipAddr') // 배송지 수정 기능
                 shipAddrName: shipAddr.shipAddrName,
                 shipAddrID: shipAddr.shipAddrID,
                 defaultShip: shipAddr.defaultShip,
-                shipAddrDetail: shipAddr.shipAddrDetail,
+
+                roadAddress : shipAddr.shipAddrDetail[0],
+                postcode : shipAddr.shipAddrDetail[1],
+                detailAddress : shipAddr.shipAddrDetail[2],
                 contactNumber: shipAddr.contactNumber
             });
         });
@@ -63,6 +70,9 @@ router.route('/modifyShipAddr') // 배송지 수정 기능
 
     .post(function(req, res) {
         const shipAddr = new ShipAddr(req.body);
+        shipAddr.shipAddrDetail[0] = req.body.roadAddress;
+        shipAddr.shipAddrDetail[1] = req.body.postcode;
+        shipAddr.shipAddrDetail[2] = req.body.detailAddress;
 
         //중복코드 리팩토링 필요
         if(shipAddr.defaultShip == 1){
@@ -112,9 +122,8 @@ router.route('/modifyShipAddr') // 배송지 수정 기능
     });
 
 router.delete('/removeShipAddr', (req, res) => {
-    //먼저 cart안에 내가 지우려고 한 상품을 지워주기
-    ShipAddr.deleteOne( { userID: req.body.userID, shipAddrID: req.body.shipAddrID}, function
-        (err, shipAddrInfo){
+    ShipAddr.deleteOne( { userID: req.body.userID, shipAddrID: req.body.shipAddrID},
+        function(err, shipAddrInfo){
         console.log(shipAddrInfo)
     });
 });
