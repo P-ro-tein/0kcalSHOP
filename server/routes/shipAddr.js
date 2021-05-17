@@ -111,4 +111,12 @@ router.route('/modifyShipAddr') // 배송지 수정 기능
             });
     });
 
+router.delete('/removeShipAddr', (req, res) => {
+    //먼저 cart안에 내가 지우려고 한 상품을 지워주기
+    ShipAddr.deleteOne( { userID: req.body.userID, shipAddrID: req.body.shipAddrID}, function
+        (err, shipAddrInfo){
+        console.log(shipAddrInfo)
+    });
+});
+
 module.exports = router;
