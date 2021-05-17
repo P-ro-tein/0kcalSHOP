@@ -2,7 +2,7 @@ import axios from "axios";
 
 export async function getItem(){
     const response=await axios.get(
-        "http://ec2-13-125-253-137.ap-northeast-2.compute.amazonaws.com/product/api"
+        "http://localhost:9000/api/product/products"
     );
     return response.data;
 }

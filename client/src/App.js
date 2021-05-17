@@ -3,7 +3,7 @@ import Item from './Item/Item';
 import Category from './Item/Category';
 import Footer from './Common/Footer';
 import ItemDetail from './Item/ItemDetail';
-
+import Register from './Register/Register';
 import {BrowserRouter as Router,Route} from "react-router-dom";
 import styled from 'styled-components';
 import {SEProvider} from './Context/Context';
@@ -23,6 +23,7 @@ function App() {
       <Category />
       <Route path="/" component={Item} exact={true} />
       <Route path="/Itemdetail" component={ItemDetail} />
+      <Route path="/register" component={Register} />
     <Footer />
     </Box>
     </SEProvider>

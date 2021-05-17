@@ -1980,6 +1980,11 @@ latest-version@^5.0.0, latest-version@^5.1.0:
   dependencies:
     package-json "^6.3.0"
 
+lib@^4.3.3:
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/lib/-/lib-4.3.3.tgz#a92c85b27610e1f1361cc54110a3653abce35b5f"
+  integrity sha512-5ZIjwJvbfVJjbu0BTpfkqJrQ2ykXzo+XRFkHkTPHGpAPNS9vWwhLn1caQsedTKXmQ2U9gKYFSAlfjAXdXuWBjA==
+
 libnpmconfig@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/libnpmconfig/-/libnpmconfig-1.2.1.tgz#c0c2f793a74e67d4825e5039e7a02a0044dfcbc0"

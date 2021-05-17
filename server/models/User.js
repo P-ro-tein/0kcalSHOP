@@ -10,7 +10,7 @@ const userSchema = mongoose.Schema({
   },
   name: { // 사용자 이름
     type: String,
-    maxlength: 8,
+    maxLength: 8,
   },
   email: { // 사용자 이메일 주소
     type: String,
