@@ -4,10 +4,11 @@ const Schema = mongoose.Schema;
 const noticeSchema = mongoose.Schema({
     noticeTitle: {
         type: String,
-        maxlength: 50
+        maxlength: 50,
+        require:true
     },
     noticeID: { // 동일한 title을 가진 공지를 내부적으로 구별하기 위해 ID 사용 추가
-        type:String,
+        type:String
     },
     createdDate: {
         type: Date,
@@ -31,11 +32,7 @@ const noticeSchema = mongoose.Schema({
         type: Number,
         default: 0,
     },
-    views: {
-        type: Number,
-        default: 0
-    },
-}, { timestamps: true })
+})
 
 const Notice = mongoose.model('Notice', noticeSchema);
 module.exports = { Notice }

@@ -35,7 +35,9 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use('/api/users', require('./routes/users'));
-app.use('/api/product',require('./routes/product'))
+app.use('/api/product',require('./routes/product'));
+app.use('/api/notice',require('./routes/notice'));
+app.use('/api/shipAddr',require('./routes/shipAddr'));
 
 // index.html for all page routes    html or routing and naviagtion
 // 경로와 index.html은 상황에따라 달라질 수 있음
