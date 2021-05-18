@@ -1,0 +1,132 @@
+.main_container {
+    border: 0px solid;
+  }
+  
+  .join_container {
+    width: 800px;
+    margin: auto;
+  }
+  
+  .form_container {
+    width: 100%;
+    margin: auto;
+  }
+  
+  .form_title_div {
+    margin: auto;
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  
+  .form_subtitle_div {
+    margin: 40px;
+  }
+  
+  .form_title_p {
+    font-weight: bold;
+    font-size: 40px;
+    display: inline-block;
+  }
+  
+  .form_box_div {
+    position: absolute;
+    top: 198px;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 15px;
+    color: white;
+    width: 150px;
+    height: 30px;
+    line-height: 30px;
+    border: 2px lightgrey solid;
+    background-color: yellowgreen;
+  }
+  
+  .form_box_second_div {
+    position: absolute;
+    top: 198px;
+    left: 512px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 15px;
+    width: 150px;
+    height: 30px;
+    line-height: 30px;
+    color: black;
+    border: 2px lightgrey solid;
+    background-color: white;
+  }
+  
+  .form_bigbox_div {
+    width: 100%;
+    margin-top: 30px;
+    padding-bottom: 30px;
+    border: 2px lightgrey solid;
+  }
+  
+  .form_input {
+    width: 50%;
+    height: 30px;
+    border: 3px solid;
+    border-radius: 3px;
+    border-color: greenyellow;
+  }
+  
+  .form_item_name {
+    display: inline-block;
+    margin-left: 60px;
+    width: 160px;
+    color: black;
+  }
+  
+  .form_text_alert {
+    width: 50%;
+    margin-left: 230px;
+    height: 20px;
+  }
+  
+  .form_text_alert_padding {
+    padding-bottom: 10px;
+  }
+  
+  .form_submit_button {
+    width: 40%;
+    height: 50px;
+    margin-left: 30%;
+    margin-top: 40px;
+    background-color: yellowgreen;
+    border: 1px;
+    border-radius: 3px;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 40px;
+  }
+  
+  .chkid_button {
+    display: inline-block;
+    margin-left: 5px;
+    height: 30px;
+    background-color: yellowgreen;
+    border-radius: 3px;
+    color: white;
+    font-size: 14px;
+    border: 1px;
+  }
+  
+  .small_span {
+    font-size: 10px;
+    color: red;
+  }
+  
+  .form_welcome_div {
+    width: fit-content;
+    font-size: 30px;
+    padding-top: 40px;
+    margin: auto;
+  }
+  
+  .form_submit_button:focus {
+    border: none;
+    outline: none;
+  }

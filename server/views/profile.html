@@ -1,0 +1,8 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div>{{'안녕하세요'}}</div>
+<form action="/logout" name="logout_form" method="get">
+    <button type="button" onclick='logout()'>logout</button>
+</form>
+{% endblock %}
