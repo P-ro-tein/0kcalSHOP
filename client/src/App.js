@@ -7,7 +7,6 @@ import Register from './Register/Register';
 import {BrowserRouter as Router,Route} from "react-router-dom";
 import styled from 'styled-components';
 import {SEProvider} from './Context/Context';
-import axios from 'axios';
 
 const Box=styled.div`
 width:100%;

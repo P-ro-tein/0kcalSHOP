@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/main.css">
+    <script type="text/javascript" src="./main.js"></script>
+    <title>0Kcal Shop</title>
+</head>
+
+<body>
+    <header>
+        <span style="float: left; margin-right: 20px;">
+            <img width="50px" height="50px" src="./images/logo.jpg" style="vertical-align:text-bottom">
+            <h1 style="display: inline;">Kcal Shop</h1> <br>
+        </span>
+    </header>
+    <div id="first_nav">
+        <div id="advertise">
+            <img id="advertise" src="./images/sample.png">
+        </div>
+        <div id="search">
+            <div id="search-box">
+                <input id="search-input" type="text" placeholder="검색어 입력">
+                <button id="search-button"><img id="glass" src="./images/glass.png"></button>
+            </div>
+            <br>
+            <div id="search-keys">
+                <a href="#" id="search-key">닭가슴살</a> | <a href="#" id="search-key">샐러드</a> | <a href="#"
+                    id="search-key">도시락</a> | <a href="#" id="search-key">다이어트</a>
+            </div>
+        </div>
+        <form id="login-box">
+            <div id="input-box">
+                <div>
+                    <input id="id" type="text" placeholder="ID" />
+                    <input id="pw" type="password" placeholder="PASSWORD" />
+                </div>
+                <div>
+                    <button id="logbutton">login</button>
+                </div>
+            </div>
+            <div class="registe">Not registered? <a id="goregist" href="#">Create an account</a></div>
+        </form>
+    </div>
+    <div id="category-list">
+        <ul id="categories">
+            <li id="category-list-item"><a href="#" id="category-link">공지사항</a></li>
+            <li id="category-list-item"><a href="#" id="category-link">이벤트</a></li>
+            <li id="category-list-item"><a href="#" id="category-link">인기상품</a></li>
+            <li id="category-list-item"><a href="#" id="category-link">전체상품</a></li>
+            <li id="category-list-item"><a href="#" id="category-link">문의</a></li>
+        </ul>
+    </div>
+
+    <div style="overflow: hidden;">
+        <div class="slider">
+            <input type="radio" name="radio-btn" id="radio1">
+            <input type="radio" name="radio-btn" id="radio2">
+            <input type="radio" name="radio-btn" id="radio3">
+            <input type="radio" name="radio-btn" id="radio4">
+
+            <div class="slide first">
+                <img src="./images/slidesample1.png">
+            </div>
+            <div class="slide">
+                <img src="./images/slidesample2.png">
+            </div>
+            <div class="slide">
+                <img src="./images/slidesample3.png">
+            </div>
+            <div class="slide">
+                <img src="./images/slidesample2.png">
+            </div>
+        
+        </div>
+        <div class="navigation-auto">
+            <div class="auto-btn1"></div>
+            <div class="auto-btn2"></div>
+            <div class="auto-btn3"></div>
+            <div class="auto-btn4"></div>
+    
+        </div>
+        <div class="navigation-manual">
+            <label for="radio1" class="manual-btn"></label>
+            <label for="radio2" class="manual-btn"></label>
+            <label for="radio3" class="manual-btn"></label>
+            <label for="radio4" class="manual-btn"></label>
+        </div>
+    </div>
+    
+
+    <div id="product-container">
+        <div id="set-products">
+            <ul id="product-ul">
+                <li id="product" data-index="1">
+                    <div id="img-wrapper">
+                        <a href="#">
+                            <div id="product-image"></div>
+                        </a>
+                    </div>
+                    <div id="text-wrapper">
+                        <p id="name">샐러드다샐러드!!</p>
+                    </div>
+                    <div id="price-wrapper">
+                        <span id="price">6400</span>
+                        <small id="won">원</small>
+                    </div>
+                </li>
+                <li id="product" data-index="2">
+                    <div id="img-wrapper">
+                        <a href="#">
+                            <div id="product-image"></div>
+                        </a>
+                    </div>
+                    <div id="text-wrapper">
+                        <p id="name">샐러드다샐러드!!</p>
+                    </div>
+                    <div id="price-wrapper">
+                        <span id="price">6400</span>
+                        <small id="won">원</small>
+                    </div>
+                </li>
+                <li id="product" data-index="3">
+                    <div id="img-wrapper">
+                        <a href="#">
+                            <div id="product-image"></div>
+                        </a>
+                    </div>
+                    <div id="text-wrapper">
+                        <p id="name">샐러드다샐러드!!</p>
+                    </div>
+                    <div id="price-wrapper">
+                        <span id="price">6400</span>
+                        <small id="won">원</small>
+                    </div>
+                </li>
+                <li id="product" data-index="4">
+                    <div id="img-wrapper">
+                        <a href="#">
+                            <div id="product-image"></div>
+                        </a>
+                    </div>
+                    <div id="text-wrapper">
+                        <p id="name">샐러드다샐러드!!</p>
+                    </div>
+                    <div id="price-wrapper">
+                        <span id="price">6400</span>
+                        <small id="won">원</small>
+                    </div>
+                </li>
+            </ul>
+            <ul id="product-ul">
+                <li id="product" data-index="1">
+                    <div id="img-wrapper">
+                        <a href="#">
+                            <div id="product-image"></div>
+                        </a>
+                    </div>
+                    <div id="text-wrapper">
+                        <p id="name">샐러드다샐러드!!</p>
+                    </div>
+                    <div id="price-wrapper">
+                        <span id="price">6400</span>
+                        <small id="won">원</small>
+                    </div>
+                </li>
+                <li id="product" data-index="2">
+                    <div id="img-wrapper">
+                        <a href="#">
+                            <div id="product-image"></div>
+                        </a>
+                    </div>
+                    <div id="text-wrapper">
+                        <p id="name">샐러드다샐러드!!</p>
+                    </div>
+                    <div id="price-wrapper">
+                        <span id="price">6400</span>
+                        <small id="won">원</small>
+                    </div>
+                </li>
+                <li id="product" data-index="3">
+                    <div id="img-wrapper">
+                        <a href="#">
+                            <div id="product-image"></div>
+                        </a>
+                    </div>
+                    <div id="text-wrapper">
+                        <p id="name">샐러드다샐러드!!</p>
+                    </div>
+                    <div id="price-wrapper">
+                        <span id="price">6400</span>
+                        <small id="won">원</small>
+                    </div>
+                </li>
+                <li id="product" data-index="4">
+                    <div id="img-wrapper">
+                        <a href="#">
+                            <div id="product-image"></div>
+                        </a>
+                    </div>
+                    <div id="text-wrapper">
+                        <p id="name">샐러드다샐러드!!</p>
+                    </div>
+                    <div id="price-wrapper">
+                        <span id="price">6400</span>
+                        <small id="won">원</small>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-box">
+            <div id="footer-text">
+                <B>0Kcal Shop</B><br>
+                대표 : SE9TEAM<br>
+                <br>
+                (01811) 서울시 노원구 공릉로 232 서울과학기술대학교<br>
+                SEOUL NATIONAL UNIVERSITY OF SCIENCE AND TECHNOLOGY_0Kcal_Shop<br>
+                Copyright © 0Kcal. All Rights Reserved.<br>
+            </div>
+
+            <div id="footer-link">
+                <a id="storelink" href="#">
+                    <div id="stores">
+                        <img id="apple" src="./images/apple.png">
+                        <div id="store-link">App store</div>
+                    </div>
+                </a>
+            </div>
+            <div id="footer-link">
+                <a id="storelink" href="#">
+                    <div id="stores">
+                        <img id="google" src="./images/googleplay.png">
+                        <div id="store-link">Google play</div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </footer>
+
+</body>
+
+</html>

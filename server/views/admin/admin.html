@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="./admin.js"></script>
+        <title>0Kcal Shop | 관리자화면</title>
+    </head>
+    <body>
+        
+        <header>
+            <h1>0Kcal Shop</h1>
+        </header>
+
+        
+        <!--카테고리-->
+        <div>
+            <a href=#none id="show_1" onclick="
+            if(hide_1.style.display=='none')
+             {hide_1.style.display=''; show_1.innerText='▼공지사항/이벤트관리'}
+            else 
+             {hide_1.style.display='none'; show_1.innerText='▷공지사항/이벤트관리'}">▷공지사항/이벤트관리</a>
+            <div id="hide_1" style="display:none">
+                <ul>
+                    <li><a href="notice_search.html" target="changeFrame" >공지사항 조회</a></li>
+                    <li><a href="notice_2.html" target="changeFrame">공지사항 등록</a></li>
+                </ul>
+            </div>
+        </div>
+        <div>
+            <a href=#none id="show_2" onclick="
+            if(hide_2.style.display=='none')
+             {hide_2.style.display=''; show_2.innerText='▼상품 관리'}
+            else 
+             {hide_2.style.display='none'; show_2.innerText='▷상품 관리'}">▷상품 관리</a>
+            <div id="hide_2" style="display:none">
+                <ul>
+                    <li><a href="product_1.html" target="changeFrame" >상품 조회</a></li>
+                    <li><a href="product_regist.html" target="changeFrame">상품 등록</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!--로그아웃 버튼-->
+        <div>
+            <button id="logoutbutton">logout</button>
+        </div>
+
+
+        <!--변경화면-->
+        <p style="text-align: center;">
+            <iframe src="notice_search.html" width="800" height="600" name="changeFrame"></iframe>
+        </p>
+
+
+        <footer>
+            <div id="footer-text">
+                <B>0Kcal Shop</B><br>
+                대표 : SE9TEAM<br>
+                <br>
+                (01811) 서울시 노원구 공릉로 232 서울과학기술대학교<br>
+                SEOUL NATIONAL UNIVERSITY OF SCIENCE AND TECHNOLOGY_0Kcal_Shop<br>
+                Copyright © 0Kcal. All Rights Reserved.<br>
+            </div>
+        </footer>
+    </body>
+</html>

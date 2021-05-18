@@ -11,6 +11,7 @@ const { Product } = require("../models/Product");
 //회원가입 post요청 처리
 router.post("/register", (req, res) => {
     const user = new User(req.body);
+    console.log(user);
     user.save((err, doc) => {
         if (err) return res.json({ success: false, err }); // 실패하면 false, err 보내기
         return res.status(200).json({
