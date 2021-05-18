@@ -26,9 +26,16 @@ const userSchema = mongoose.Schema({
     type: Number,
     default: 0,
   },
+  phone:{
+    type: String,
+  },
+  birth: {
+    type: String,
+  },
   defualtShipAddrName : { // 상품 상세정보에서 바로 해당 유저의 기본 주소를 보여주기위해 유저 DB에 삽입
     type: String,
     maxlength : 15,
+    default: "",
   },
   cart: {
     type: Array,

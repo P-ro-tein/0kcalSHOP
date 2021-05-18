@@ -18,11 +18,12 @@ display:block;
 font-size: 30px;
 margin-bottom: 50px;
 `
-function RegisterForm () {
+function RegisterForm ({history}) {
     const [id, setId] = useState("");
     const [pw, setPw] = useState("");
     const [pwC, setPwC] = useState("");
-
+    const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
     const idChangeHandler = (e) => {
         setId(e.currentTarget.value);
     }
@@ -33,13 +34,19 @@ function RegisterForm () {
     const pwCChangeHandler = (e) => {
         setPwC(e.currentTarget.value);
     }
-
+    const emailChangeHandler = (e) => {
+        setEmail(e.currentTarget.value);
+    }
+    const nameChangeHandler = (e) => {
+        setName(e.currentTarget.value);
+    }
     const submitHandler = () => {
         
         const data = {
             id: id,
             password: pw,
-            
+            email: email,
+            name: name,
         }
         axios({
             url: '/api/users/register',
@@ -49,8 +56,9 @@ function RegisterForm () {
         .then(res => {
             //redux로 가져올 경우 payload, axios로 바로 가져올 경우 data
             if(res.data.success){
-                console.log(res.data.success);
+                history.push('/register/done');
             } else { 
+                alert('가입할 수 없습니다');
                 console.log(res.data.err);
             }
         });
@@ -58,8 +66,8 @@ function RegisterForm () {
     return (
             <Box>
                 <Title>회원가입</Title>
-                <InputWithLabel label="이름" name="name" placeholder="이름"/>
-                <InputWithLabel label="이메일" name="email" placeholder="이메일"/>
+                <InputWithLabel label="이름" name="name" placeholder="이름" value={name} onChange={nameChangeHandler}/>
+                <InputWithLabel label="이메일" name="email" placeholder="이메일" value={email} onChange={emailChangeHandler}/>
                 <InputWithLabel label="아이디" name="id" placeholder="아이디" value={id} onChange={idChangeHandler}/>
                 <InputWithLabel label="비밀번호" name="password" placeholder="비밀번호" type="password" value={pw} onChange={pwChangeHandler}/>
                 <InputWithLabel label="비밀번호 확인" name="passwordConfirm" placeholder="비밀번호 확인" type="password" value={pwC} onChange={pwCChangeHandler}/>

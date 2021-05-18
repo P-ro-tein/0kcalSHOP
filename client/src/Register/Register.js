@@ -1,14 +1,16 @@
 import React from 'react';
-import {Route} from "react-router-dom";
-import RegisterDone from './RegisterDone';
+import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import RegisterForm from './RegisterForm';
+import RegisterDone from './RegisterDone';
 
 function Register () {
     return (
-            <div>
-                <Route path="" exact={true} component={RegisterForm} />
-                <Route path="/done" component={RegisterDone} />
-            </div>
+            <Router>
+                <Switch>
+                    <Route path="/done" component={RegisterDone} />
+                    <Route path="" exact={true} component={RegisterForm} />
+                </Switch>
+            </Router>
         );
 }
 
