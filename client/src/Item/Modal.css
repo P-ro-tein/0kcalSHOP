@@ -119,6 +119,7 @@
 
 .address {
   border: 0.5px solid grey;
-  width: 325px;
+  width: 320px;
   margin-left: 130px;
+  height: 18px;
 }

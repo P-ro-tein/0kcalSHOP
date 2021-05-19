@@ -7,7 +7,7 @@ const userSchema = mongoose.Schema({
   id: { //사용자 로그인 ID
     type : String,
     maxlength: 15,
-    unique: true
+    unique: 1
   },
   name: { // 사용자 이름
     type: String,

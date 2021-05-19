@@ -7,11 +7,6 @@ const initialState = {
     loading: false,
     data: null,
     error: null,
-  },
-  register: {
-    loading: false,
-    data: null,
-    error: null
   }
 };
 
@@ -48,21 +43,6 @@ function SEReducer(state, action) {
         ...state,
         item: error(action.error),
       };
-      case "GET_REGISTER":
-        return {
-          ...state,
-        register: loadingState,
-        }
-      case "GET_REGISTER_SUCCESS":
-        return {
-          ...state,
-          register: success(action.data)
-        }
-      case "GET_REGISTER_ERROR":
-          return {
-            ...state,
-            register: success(action.error)
-          }  
     default:
       throw new Error(`Unhanded action type : ${action.type}`);
   }
@@ -99,4 +79,3 @@ export function useSEDispatch() {
 }
 
 export const getItem = createAsyncDispatcher("GET_ITEM",api.getItem);
-export const isRegisterSuccess = createAsyncDispatcher("GET_REGISTER", api.isRegisterSuccess);

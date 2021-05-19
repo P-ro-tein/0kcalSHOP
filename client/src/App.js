@@ -1,12 +1,15 @@
-import Nav from './Common/Nav';
+import Header from './Common/Header';
 import Item from './Item/Item';
-import Category from './Item/Category';
 import Footer from './Common/Footer';
 import ItemDetail from './Item/ItemDetail';
-import Register from './Register/Register';
+import Navbar from "./Common/Navbar"
+import MainPage from "./Main/MainPage";
+import Register from "./Register/Register";
+
 import {BrowserRouter as Router,Route} from "react-router-dom";
 import styled from 'styled-components';
 import {SEProvider} from './Context/Context';
+
 
 const Box=styled.div`
 width:100%;
@@ -18,10 +21,11 @@ function App() {
     <Router>
     <SEProvider>
     <Box>
-    <Nav/>
-      <Category />
-      <Route path="/" component={Item} exact={true} />
-      <Route path="/Itemdetail" component={ItemDetail} />
+    <Header/>
+      <Navbar />
+      <Route path="/" component={MainPage} exact={true} />
+      <Route path="/Item" component={Item} />
+      <Route path="/ItemDetail" component={ItemDetail} />
       <Route path="/register" component={Register} />
     <Footer />
     </Box>

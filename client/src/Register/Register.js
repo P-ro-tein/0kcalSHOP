@@ -6,10 +6,8 @@ import RegisterDone from './RegisterDone';
 function Register () {
     return (
             <Router>
-                <Switch>
                     <Route path="/done" component={RegisterDone} />
                     <Route path="" exact={true} component={RegisterForm} />
-                </Switch>
             </Router>
         );
 }

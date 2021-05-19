@@ -32,9 +32,11 @@
         "path": "^0.12.7",
         "react-redux": "^7.2.4",
         "react-router-dom": "^5.2.0",
+        "react-slick": "^0.28.1",
         "redux": "^4.1.0",
         "redux-actions": "^2.6.5",
         "saslprep": "^1.0.3",
+        "slick-slider": "^1.8.2",
         "styled-components": "^5.3.0",
         "supports-color": "^8.1.1"
     },
