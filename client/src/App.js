@@ -5,7 +5,7 @@ import ItemDetail from './Item/ItemDetail';
 import Navbar from "./Common/Navbar"
 import MainPage from "./Main/MainPage";
 import Register from "./Register/Register";
-
+import Login from "./Login/Login";
 import {BrowserRouter as Router,Route} from "react-router-dom";
 import styled from 'styled-components';
 import {SEProvider} from './Context/Context';
@@ -27,7 +27,9 @@ function App() {
       <Route path="/Item" component={Item} />
       <Route path="/ItemDetail" component={ItemDetail} />
       <Route path="/register" component={Register} />
-    <Footer />
+      <Route path="/login" component={Login} />
+
+      <Footer />
     </Box>
     </SEProvider>
     </Router>
