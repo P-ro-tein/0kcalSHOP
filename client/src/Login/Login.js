@@ -39,8 +39,11 @@ function Login ({history}) {
         })
             .then(res => {
                 //redux로 가져올 경우 payload, axios로 바로 가져올 경우 data
-                if(res.data.success&&!res.data.isAdmin){
+                if(res.data.loginSuccess&&!res.data.isAdmin){
                     history.push('/');
+                }
+                if(res.data.loginSucess&&res.data.isAdmin){
+                    // 관리자 페이지로 이동
                 } else {
                     alert('로그인 실패');
                     console.log(res.data.err);
