@@ -107,4 +107,57 @@ router.post('/removeNotice', (req, res) => {
     });
 });
 
+// 공지사항 정렬및 검색
+router.get('/list', (req, res) => {
+    let order = req.body.order ? req.body.order : "desc"; // default 내림차순. 오름차순으로 하고싶은경우 asc로 변경
+    let sortBy = "expiredDate"; // 진행기간 기준으로만 정렬할 것이기 때문에 expiredDate값으로 정렬
+
+    // pagination을 위한 limit, skip 사용
+    let limit = req.body.limit ? parseInt(req.body.limit) : 10; // default로 한 페이지에서 10개의 공지사항만 띄우도록 함.
+    let skip = req.body.skip ? limit * (parseInt(req.body.pageNumber)-1) : 0;
+    // parseInt(req.body.skip) : 0; // 클라이언트에서 직접 skip을 넘겨주는 거 대신 페이지 번호를 넘겨받아 서버에서 계산
+    // default 첫 페이지. 이후 페이지의 경우 skip = limit * (페이지 번호 -1) 하면 됨.
+
+    let term = req.body.searchTerm // 공지사항 검색을 위한 부분
+
+    let findArgs = {};
+
+    if (term) {
+        Notice
+            .find({$text: {$search: term}})
+            .find({
+                "expiredDate" : {"$gte": new Date().getTime()}, // 현재 시간 이후이면서
+                "deleted" : 0 // 삭제/비활성화 처리되지 않은 공지사항 로드
+            })
+            .sort([[sortBy, order]])
+            .skip(skip)
+            .limit(limit)
+            .exec((err, noticeInfo) => {
+                if (err) return res.status(400).json({ success: false, err })
+                return res.status(200).json({
+                    success: true,
+                    noticeInfo,
+                    postSize: noticeInfo.length
+                })
+            })
+    } else {
+        Notice
+            .find({
+                "expiredDate" : {"$gte": new Date().getTime()}, // 현재 시간 이후이면서
+                "deleted" : 0 // 삭제/비활성화 처리되지 않은 공지사항 로드
+            })
+            .sort([[sortBy, order]])
+            .skip(skip)
+            .limit(limit)
+            .exec((err, noticeInfo) => {
+                if (err) return res.status(400).json({ success: false, err })
+                return res.status(200).json({
+                    success: true,
+                    noticeInfo,
+                    postSize: noticeInfo.length
+                })
+            })
+    }
+})
+
 module.exports = router;
