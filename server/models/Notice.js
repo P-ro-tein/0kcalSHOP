@@ -32,7 +32,9 @@ const noticeSchema = mongoose.Schema({
         type: Number,
         default: 0,
     },
-})
+});
+
+noticeSchema.index({noticeTitle: 'text'});
 
 const Notice = mongoose.model('Notice', noticeSchema);
 module.exports = { Notice }
