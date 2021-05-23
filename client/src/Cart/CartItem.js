@@ -1,7 +1,7 @@
 import React from "react";
 import styled from 'styled-components';
 
-import './AllCss.css';
+import '../AllCss.css';
 
 const Bar=styled.div`
 width:100%;

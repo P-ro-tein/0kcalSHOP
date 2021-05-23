@@ -6,6 +6,7 @@ import Navbar from "./Common/Navbar"
 import MainPage from "./Main/MainPage";
 import Register from "./Register/Register";
 import Login from "./Login/Login";
+import Cart from "./Cart/CartItem";
 import {BrowserRouter as Router,Route} from "react-router-dom";
 import styled from 'styled-components';
 import {SEProvider} from './Context/Context';
@@ -28,7 +29,7 @@ function App() {
       <Route path="/ItemDetail" component={ItemDetail} />
       <Route path="/register" component={Register} />
       <Route path="/login" component={Login} />
-
+      <Route path="/Cart" component={Cart} />
       <Footer />
     </Box>
     </SEProvider>

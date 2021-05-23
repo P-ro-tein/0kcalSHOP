@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Modal from './Modal';
+import Modal from './DeliveryModal';
 import '../AllCss.css';
 
 const DetailText=styled.div`

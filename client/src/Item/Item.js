@@ -3,29 +3,13 @@ import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 
 import {getItem,useSEDispatch,useSEState} from "../Context/Context";
+import ItemBox from './ItemBox';
 
   const Box=styled.div`
 display:block;
 width:1200px;
 height:1200px;
 margin:0 auto;
-`;
-
-const BoxItem=styled.div`
-float:left;
-width:280px;
-height:280px;
-margin:10px;
-margin-bottom:100px;
-cursor:pointer;
-`;
-
-const ItemDetail=styled.div`
-display:block;
-width:100%;
-height:50px;
-padding-top:10px;
-font-size:15px;
 `;
 
 function Item(){
@@ -47,10 +31,7 @@ function Item(){
           return(
             <>
             <Link to="./ItemDetail">
-            <BoxItem>
-               <img src={data.images} alt={data._id} width="100%" height="280"/>
-               <ItemDetail>{data.title}</ItemDetail>            
-            </BoxItem>
+              <ItemBox data={data}></ItemBox>
             </Link>
             </>
           ); 
