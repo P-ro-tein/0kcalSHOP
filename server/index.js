@@ -10,15 +10,12 @@ const path = require('path');
 const { auth } = require("./middleware/auth");
 const config = require("./config/key");
 
-
-
 app.use(
   cors({
     origin: true,
     credentials: true, //도메인이 다른경우 서로 쿠키등을 주고받을때 허용해준다고 한다
   })
 );
-
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -33,19 +30,12 @@ mongoose
   })
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
+app.use('/uploads', express.static('uploads'));
 
 app.use('/api/users', require('./routes/users'));
 app.use('/api/product',require('./routes/product'));
 app.use('/api/notice',require('./routes/notice'));
 app.use('/api/shipAddr',require('./routes/shipAddr'));
-
-// index.html for all page routes    html or routing and naviagtion
-// 경로와 index.html은 상황에따라 달라질 수 있음
-// app.get("*", (req, res) => {
-//   res.send({
-//     test:"hi"
-//   });
-// });
 
 app.use((err,req,res,next)=>{
   console.error(err);
