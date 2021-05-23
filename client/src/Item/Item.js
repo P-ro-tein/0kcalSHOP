@@ -61,12 +61,12 @@ function Item(){
       <Box>
         {Products.map((product) => {
           return (
-            <a href={`/product/${product._id}`}>
+            <Link to='/ItemDetail'>
               <BoxItem>
                 <img src={`http://localhost:9000/uploads/${product.images[0]}`} alt={product.title} width="100%" height="280px"/>
                 <ItemDetail>{product.title}</ItemDetail>
               </BoxItem>
-            </a>
+            </Link>
           );
         })}
       </Box>

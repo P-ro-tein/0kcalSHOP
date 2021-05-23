@@ -95,7 +95,7 @@ const Destination=styled.div`
     
 `;
 
-function ItemDetail(){
+function ItemDetail(props){
     const [number,setNumber]=useState(0);
     const [modalOpen,setModalOpen]=useState(false);
 
