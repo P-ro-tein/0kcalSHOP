@@ -107,6 +107,9 @@
   height: 30px;
   text-align: center;
   color: white;
+  padding-top: 2px;
+  margin-right: 1px;
+  position: relative;
 }
 
 .newbox {
@@ -115,6 +118,8 @@
   padding: 30px;
 
   margin-top: 30px;
+  position: relative;
+  top: -30px;
 }
 
 .address {

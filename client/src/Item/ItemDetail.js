@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Modal from './Modal';
+import Modal from './DeliveryModal';
 import '../AllCss.css';
 
 const DetailText=styled.div`
@@ -95,7 +95,7 @@ const Destination=styled.div`
     
 `;
 
-function ItemDetail(){
+function ItemDetail(props){
     const [number,setNumber]=useState(0);
     const [modalOpen,setModalOpen]=useState(false);
 

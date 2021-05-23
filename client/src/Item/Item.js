@@ -61,7 +61,7 @@ function Item(){
       <Box>
         {Products.map((product) => {
           return (
-            <Link to="/ItemDetail:id">
+            <Link to='/ItemDetail'>
               <BoxItem>
                 <img src={`http://localhost:9000/uploads/${product.images[0]}`} alt={product.title} width="100%" height="280px"/>
                 <ItemDetail>{product.title}</ItemDetail>
