@@ -21,9 +21,6 @@ const noticeSchema = mongoose.Schema({
     expiredDate: {
         type: Date,
     },
-    description: { // 공지 내용 입력
-        type: String,
-    },
     images: {
         type: Array,
         default: []
@@ -32,7 +29,9 @@ const noticeSchema = mongoose.Schema({
         type: Number,
         default: 0,
     },
-})
+});
+
+noticeSchema.index({noticeTitle: 'text'});
 
 const Notice = mongoose.model('Notice', noticeSchema);
 module.exports = { Notice }
