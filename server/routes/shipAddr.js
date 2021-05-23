@@ -5,16 +5,18 @@ const { ShipAddr } = require("../models/ShipAddr");
 const fs = require('fs');
 const path = require('path');
 const { User } = require('../models/User');
+const { auth } = require('../middleware/auth');
 const uuidGenerate = require('../util/uuid');
 
 
-router.post('/register',(req, res) => {
+router.post('/register', auth, (req, res) => {
     //받아온 정보들을 DB에 넣어 준다.
     const shipAddr = new ShipAddr(req.body);
     shipAddr.shipAddrID = uuidGenerate.uuidv4();
     shipAddr.shipAddrDetail[0] = req.body.roadAddress;
     shipAddr.shipAddrDetail[1] = req.body.postcode;
     shipAddr.shipAddrDetail[2] = req.body.detailAddress;
+    shipAddr.userID = req.user.id; // 현재 로그인한 ID로 배송지 정보 저장
 
     if(shipAddr.defaultShip == 1){
         // 기본 배송지가 현재 설정되어있는 경우 기존 기본배송지 설정값을 0으로 업데이트하고
@@ -45,8 +47,9 @@ router.post('/register',(req, res) => {
 })
 
 router.route('/modifyShipAddr') // 배송지 수정 기능
-    .get(function(req, res) {
-        ShipAddr.findOne({ userID: req.body.userID, shipAddrID: req.body.shipAddrID }, (err, shipAddr) => {
+    .get(auth, function(req, res) {
+        ShipAddr.findOne({ userID: req.user.id, shipAddrID: req.body.shipAddrID }, (err, shipAddr) => {
+            console.log(req.user.id, req.body.shipAddrID)
             if (!shipAddr)
                 return res.json({ // 전달받은 배송지 ID, 유저ID 가 존재하지 않는 경우
                     success: false,
@@ -68,11 +71,12 @@ router.route('/modifyShipAddr') // 배송지 수정 기능
         });
     })
 
-    .post(function(req, res) {
+    .post(auth, function(req, res) {
         const shipAddr = new ShipAddr(req.body);
         shipAddr.shipAddrDetail[0] = req.body.roadAddress;
         shipAddr.shipAddrDetail[1] = req.body.postcode;
         shipAddr.shipAddrDetail[2] = req.body.detailAddress;
+        shipAddr.userID = req.user.id; // 현재 로그인한 ID로 배송지 정보 저장
 
         //중복코드 리팩토링 필요
         if(shipAddr.defaultShip == 1){
@@ -104,6 +108,7 @@ router.route('/modifyShipAddr') // 배송지 수정 기능
             { userID: shipAddr.userID, shipAddrID: shipAddr.shipAddrID },
             {
                 $set: {
+                    "shipAddrRecipient" : shipAddr.shipAddrRecipient,
                     "shipAddrName": shipAddr.shipAddrName,
                     "defaultShip": shipAddr.defaultShip,
                     "shipAddrDetail": shipAddr.shipAddrDetail,
@@ -121,11 +126,29 @@ router.route('/modifyShipAddr') // 배송지 수정 기능
             });
     });
 
-router.delete('/removeShipAddr', (req, res) => {
-    ShipAddr.deleteOne( { userID: req.body.userID, shipAddrID: req.body.shipAddrID},
-        function(err, shipAddrInfo){
+router.delete('/removeShipAddr', auth, (req, res) => {
+    ShipAddr.deleteOne( { userID: req.user.id, shipAddrID: req.body.shipAddrID},
+        function(err, shipAddrInfo) {
         console.log(shipAddrInfo)
     });
 });
+
+// 배송지 조회
+router.get('/list', auth, (req, res) => {
+    const shipAddr = new ShipAddr(req.body);
+    let order = req.body.order ? req.body.order : "desc"; // default 내림차순. 오름차순으로 하고싶은경우 asc로 변경
+    let sortBy = "shipAddrName"; // 배송지 이름 기준 정렬
+
+        ShipAddr
+            .find({"userID": req.user.id})
+            .exec((err, shipAddrInfo) => {
+                if (err) return res.status(400).json({ success: false, err })
+                return res.status(200).json({
+                    success: true,
+                    shipAddrInfo,
+                    postSize: shipAddrInfo.length
+                })
+            })
+})
 
 module.exports = router;
