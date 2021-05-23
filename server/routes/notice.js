@@ -54,7 +54,6 @@ router.route('/modifyNotice') // 공지 수정시, 클라이언트로 현재 선
                 createdDate: notice.createdDate,
                 updatedDate: notice.updatedDate,
                 expiredDate: notice.expiredDate,
-                description: notice.description,
                 images : notice.images,
                 deleted : notice.deleted
             });
@@ -76,7 +75,6 @@ router.route('/modifyNotice') // 공지 수정시, 클라이언트로 현재 선
                 $set: {"updatedDate": Date.now(),
                     "noticeTitle": notice.noticeTitle,
                     "expiredDate": notice.expiredDate,
-                    "description": notice.description,
                     "images" : notice.images
                     },
             },
@@ -111,7 +109,6 @@ router.post('/removeNotice', (req, res) => {
 router.get('/list', (req, res) => {
     let order = req.body.order ? req.body.order : "desc"; // default 내림차순. 오름차순으로 하고싶은경우 asc로 변경
     let sortBy = "expiredDate"; // 진행기간 기준으로만 정렬할 것이기 때문에 expiredDate값으로 정렬
-
     // pagination을 위한 limit, skip 사용
     let limit = req.body.limit ? parseInt(req.body.limit) : 10; // default로 한 페이지에서 10개의 공지사항만 띄우도록 함.
     let skip = req.body.skip ? limit * (parseInt(req.body.pageNumber)-1) : 0;

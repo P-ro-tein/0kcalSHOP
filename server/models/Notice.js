@@ -21,9 +21,6 @@ const noticeSchema = mongoose.Schema({
     expiredDate: {
         type: Date,
     },
-    description: { // 공지 내용 입력
-        type: String,
-    },
     images: {
         type: Array,
         default: []
