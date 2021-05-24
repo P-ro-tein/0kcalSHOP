@@ -1,8 +1,7 @@
-import React,{useEffect} from 'react';
+import React,{useEffect,useState} from 'react';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
-
-import {getItem,useSEDispatch,useSEState} from "../Context/Context";
+import axios from 'axios';
 
   const Box=styled.div`
 display:block;
@@ -29,32 +28,47 @@ font-size:15px;
 `;
 
 function Item(){
-  const state = useSEState();
-  const dispatch = useSEDispatch();
-  const { data: item, loading, error } = state.item;
-
+  const [Products, setProducts] = useState([])
+  
   useEffect(() => {
-    getItem(dispatch);
-  }, [dispatch]);
+    
+    axios.post('/api/product/products')
+    .then(response => {
+      if(response.data.success) {
+        setProducts(response.data.productInfo)
+      } else {
+        console.log('상품정보가져오는데실패');
+      }
+    })
 
-  if (loading) return <div></div>;
-  if (error) return <div>에러가 발생했습니다.</div>;
-  if (!item) return null;
+  }, []);
+
+  async function getItem(){
+    const response=await axios.get(
+        "/api/product/products"
+    );
+    return response.data.productInfo;
+  }
+
+  // if (loading) return <div></div>;
+  // if (error) return <div>에러가 발생했습니다.</div>;
+  // if (!item) return null;
+
+  const productInfo = getItem();
+  console.log(productInfo);
 
     return(
       <Box>
-        {item.map((data)=>{
-          return(
-            <>
-            <Link to="./ItemDetail">
-            <BoxItem>
-               <img src={data.images} alt={data._id} width="100%" height="280"/>
-               <ItemDetail>{data.title}</ItemDetail>            
-            </BoxItem>
+        {Products.map((product) => {
+          return (
+            <Link to="/ItemDetail:id">
+              <BoxItem>
+                <img src={`http://localhost:9000/uploads/${product.images[0]}`} alt={product.title} width="100%" height="280px"/>
+                <ItemDetail>{product.title}</ItemDetail>
+              </BoxItem>
             </Link>
-            </>
-          ); 
-      })}
+          );
+        })}
       </Box>
     );
 }
