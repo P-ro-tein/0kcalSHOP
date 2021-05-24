@@ -1,75 +1,72 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import styled from 'styled-components';
 
-import './AllCss.css';
-
-const Bar=styled.div`
-width:100%;
-background:#
-`; 
+import '../AllCss.css';
 
 const ItemImg=styled.img`
 width:300px;
-height:180px;
+height:200px;
+padding:20px 30px 20px 30px;
+border:#D8D8D8 0.5px solid;
+border-top:none;
 `;
 
 const ItemContainer=styled.div`
-display:flex;
+display:inline-flex;
 
 `;
 
 const ItemName=styled.div`
+    width:290px;
+    border:#D8D8D8 0.5px solid;
+    padding:100px 20px 0px 30px;
+    border-top:none;
+    border-left:none;
 `;
 
-const ItemNumber=styled.div`
-
+const ItemNumber=styled.input`
+    width:50px; 
+    height:23px; 
 `;
 
 const Number=styled.div`
 display:flex;
+width:150px;
+border:#D8D8D8 0.5px solid;
+border-top:none;
+border-left:none;
+padding:100px 0px 0px 20px;
 `;
 
 const ItemPrice=styled.div`
-
+    width:100px;
+    padding:100px 30px 0px 85px;
+    border-bottom:#D8D8D8 0.5px solid;
 `;
-function CartItem(){
-    const Item=[
-        {
-            imgUrl:'https://danoshop.net/mall/upload/2020/03/11/dumpling_716x478.jpg',
-            name:'다노 닭가슴살 곤약만두 3종 (오리지널/청양고추/불닭) 10팩',
-            quantity:'2',
-            price:'26900'
-        },
-        {
-            imgUrl:'https://danoshop.net/mall/upload/2020/07/27/%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%90%E1%85%B5%E1%86%AB%E1%84%87%E1%85%B3%E1%84%85%E1%85%A1%E1%84%89%E1%85%A9%E1%86%AF%E1%84%92%E1%85%A9%E1%84%87%E1%85%A5.png',
-            name:'다노 브라운라이스소울 프로틴베리&프로틴초코',
-            quantity:'10',
-            price:'2,300'
-        },
-        {
-            imgUrl:'https://danoshop.net/mall/upload/2020/07/20/hover_oe.png',
-            name:'스키니피그 저칼로리 아이스크림',
-            quantity:'2',
-            price:'29,900'
-        },
-    ];
+function CartItem({Item}){
+
+    const [quantity,setQuantity]=useState(Item.quantity);
+    
 
     const onIncrease=()=>{
-        
+        setQuantity(number=>number+1);
     };
 
     const onDecrease=()=>{
-
+        setQuantity(number=>number-1);
     };
     
     return(
         <ItemContainer>
+            <div style={{padding:'100px 30px 0px 50px',borderBottom:'#D8D8D8 0.5px solid'}}>
+            <input type="checkbox"></input>
+            </div>
             <ItemImg src={Item.imgUrl}></ItemImg>
             <ItemName>{Item.name}</ItemName>
             <Number>
-            <ItemNumber>{Item.number}</ItemNumber>
-                <button onClick={onIncrease} class="num">+</button>
-                <button onClick={onDecrease} class="num">-</button> 
+            <ItemNumber placeholder={quantity}></ItemNumber>
+                <button onClick={onIncrease} class="num" style={{height:'30px'}}>+</button>
+                <button onClick={onDecrease} class="num" style={{height:'30px'}}>-</button> 
             </Number>
             <ItemPrice>{Item.price}</ItemPrice>
         </ItemContainer>
