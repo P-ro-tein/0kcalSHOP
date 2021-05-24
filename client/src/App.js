@@ -1,3 +1,5 @@
+import React from 'react';
+
 import Header from './Common/Header';
 import Item from './Item/Item';
 import Footer from './Common/Footer';
@@ -6,10 +8,9 @@ import Navbar from "./Common/Navbar"
 import MainPage from "./Main/MainPage";
 import Register from "./Register/Register";
 import Login from "./Login/Login";
-import Cart from "./Cart/CartItem";
 import {BrowserRouter as Router,Route} from "react-router-dom";
 import styled from 'styled-components';
-import {SEProvider} from './Context/Context';
+import CartPage from './Cart/CartPage';
 
 
 const Box=styled.div`
@@ -20,19 +21,17 @@ height:100%;
 function App() {
   return (
     <Router>
-    <SEProvider>
     <Box>
     <Header/>
       <Navbar />
       <Route path="/" component={MainPage} exact={true} />
       <Route path="/Item" component={Item} />
-      <Route path="/ItemDetail" component={ItemDetail} />
+      <Route path="/product/:productId" component={ItemDetail} />
       <Route path="/register" component={Register} />
       <Route path="/login" component={Login} />
-      <Route path="/Cart" component={Cart} />
+      <Route path="/Cart" component={CartPage} />
       <Footer />
     </Box>
-    </SEProvider>
     </Router>
   );
 }

@@ -1,11 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import {Link} from 'react-router-dom';
 
 import Category from './SubHeader';
+import '../AllCss.css';
 
 const BoxHeader=styled.div`
     width:100%;
-    height:100px;
+    height:80px;
     background:#ff7777;
 `;
 
@@ -31,7 +33,9 @@ function Header(){
         <>
         <BoxHeader>
             <ContainerHeader>
+                <Link to ='/' class="link">
                 <Logo>0kcal Shop</Logo>
+                </Link>
             </ContainerHeader>
         </BoxHeader>
         <Category />

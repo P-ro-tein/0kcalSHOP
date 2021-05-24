@@ -4,7 +4,7 @@ import '../AllCss.css'
 import DaumPostcode from 'react-daum-postcode';
 
 
-const DeliveryModal = ( props ) => {
+const CompleteModal = ( props ) => {
     const { open, close, header} = props;
     const [Q1,setSelect]=useState("delivery0");
     const [Div,setDiv]=useState(1); 
@@ -152,4 +152,4 @@ const DeliveryModal = ( props ) => {
     )
 }
 
-export default DeliveryModal;
+export default CompleteModal;
