@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Modal from './DeliveryModal';
+
+import axios from 'axios';
+import DeliveryModal from './DeliveryModal';
+import CompleteModal from './CompleteModal';
 import '../AllCss.css';
 
 const DetailText=styled.div`
@@ -97,14 +100,35 @@ const Destination=styled.div`
 
 function ItemDetail(props){
     const [number,setNumber]=useState(0);
-    const [modalOpen,setModalOpen]=useState(false);
+    const [DeliverymodalOpen,setDeliveryModalOpen]=useState(false);
+    const [CompletemodalOpen,setCompletemodalOpen]=useState(false);
+    const productId = props.match.params.productId
 
-    const openModal=()=>{
-        setModalOpen(true);
+    const [Product, setProduct] = useState({});
+
+    useEffect(() => {
+        axios.get(`/api/product/products_by_id?id=${productId}&type=single`)
+            .then(response => {
+                setProduct(response.data[0])
+            })
+            .catch(err => alert(err))
+    }, [])
+
+
+    const openDeliveryModal=()=>{
+        setDeliveryModalOpen(true);
     }
 
-    const closeModal=()=>{
-        setModalOpen(false);
+    const closeDeliveryModal=()=>{
+        setDeliveryModalOpen(false);
+    }
+
+    const openCompleteModal=()=>{
+        setCompletemodalOpen(true);
+    }
+    
+    const closeCompleteModal=()=>{
+        setCompletemodalOpen(false);
     }
 
     const onIncrease=()=>{
@@ -130,16 +154,16 @@ function ItemDetail(props){
             <TopBox>
             <LeftContainer>
                 <DetailText>
-                    카테고리
+                    {Product.category}
                 </DetailText>
-                <img src="https://danoshop.net/mall/upload/2021/04/23/9doh53j1igx7pxyr83n6.png" width="600"></img>
+                <img src={`http://localhost:9000/uploads/${Product.images}`} width="600" height="400"></img>
             </LeftContainer>
             <RightContainer>
                 <ItemName>
-                    다노 프로틴 다노바 2종(베리/초코)
+                    {Product.title}
                 </ItemName>
                 <Description>
-                장내 유익균 증식 도움을 주는 프락토올리고당이 함유된 다노바
+                    {Product.description}
                 </Description>
                 <hr></hr>
                 <Container>
@@ -147,7 +171,7 @@ function ItemDetail(props){
                     가격
                 </DetailText>
                 <Price style={{marginLeft:'200px'}}>
-                    2400<span>원</span>
+                    {Product.price}<span>원</span>
                 </Price>
                 </Container>
                 <hr></hr>
@@ -164,12 +188,13 @@ function ItemDetail(props){
                     배송지
                 </DetailText>
                 <Destination>집</Destination>
-                <button onClick={openModal} class="add">추가</button>
+                <button onClick={openDeliveryModal} class="add">추가</button>
                 </Container>
-                <Modal open={modalOpen} close={closeModal} header="배송지">
-                </Modal>
+                <DeliveryModal open={DeliverymodalOpen} close={closeDeliveryModal} header="배송지">
+                </DeliveryModal>
                 <hr></hr>
-                <button class="cart" style={{}}>장바구니</button>
+                <button class="cart" onClick={openCompleteModal}>장바구니</button>
+                <CompleteModal open={CompletemodalOpen} close={closeCompleteModal} header="완료"></CompleteModal>
                 <button class="cart">바로구매</button>
             </RightContainer>
             </TopBox>
