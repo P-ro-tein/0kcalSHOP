@@ -58,91 +58,155 @@ router.post('/register',upload, (req, res) => {
     })
 })
 
-router.post('/products', (req, res) => {
-    let order = req.body.order ? req.body.order : "desc";
-    let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
-    // product collection에 들어 있는 모든 상품 정보를 가져오기 
-    let limit = req.body.limit ? parseInt(req.body.limit) : 20;
-    let skip = req.body.skip ? parseInt(req.body.skip) : 0;
-    let term = req.body.searchTerm
+router.route('/modifyProduct') // 상품 정보 수정시, 클라이언트로 현재 선택한 공지의 콘텐츠들을 보내고 다시 POST로 받는다
+    .get(function(req, res) {
+        Product.findOne({ _id: req.body._id }, (err, product) => {
+            if (!product)
+                return res.json({ // NoticeID가 잘못 입력된 경우
+                    success: false,
+                    message: "ID not found"
+                });
 
+            res.status(200).json({ // 클라이언트로 상품 고유ID에 해당되는 모든 DB정보를 보낸다
+                _id : product._id,
+                title : product.title,
+                category : product.category,
+                description : product.description,
+                price : product.price,
+                images : product.images,
+                stock : product.stock,
+                sold : product.sold,
+                deleted : product.deleted,
+                views : product.views,
+                createdDate: notice.createdDate,
+                updatedDate: notice.updatedDate
+            });
+        });
+    })
+    .post(function(req, res) {
+        const product = new Product(req.body);
+
+        Product.findOneAndUpdate(
+            // 상품 수정 시, 이미 클라이언트로 모든 정보를 보내줬고 다시 받을 때 변경하지 않았으면 그대로 다시 올 것이고
+            // 수정되었다면 수정된 사항이 올것이기 때문에 그 정보를 바탕으로 상품 고유ID에 해당되는 DB에 그대로 등록
+            { _id: req.body._id },
+            {
+                $set: {"updatedDate": Date.now(),
+                    "title": product.title,
+                    "category": product.category,
+                    "description" : product.description,
+                    "price" : product.price,
+                    "images" : product.images
+                    // 재고량, 판매량, 조회수는 수정하지 않도록 함
+                },
+            },
+            { new: true },
+            (err, product) => {
+                if (!product)
+                    return res.json({ // 입력한 공지 ID에 해당하는 공지 못찾음
+                        success: false,
+                        message: "Product is not found"
+                    });
+                return res.status(200).json({success:true});
+            });
+    });
+
+// 상품 삭제버튼 클릭시 동작
+// 실제로 DB에서 삭제하면 안되고 삭제 처리만 해야하므로 deleted의 값만 1로 변경
+router.post('/removeProduct', (req, res) => {
+    Product.findOneAndUpdate({ _id: req.body._id },
+        { $set: {"deleted": 1}},
+        { new: true },
+        (err, product) => {
+            if (!product)
+                return res.json({ // 입력한 공지 ID에 해당하는 공지 못찾음
+                    success: false,
+                    message: "Product is not found"
+                });
+            return res.status(200).json({success:true});
+        });
+});
+
+// 상품 리스트 조회
+router.get('/list', (req, res) => {
+    let order = req.body.order ? req.body.order : "asc"; // default 오름차순.(낮은 가격순) 내림차순으로 하고싶은경우 asc로 변경
+    let sortBy = req.body.sortBy ? req.body.sortBy : "_id"; // default _id값으로 정렬
+    // pagination을 위한 limit, skip 사용
+    let limit = req.body.limit ? parseInt(req.body.limit) : 16; // default로 한 페이지에서 16개의 상품만 띄우도록 함.
+    let skip = req.body.skip ? limit * (parseInt(req.body.pageNumber)-1) : 0;
+    // default 첫 페이지. 이후 페이지의 경우 skip = limit * (페이지 번호 -1) 하면 됨.
+
+    let term = req.body.searchTerm // 상품 검색을 위한 부분
+    let category = req.body.category ? req.body.category : "";
     let findArgs = {};
 
-    for (let key in req.body.filters) {
-        if (req.body.filters[key].length > 0) {
+    let leastPrice = req.body.leastPrice;
+    let highestPrice = req.body.highestPrice;
 
+    for (let key in req.body.filters) { // 가격 필터링
+        if (req.body.filters[key]) { // length가 1보다 클때 작동하는게 안에 들어있으면 동작하는것 이었던것 같은데 제대로 동작안해서 그냥 삭제
             console.log('key', key)
-
             if (key === "price") {
                 findArgs[key] = {
-                    //Greater than equal
                     $gte: req.body.filters[key][0],
                     //Less than equal
                     $lte: req.body.filters[key][1]
                 }
             } else {
-                findArgs[key] = req.body.filters[key];
+                findArgs[key] = req.body.filters[key]; // 필터의 필드에 대한 값과 일치하는 것들을 넣어줌
             }
-
+            console.log(findArgs[key])
         }
     }
-
 
     if (term) {
         Product.find(findArgs)
             .find({ $text: { $search: term } })
-            .populate("writer")
+            .find({
+                "deleted" : 0, // 삭제 처리되지 않은 상품 로드
+                "category" : category,
+            })
             .sort([[sortBy, order]])
             .skip(skip)
             .limit(limit)
             .exec((err, productInfo) => {
                 if (err) return res.status(400).json({ success: false, err })
                 return res.status(200).json({
-                    success: true, productInfo,
+                    success: true,
+                    productInfo,
                     postSize: productInfo.length
                 })
             })
     } else {
-        Product.find(findArgs)
-            .populate("writer")
+        Product
+            .find(findArgs)
+            .find({
+                "deleted" : 0, // 삭제 처리되지 않은 상품 로드
+                "category" : category,
+            })
             .sort([[sortBy, order]])
             .skip(skip)
             .limit(limit)
             .exec((err, productInfo) => {
                 if (err) return res.status(400).json({ success: false, err })
                 return res.status(200).json({
-                    success: true, productInfo,
+                    success: true,
+                    productInfo,
                     postSize: productInfo.length
                 })
             })
     }
-
 })
 
-//id=123123123,324234234,324234234  type=array
-router.get('/products_by_id', (req, res) => {
-
-    let type = req.query.type
+// 상품 상세정보를 들어갈때 주소뒤에 쿼리로 질의가 오면 해당 상품의 정보를 보내준다
+router.get('/productDetail', (req, res) => {
     let productIds = req.query.id
 
-    if (type === "array") {
-        //id=123123123,324234234,324234234 이거를 
-        //productIds = ['123123123', '324234234', '324234234'] 이런식으로 바꿔주기
-        let ids = req.query.id.split(',')
-        productIds = ids.map(item => {
-            return item
-        })
-    }
-
-    //productId를 이용해서 DB에서  productId와 같은 상품의 정보를 가져온다.
-    Product.find({ _id: { $in: productIds } })
-        .populate('writer')
-        .exec((err, product) => {
-            if (err) return res.status(400).send(err)
-            return res.status(200).send(product)
-        })
-
+    //productId를 이용해서 DB에서 productId와 같은 상품의 정보를 가져온다.
+    Product.find({ _id: { $in: productIds } }, (err, product) => {
+        if (err) return res.status(400).send(err)
+        return res.status(200).send(product)
+    });
 })
-
 
 module.exports = router;

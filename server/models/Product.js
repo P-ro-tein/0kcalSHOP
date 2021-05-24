@@ -6,13 +6,10 @@ const productSchema = mongoose.Schema({
         type: String,
         maxlength: 50
     },
-    productID: { // 동일한 title을 가진 상품을 내부적으로 구별하기 위해 ID 사용 추가
-        type:String,
-    },
     category: {
         type: String,
     },
-    description: {
+    description: { // 상품 간단 요약
         type: String,
     },
     price: {
@@ -23,9 +20,12 @@ const productSchema = mongoose.Schema({
         type: Array,
         default: []
     },
+    remainStock:{
+        type:Number,
+        default: 0,
+    },
     sold: {
         type: Number,
-        maxlength: 100,
         default: 0
     },
     deleted: { // 상품 삭제시, 실제로 DB에서 삭제하는 것이 아닌 보이지않게만 해야 하므로 해당 상품을 관리자가 삭제했는지 표시
@@ -39,15 +39,12 @@ const productSchema = mongoose.Schema({
 }, { timestamps: true })
 
 productSchema.index({
-    title: 'text',
-    description: 'text'
+    title: 'text'
 }, {
     weights: {
-        title: 5,
-        description: 1
+        title: 5
     }
 })
-
 
 const Product = mongoose.model('Product', productSchema);
 
