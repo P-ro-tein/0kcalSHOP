@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import Category from './SubHeader';
+import SubHeader from './SubHeader';
 
 const BoxHeader=styled.div`
     width:100%;
@@ -34,7 +34,7 @@ function Header(){
                 <Logo>0kcal Shop</Logo>
             </ContainerHeader>
         </BoxHeader>
-        <Category />
+        <SubHeader />
         </>
     );
 }

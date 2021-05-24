@@ -9,12 +9,16 @@ const productSchema = mongoose.Schema({
     category: {
         type: String,
     },
-    description: { // 상품 간단 요약
+    description: {
         type: String,
     },
     price: {
         type: Number,
         default: 0
+    },
+    shipCharge: {
+        type: Number,
+        default: 2500
     },
     images: {
         type: Array,

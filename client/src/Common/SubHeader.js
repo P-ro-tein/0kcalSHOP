@@ -1,9 +1,9 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
-
+import axios from "axios";
 import Search from "./Search";
 import Login from "./Login";
-
+import UserInfo from "./UserInfo";
 const BoxCategory=styled.div`
 width:1200px;
 display:flex;
@@ -26,7 +26,16 @@ const ContainerLogin=styled.div`
 
 
 
-function Category(){
+function SubHeader(){
+
+    const [User, setUser]=useState({});
+
+    useEffect(() => {
+        axios.get('/api/users/auth')
+        .then(response=>{
+            setUser(response.data);
+        }
+    )},[])
     return(
         <BoxCategory>
             <div style={{width:'200px'}}></div>
@@ -34,10 +43,13 @@ function Category(){
                 <Search />
             </ContainerCategory>
             <ContainerLogin>
-                <Login />
+                {
+                    User.isAuth?
+                    <UserInfo/>:<Login />
+                }
             </ContainerLogin>
         </BoxCategory>
     );
 }
 
-export default Category;
+export default SubHeader;

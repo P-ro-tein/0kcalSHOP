@@ -18,8 +18,8 @@ display:inline-flex;
 function Login(){
     return(
         <Box>
-        <LoginButton>로그인</LoginButton>
-        <LoginButton>회원가입</LoginButton>
+            <a href="/client/login"><LoginButton>로그인</LoginButton></a>
+            <a href="/client/register"><LoginButton>회원가입</LoginButton></a>
         </Box>
     );
 }
