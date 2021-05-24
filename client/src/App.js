@@ -1,39 +1,18 @@
-import Header from './Common/Header';
-import Item from './Item/Item';
-import Footer from './Common/Footer';
-import ItemDetail from './Item/ItemDetail';
-import Navbar from "./Common/Navbar"
-import MainPage from "./Main/MainPage";
-import Register from "./Register/Register";
-import Login from "./Login/Login";
-import {BrowserRouter as Router,Route} from "react-router-dom";
-import styled from 'styled-components';
-import {SEProvider} from './Context/Context';
+import React from 'react'
+import { Route, BrowserRouter } from 'react-router-dom';
+import { SEProvider } from './Context/Context'
+import Client from './Client';
+import Admin from './Admin/Admin';
 
-
-const Box=styled.div`
-width:100%;
-height:100%;
-`;
-
-function App() {
-  return (
-    <Router>
-    <SEProvider>
-    <Box>
-    <Header/>
-      <Navbar />
-      <Route path="/" component={MainPage} exact={true} />
-      <Route path="/Item" component={Item} />
-      <Route path="/ItemDetail" component={ItemDetail} />
-      <Route path="/register" component={Register} />
-      <Route path="/login" component={Login} />
-
-      <Footer />
-    </Box>
-    </SEProvider>
-    </Router>
-  );
+function App () {
+    return (
+        <BrowserRouter>
+            <SEProvider>
+                <Route path="/client" component={Client}/>
+                <Route path="/admin" component={Admin}/>
+            </SEProvider>
+        </BrowserRouter>
+    )
 }
 
-export default App;
+export default App

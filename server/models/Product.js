@@ -6,9 +6,6 @@ const productSchema = mongoose.Schema({
         type: String,
         maxlength: 50
     },
-    productID: { // 동일한 title을 가진 상품을 내부적으로 구별하기 위해 ID 사용 추가
-        type:String,
-    },
     category: {
         type: String,
     },
@@ -19,9 +16,17 @@ const productSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
+    shipCharge: {
+        type: Number,
+        default: 2500
+    },
     images: {
         type: Array,
         default: []
+    },
+    stock: {
+        type:Number,
+        default: 0
     },
     sold: {
         type: Number,

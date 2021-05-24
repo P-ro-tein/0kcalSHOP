@@ -7,6 +7,7 @@ const path = require('path');
 const { User } = require('../models/User');
 const { auth } = require('../middleware/auth');
 const { Product } = require("../models/Product");
+const { type } = require('os');
 
 //회원가입 post요청 처리
 router.post("/register", (req, res) => {
@@ -57,7 +58,8 @@ router.get('/auth', auth, (req, res) => {
         email: req.user.email,
         name: req.user.name,
         role: req.user.role,
-        defualtShipAddrName : req.usr.defualtShipAddrName
+        cart: req.user.cart,
+        defaultShipAddrName: req.user.defaultShipAddrName
     });
   });
 
