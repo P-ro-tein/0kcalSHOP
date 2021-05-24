@@ -80,7 +80,7 @@ function Navbar(){
             <Link to='/건강간식'>
             <CategoryName>건강간식</CategoryName>
             </Link>
-            <Link to='Item'>
+            <Link to='/client/Item'>
             <CategoryName>전체상품</CategoryName>
             </Link>
             </Container>

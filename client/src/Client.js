@@ -8,7 +8,6 @@ import Register from "./Register/Register";
 import Login from "./Login/Login";
 import {BrowserRouter as Router,Route} from "react-router-dom";
 import styled from 'styled-components';
-import {SEProvider} from './Context/Context';
 
 
 const Box=styled.div`
@@ -23,7 +22,7 @@ function Client() {
       <Navbar />
       <Route path="/client/" component={MainPage} exact={true} />
       <Route path="/client/Item" component={Item} />
-      <Route path="/client/ItemDetail" component={ItemDetail} />
+      <Route path="/client/ItemDetail/:productId" component={ItemDetail} />
       <Route path="/client/register" component={Register} />
       <Route path="/client/login" component={Login} />
 

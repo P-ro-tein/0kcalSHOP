@@ -33,7 +33,7 @@ function Item(){
   const [Products, setProducts] = useState([])
   
     useEffect(() => {
-        axios.get('/api/product/products')
+        axios.post('/api/product/products')
         .then(response => {
         if(response.data.success) {
             setProducts(response.data.productInfo)
@@ -47,7 +47,7 @@ function Item(){
       <Box>
         {Products.map((product) => {
           return (
-            <a href={`/product/${product._id}`}>
+            <a href={`/client/ItemDetail/${product._id}`}>
               <BoxItem>
                 <img src={`http://localhost:9000/uploads/${product.images[0]}`} alt={product.title} width="100%" height="280px"/>
                 <ItemDetail>{product.title}</ItemDetail>
