@@ -38,6 +38,7 @@ app.use('/api/users', require('./routes/users'));
 app.use('/api/product',require('./routes/product'));
 app.use('/api/notice',require('./routes/notice'));
 app.use('/api/shipAddr',require('./routes/shipAddr'));
+app.use('/api/orderList',require('./routes/orderList'));
 
 // index.html for all page routes    html or routing and naviagtion
 // 경로와 index.html은 상황에따라 달라질 수 있음
