@@ -66,34 +66,34 @@ const CompleteModal = ( props ) => {
                         <button className="close" onClick={close}> &times; </button>
                     </header>
                     <main>
-                        <div class="box">
-                            <div class="container">
-                                <div class="text"> 현재 배송지</div>
+                        <div className="box">
+                            <div className="container">
+                                <div className="text"> 현재 배송지</div>
                                 <div style={{display:"block"}}>
-                                    <div class="dstination">집</div>
-                                    <div class="destination">공릉로 232 미래관 304호</div>
+                                    <div className="dstination">집</div>
+                                    <div className="destination">공릉로 232 미래관 304호</div>
                                 </div>
                             </div>
                             <div>
                                 <div style={{display:'inline-flex'}}>
-                                <button class="_text" onClick={ChangeDiv1}>배송지 목록</button><button class="_text" onClick={ChangeDiv2}>신규 배송지</button>
+                                <button className="_text" onClick={ChangeDiv1}>배송지 목록</button><button className="_text" onClick={ChangeDiv2}>신규 배송지</button>
                                 </div>
-                                { Div===2 &&<div class="newbox">
-                                    <div class="container">
-                                    <div class="text">배송지 이름</div>
-                                    <input type="text" class="input"></input>
+                                { Div===2 &&<div className="newbox">
+                                    <div className="container">
+                                    <div className="text">배송지 이름</div>
+                                    <input type="text" className="input"></input>
                                     </div>
-                                    <div class="container">
-                                        <div class="text">수령인</div>
-                                        <input type="text" class="input"></input>
+                                    <div className="container">
+                                        <div className="text">수령인</div>
+                                        <input type="text" className="input"></input>
                                     </div>
-                                    <div class="container">
-                                        <div class="text">휴대전화</div>
-                                        <input type="tel" class="input"></input>
+                                    <div className="container">
+                                        <div className="text">휴대전화</div>
+                                        <input type="tel" className="input"></input>
                                     </div>
-                                    <div class="container">
-                                        <div class="text">배송지 주소</div>
-                                        <div type="text" class="input" style={{width:"245px"}}>{isAddress}</div>
+                                    <div className="container">
+                                        <div className="text">배송지 주소</div>
+                                        <div type="text" className="input" style={{width:"245px"}}>{isAddress}</div>
                                         <button onClick={ChangePost}>주소 찾기</button>
                                     </div>
                                     {
@@ -106,11 +106,11 @@ const CompleteModal = ( props ) => {
                                         Address={isAddress}
                                         ZoneCode={isZoneCode}/>:null
                                     }
-                                    <div class="address">{isZoneCode}</div>
-                                    <div class="address"></div>
+                                    <div className="address">{isZoneCode}</div>
+                                    <div className="address"></div>
                                 </div>}
                                 {Div===1&&
-                                <div class="newbox">
+                                <div className="newbox">
                                     <div style={{paddingBottom:"10px"}}>
                                     <label htmlFor="delivery">
                                         <input type="radio" id="delivery0" name="delivery0" value="delivery0" checked={Q1 === "delivery0" ? true : false} onChange={changeRadioQ1}></input>

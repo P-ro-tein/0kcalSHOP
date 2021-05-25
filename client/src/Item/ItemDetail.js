@@ -112,7 +112,7 @@ function ItemDetail(props){
                 setProduct(response.data[0])
             })
             .catch(err => alert(err))
-    }, [])
+    }, [productId]);
 
 
     const openDeliveryModal=()=>{
@@ -156,7 +156,7 @@ function ItemDetail(props){
                 <DetailText>
                     {Product.category}
                 </DetailText>
-                <img src={`http://localhost:9000/uploads/${Product.images}`} width="600" height="400"></img>
+                <img alt={Product._id} src={`http://localhost:9000/uploads/${Product.images}`} width="600" height="400"></img>
             </LeftContainer>
             <RightContainer>
                 <ItemName>
@@ -180,30 +180,30 @@ function ItemDetail(props){
                     수량
                 </DetailText>
                 <Number>{number}</Number>
-                <button onClick={onIncrease} class="num">+</button>
-                <button onClick={onDecrease} class="num">-</button>
+                <button onClick={onIncrease} className="num">+</button>
+                <button onClick={onDecrease} className="num">-</button>
                 </Container>
                 <Container>
                 <DetailText>
                     배송지
                 </DetailText>
                 <Destination>집</Destination>
-                <button onClick={openDeliveryModal} class="add">추가</button>
+                <button onClick={openDeliveryModal} className="add">추가</button>
                 </Container>
                 <DeliveryModal open={DeliverymodalOpen} close={closeDeliveryModal} header="배송지">
                 </DeliveryModal>
                 <hr></hr>
-                <button class="cart" onClick={openCompleteModal}>장바구니</button>
+                <button className="cart" onClick={openCompleteModal}>장바구니</button>
                 <CompleteModal open={CompletemodalOpen} close={closeCompleteModal} header="완료"></CompleteModal>
-                <button class="cart">바로구매</button>
+                <button className="cart">바로구매</button>
             </RightContainer>
             </TopBox>
             <DescriptionBox>상품 설명</DescriptionBox>
             <hr></hr>
             <DescriptionContainer>
-                <img src="https://danoshop.net/mall/upload/2021/04/27/01_pro_danobar_2set_edit_x4WyBcv.png" width="500"></img>
-                <img src="https://danoshop.net/mall/upload/2021/04/23/02_pro_danobar_2set_gu8cS4C.png" width="500"></img>
-                <img src="https://danoshop.net/mall/upload/2021/04/23/03_pro_danobar_2set.png" width="500"></img>
+                <img alt="1" src="https://danoshop.net/mall/upload/2021/04/27/01_pro_danobar_2set_edit_x4WyBcv.png" width="500"></img>
+                <img alt="2" src="https://danoshop.net/mall/upload/2021/04/23/02_pro_danobar_2set_gu8cS4C.png" width="500"></img>
+                <img alt="3" src="https://danoshop.net/mall/upload/2021/04/23/03_pro_danobar_2set.png" width="500"></img>
             </DescriptionContainer> 
         </Box>
         </>

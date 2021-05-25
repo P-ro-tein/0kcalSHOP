@@ -65,8 +65,8 @@ function CartItem({Item}){
             <ItemName>{Item.name}</ItemName>
             <Number>
             <ItemNumber placeholder={quantity}></ItemNumber>
-                <button onClick={onIncrease} class="num" style={{height:'30px'}}>+</button>
-                <button onClick={onDecrease} class="num" style={{height:'30px'}}>-</button> 
+                <button onClick={onIncrease} className="num" style={{height:'30px'}}>+</button>
+                <button onClick={onDecrease} className="num" style={{height:'30px'}}>-</button> 
             </Number>
             <ItemPrice>{Item.price}</ItemPrice>
         </ItemContainer>

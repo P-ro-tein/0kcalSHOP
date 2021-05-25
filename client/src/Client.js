@@ -6,8 +6,9 @@ import Navbar from "./Common/Navbar"
 import MainPage from "./Main/MainPage";
 import Register from "./Register/Register";
 import Login from "./Login/Login";
-import {BrowserRouter as Router,Route} from "react-router-dom";
+import {Route} from "react-router-dom";
 import styled from 'styled-components';
+import { GlobalContext } from "./GlobalContext";
 
 
 const Box=styled.div`
@@ -17,6 +18,7 @@ height:100%;
 
 function Client() {
   return (
+    <GlobalContext>
     <Box>
     <Header/>
       <Navbar />
@@ -25,9 +27,9 @@ function Client() {
       <Route path="/client/ItemDetail/:productId" component={ItemDetail} />
       <Route path="/client/register" component={Register} />
       <Route path="/client/login" component={Login} />
-
       <Footer />
     </Box>
+    </GlobalContext>
   );
 }
 
