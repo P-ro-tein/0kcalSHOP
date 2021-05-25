@@ -7,9 +7,6 @@ const noticeSchema = mongoose.Schema({
         maxlength: 50,
         require:true
     },
-    noticeID: { // 동일한 title을 가진 공지를 내부적으로 구별하기 위해 ID 사용 추가
-        type:String
-    },
     createdDate: {
         type: Date,
         default: Date.now(),

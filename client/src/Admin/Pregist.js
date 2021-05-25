@@ -1,98 +1,112 @@
 import './Basic.css';
-//import { Link } from "react-router-dom";
-export default function Pregist() {
-    /*const [title, setTitle] = useState("");
+import React, { useState } from 'react';
+import axios from 'axios';
+
+export default function Pregist(props) {
+    const [title, setTitle] = useState("");
     const [category, setCategory] = useState("");
     const [price, setPrice] = useState("");
     const [shipCharge, setShipCharge] = useState("");
     const [remainStock, setRemainStock] = useState("");
     const [images, setImages] = useState("");
-
+    const [description, setDescription] = useState("")
 
     const titleChangeHandler = (e) => {
-        setId(e.currentTarget.value);
+        setTitle(e.currentTarget.value);
     }
     const categoryChangeHandler = (e) => {
-        setId(e.currentTarget.value);
+        setCategory(e.currentTarget.value);
     }
     const priceChangeHandler = (e) => {
-        setId(e.currentTarget.value);
+        setPrice(e.currentTarget.value);
     }
     const shipChargeChangeHandler = (e) => {
-        setId(e.currentTarget.value);
+        setShipCharge(e.currentTarget.value);
     }
     const remainStockChangeHandler = (e) => {
-        setId(e.currentTarget.value);
+        setRemainStock(e.currentTarget.value);
     }
     const imagesChangeHandler = (e) => {
-        setId(e.currentTarget.value);
+        setImages(e.currentTarget.value);
+    }
+    const descriptionChangeHandler = (e) => {
+        setDescription(e.currentTarget.value)
     }
 
-    const submitHandler = () => {
+    const submitHandler = (event) => {
+        event.preventDefault();
+        const formData = new FormData(); 
+
+        formData.append('title', title);
+        formData.append('category', category);
+        formData.append('price', price);
+        formData.append('shipCharge', shipCharge);
+        formData.append('remainStock', remainStock);
+        formData.append('description', description);
+        formData.append('images', event.target.images.files[0]);        
         
-        const data = {
-            title: title,
-            category: category,
-            price: price,
-            shipCharge: shipCharge,
-            remainStock: remainStock,
-            images: images,
-        }
         axios({
             url: '/api/product/register',
             method: 'post',
-            data
+            formData
         })
-        .then(res => {
-            if(response.success){
-                history.push('/admin/psearch');
+        .then(response => {
+            if(response.data.success){
+                alert('등록완료');
+                props.history.push('/admin/psearch');
             } else { 
-                alert('가입할 수 없습니다');
-                console.log(response.message);
+                alert('');
+                console.log(response.data.message);
             }
         });
-    }*/
+    }
+
 
     return(
         <div className="Page">
             <span><b>상품 관리 &gt; 상품 등록</b></span>
             <hr/>
-            <form action="/api/product/register" method="POST" enctype="multipart/form-data">
+
+            <form action="/api/product/register" method="POST" enctype="multipart/form-data" onSubmit="submitHandler">
             <table>
                 <tr className="Ttitle">
                     <td colSpan="2">상품 등록</td>
                 </tr>
                 <tr>
-                    <td className="Tname">상품명</td><td><input type="text" name="title" /></td>
+                    <td className="Tname">상품명</td><td><input type="text" name="title" onChange={titleChangeHandler}/></td>
                 </tr>
                 <tr>
                     <td>카테고리명</td>
                     <td>
-                        <select name="category">
+                        <select name="category" onChange={categoryChangeHandler}>
                             <option selected disabeld hidden>카테고리 선택</option>
-                            <option>식단세트</option>
-                            <option>식사대용</option>
-                            <option>건강간식</option>
+                            <option value="식단세트">식단세트</option>
+                            <option value="식사대용">식사대용</option>
+                            <option value="건강간식">건강간식</option>
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <td>가격</td>
-                    <td><input type="number" name="price" /></td>
+                    <td><input type="number" name="price" onChange={priceChangeHandler}/></td>
                 </tr>
                 <tr>
                     <td>배송비</td>
-                    <td><input type="number" name="shipCharge"/></td>
+                    <td><input type="number" name="shipCharge" onChange={shipChargeChangeHandler}/></td>
                 </tr>
                 <tr>
                     <td>재고량</td>
-                    <td><input type="number" name="remainStock"/></td>
+                    <td><input type="number" name="remainStock" onChange={remainStockChangeHandler}/></td>
                 </tr>
                 <tr>
-                    <td>대표이미지</td><td><input type="file" name="images" accept="img/*"/></td>
+                    <td>상품 소개</td>
+                    <td><input type="text" name="description" name="description" onChange={descriptionChangeHandler} /> </td>
                 </tr>
                 <tr>
-                    <td>상품 상세설명</td><td><input type="file" name="images" accept="img/*" multiple/></td>
+                    <td>대표이미지</td><td><input type="file" name="images" accept="img/*" onChange={imagesChangeHandler}/></td>
+                </tr>
+                <tr>
+                    <td>상품 상세설명</td><td><input type="file" name="images" accept="img/*" multiple onChange={imagesChangeHandler}/></td>
                 </tr>
             </table><br/>
                 

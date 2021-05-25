@@ -6,13 +6,11 @@ const fs = require('fs');
 const path = require('path');
 const { User } = require('../models/User');
 const { auth } = require('../middleware/auth');
-const uuidGenerate = require('../util/uuid');
 
 
 router.post('/register', auth, (req, res) => {
     //받아온 정보들을 DB에 넣어 준다.
     const shipAddr = new ShipAddr(req.body);
-    shipAddr.shipAddrID = uuidGenerate.uuidv4();
     shipAddr.shipAddrDetail[0] = req.body.roadAddress;
     shipAddr.shipAddrDetail[1] = req.body.postcode;
     shipAddr.shipAddrDetail[2] = req.body.detailAddress;
@@ -48,8 +46,8 @@ router.post('/register', auth, (req, res) => {
 
 router.route('/modifyShipAddr') // 배송지 수정 기능
     .get(auth, function(req, res) {
-        ShipAddr.findOne({ userID: req.user.id, shipAddrID: req.body.shipAddrID }, (err, shipAddr) => {
-            console.log(req.user.id, req.body.shipAddrID)
+        ShipAddr.findOne({ userID: req.user.id, _id: req.body._id }, (err, shipAddr) => {
+            console.log(req.user.id, req.body._id)
             if (!shipAddr)
                 return res.json({ // 전달받은 배송지 ID, 유저ID 가 존재하지 않는 경우
                     success: false,
@@ -60,7 +58,6 @@ router.route('/modifyShipAddr') // 배송지 수정 기능
                 _id: shipAddr._id,
                 userID : shipAddr.userID,
                 shipAddrName: shipAddr.shipAddrName,
-                shipAddrID: shipAddr.shipAddrID,
                 defaultShip: shipAddr.defaultShip,
 
                 roadAddress : shipAddr.shipAddrDetail[0],
@@ -91,7 +88,7 @@ router.route('/modifyShipAddr') // 배송지 수정 기능
                         console.log("Default ShipAddress is not found");
                 });
             User.findOneAndUpdate({id: shipAddr.userID}, // 유저 모델에서 해당 유저를 찾아 기본 배송지명 변경
-                {$set: {"defualtShipAddrName": shipAddr.shipAddrName}},
+                {$set: {"defaultShipAddrName": shipAddr.shipAddrName}},
                 { new: true },
                 (err, userInfo) => {
                     if (!userInfo)
@@ -105,7 +102,7 @@ router.route('/modifyShipAddr') // 배송지 수정 기능
         ShipAddr.findOneAndUpdate(
             // 배송지 수정 시, 이미 클라이언트로 모든 정보를 보내줬고 다시 받을 때 변경하지 않았으면 그대로 다시 올 것이고
             // 수정되었다면 수정된 사항이 올것이기 때문에 그 정보를 바탕으로 shipAddrID에 해당되는 DB에 그대로 등록
-            { userID: shipAddr.userID, shipAddrID: shipAddr.shipAddrID },
+            { userID: shipAddr.userID, _id: shipAddr._id },
             {
                 $set: {
                     "shipAddrRecipient" : shipAddr.shipAddrRecipient,
@@ -127,7 +124,7 @@ router.route('/modifyShipAddr') // 배송지 수정 기능
     });
 
 router.delete('/removeShipAddr', auth, (req, res) => {
-    ShipAddr.deleteOne( { userID: req.user.id, shipAddrID: req.body.shipAddrID},
+    ShipAddr.deleteOne( { userID: req.user.id, _id: req.body._id},
         function(err, shipAddrInfo) {
         console.log(shipAddrInfo)
     });
