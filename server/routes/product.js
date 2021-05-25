@@ -30,20 +30,7 @@ var storage = multer.diskStorage({
 // 앞에서 만든 storage를 넣어서 저장될 파일의 이름을 유지하는 upload 미들웨어.
 // 하나의 파일을 처리하기 위해 .single()을 사용
 // .single()에는 html form에서 사용된 파일 input 필드의 이름(name)이 삽입.
-var upload = multer({ storage: storage }).single("images")
-
-/* 프론트에서 사진 요청시 이용할 수 도 있는 코드
-router.use('/img',express.static(path.resolve(__dirname,'../uploads')));
-router.post('/image', (req, res) => {
-    //가져온 이미지를 저장을 해주면 된다.
-    upload(req, res, err => {
-        if (err) {
-            return req.json({ success: false, err })
-        }
-        return res.json({ success: true, filePath: res.req.file.path, fileName: res.req.file.filename })
-    })
-
-})*/
+var upload = multer({ storage: storage }).array("images")
 
 // 폼 액션이 /product/register
 router.post('/register',upload, (req, res) => {
@@ -51,7 +38,9 @@ router.post('/register',upload, (req, res) => {
     const product = new Product(req.body)
     // single이니까 file 속성 안에 filename이 들어있으므로 안넘겨져서 그냥 타이틀사진을 그냥 넣어버렸다
     // 몇 장 사진이 추가되면 for문 돌리든지..나중에 방법을 강구해보자.
-    product.images[0] = req.file.filename;
+   for(let i=0 ; i<req.files.length; i+=1){
+       product.images[i]=req.files[i].filename
+    }
     product.save((err) => {
         if (err) return res.status(400).json({ success: false, err })
         return res.status(200).json({success:true});

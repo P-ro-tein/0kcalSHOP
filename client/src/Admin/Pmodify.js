@@ -3,9 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function Pmodify(props) {
-    
     const productId = props.match.params.productId
-
     const [Product, setProduct] = useState({})
 
     useEffect(() => {
@@ -16,11 +14,23 @@ function Pmodify(props) {
             .catch(err => alert(err))
     }, [])
 
+    const removeHandler=() => {
+        const _id = productId;
+        axios.post('/api/product/removeProduct', {_id})
+            .then(response=>{
+                if(response.success){
+                    alert('상품 삭제 완료');
+                } else{
+                    alert(response.message);
+                }
+            })
+    }
+
     return(
         <div className="Page">
             <span><b>상품 관리 &gt; 상품 수정</b></span>
             <hr/>
-            <form method="POST">
+            <form action="/api/product/modiftProduct" method="POST" enctype="multipart/form-data">
             <table>
                 <tr className="Ttitle">
                     <td colSpan="2">상품 수정</td>
@@ -32,7 +42,6 @@ function Pmodify(props) {
                     <td>카테고리명</td>
                     <td>
                         <select name="category" value={Product.category}>
-                            <option selected disabeld hidden>카테고리 선택</option>
                             <option>식단세트</option>
                             <option>식사대용</option>
                             <option>건강간식</option>
@@ -49,16 +58,17 @@ function Pmodify(props) {
                 </tr>
                 <tr>
                     <td>재고량</td>
-                    <td><input type="number" name="stock" value={Product.stock}/></td>
+                    <td><input type="number" name="remainStock" value={Product.remainStock}/></td>
                 </tr>
                 <tr>
                     <td>대표이미지</td><td><input type="file" name="images" accept="img/*" /></td>
                 </tr>
                 <tr>
-                    <td>상품 상세설명</td><td><input type="file" name="images" accept="img/*"/></td>
+                    <td>상품 상세설명</td><td><input type="file" name="images" accept="img/*" multiple/></td>
                 </tr>
             </table><br/>
-                <input type="submit" value="등록"/>
+                <input type="submit" value="수정"/> &nbsp;
+                <input type="button" value="삭제" onClick={removeHandler}/>
             </form> 
         </div>
     )
