@@ -88,7 +88,7 @@ router.route('/modifyShipAddr') // 배송지 수정 기능
                         console.log("Default ShipAddress is not found");
                 });
             User.findOneAndUpdate({id: shipAddr.userID}, // 유저 모델에서 해당 유저를 찾아 기본 배송지명 변경
-                {$set: {"defualtShipAddrName": shipAddr.shipAddrName}},
+                {$set: {"defaultShipAddrName": shipAddr.shipAddrName}},
                 { new: true },
                 (err, userInfo) => {
                     if (!userInfo)
