@@ -12,7 +12,6 @@ const shipAddrSchema = Schema({
         maxlength: 15,
         require: true
     },
-    shipAddrID: String, // 배송지 별명이 동일해도 다른 배송지일수도 있으니 ID로 확인하는 것도 있어야 할듯
     defaultShip: { // 기본 배송지 설정 여부
         type: Number,
         default: 0,
