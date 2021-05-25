@@ -1,6 +1,5 @@
 import React,{useEffect,useState} from 'react';
 import styled from 'styled-components';
-import {Link} from 'react-router-dom';
 
 import axios from "axios";
 
@@ -49,7 +48,7 @@ function Item(){
           return (
             <a href={`/client/ItemDetail/${product._id}`}>
               <BoxItem>
-                <img src={`http://localhost:9000/uploads/${product.images[0]}`} alt={product.title} width="100%" height="280px"/>
+                <img key={product._id} src={`http://localhost:9000/uploads/${product.images[0]}`} alt={product.title} width="100%" height="280px"/>
                 <ItemDetail>{product.title}</ItemDetail>
               </BoxItem>
             </a>

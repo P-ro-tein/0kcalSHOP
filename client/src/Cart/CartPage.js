@@ -101,7 +101,7 @@ function CartPage(){
             </Bar>
             {Item.map((item)=>{
                 return(
-                    <CartItem Item={item} />
+                    <CartItem key={item.price} Item={item} />
                 )
             })}
             <div style={{height:'80px'}}></div>

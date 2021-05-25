@@ -1,4 +1,4 @@
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import Header from "./Header";
 import Category from "./Category";
 import Nsearch from "./Nsearch";

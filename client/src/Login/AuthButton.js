@@ -6,9 +6,10 @@ const Wrapper = styled.button`
     padding-top: 0.6rem;
     padding-bottom: 0.5rem;
 
-    background: #ff7777;
-    color: white;
-    width: 500px;
+    background: white;
+    color: #ff7777;
+    border:#ff7777 1px solid;
+    width: 520px;
     text-align: center;
     font-size: 1.25rem;
     font-weight: 500;
@@ -18,11 +19,11 @@ const Wrapper = styled.button`
     transition: .2s all;
 
     &:hover {
-        background: #ff8181;
+        background: #;
     }
 
     &:active {
-        background: #d95f5f;
+        background: #;
     }
 
 `;

@@ -1,6 +1,5 @@
-import React, {useState} from "react";
+import React from "react";
 import styled from "styled-components";
-import Item from "../Item/Item";
 import {Link} from 'react-router-dom';
 
 
@@ -27,44 +26,6 @@ const CategoryName=styled.button`
 `
 
 function Navbar(){
-    const [items, setItems] = useState([
-        {
-            id:1,
-            category:'공지사항',
-            active:false,
-            page:Item,
-        },
-        {
-            id:2,
-            category:'이벤트',
-            active:false,
-            page:Item,
-        },
-        {
-            id:3,
-            category:'식단세트',
-            active:false,
-            page:Item,
-        },
-        { 
-            id:4,
-            category:'식사대용',
-            active:false, 
-            page:Item
-        }, 
-        {
-            id:5,
-            category:'건강간식',
-            active:false,
-            page:Item
-        }, 
-        {
-            id:6,
-            category:'전체상품',
-            active:false,
-            page:Item
-        }, 
-    ]);
     return(
         <Bar>
             <Container>

@@ -65,14 +65,14 @@ function Footer(){
             <div style={{float:'left'}}>
             올해의 신규 브랜드 대상 수상
             </div>
-            <img style={{float:'left',marginLeft:'50px'}} src="https://www.flaticon.com/svg/vstatic/svg/744/744984.svg?token=exp=1619601165~hmac=6fa618b421c122a7e7877c185edff386" width="50"></img>
+            <img style={{float:'left',marginLeft:'50px'}} alt="prize" src="https://www.flaticon.com/svg/vstatic/svg/744/744984.svg?token=exp=1619601165~hmac=6fa618b421c122a7e7877c185edff386" width="50"></img>
             </div>
         </Banner>
         <BoxFooter>
         <ContainerFooter>
         <Text>
             <TextTitle style={{display:'inline',}}>
-            <img src="https://www.flaticon.com/svg/vstatic/svg/1170/1170646.svg?token=exp=1619598312~hmac=81ff415b8f57e2a1b87eda33e82a99d9" width="20" height="20"></img>
+            <img alt="call" src="https://www.flaticon.com/svg/vstatic/svg/1170/1170646.svg?token=exp=1619598312~hmac=81ff415b8f57e2a1b87eda33e82a99d9" width="20" height="20"></img>
             <span>무엇을 도와드릴까요?</span>
             </TextTitle>
             <div style={{color:'grey',fontSize:'12px'}}>

@@ -32,7 +32,7 @@ function Header(){
         <>
         <BoxHeader>
             <ContainerHeader>
-                <Link to ='/' class="link">
+                <Link to ='/client' className="link">
                 <Logo>0kcal Shop</Logo>
                 </Link>
             </ContainerHeader>

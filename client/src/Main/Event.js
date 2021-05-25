@@ -37,7 +37,7 @@ function Event(){
     return(
         <Box>
             <Slider {...settings}>{events.map((data)=>{
-               return <img src={data.imgUrl}/>;
+               return <img key={data.id} alt={data.id} src={data.imgUrl}/>;
             })}</Slider>
         </Box>
     );
