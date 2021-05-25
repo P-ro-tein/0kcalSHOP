@@ -7,27 +7,30 @@ const Bar=styled.div`
 margin-top:10px;
 width:100%;
 height:50px;
-background-color:#E6E6E6;
+background-color:#f9f9f9;
 `;
 
 const Container=styled.div`
     display:flex;
-    width:750px;
+    width:800px;
     margin:0 auto;
     padding-top:13px;
 `
 
 const CategoryName=styled.button`
-    margin-right:40px;
+    margin-right:70px;
     font-size:17px; 
     cursor:pointer;
     border:none;
-    background-color:#E6E6E6;
+    background-color:#f9f9f9;
+    font-family: 'Noto Sans KR', sans-serif;
 `
 
 function Navbar(){
     return(
         <Bar>
+            <link rel="preconnect" href="https://fonts.gstatic.com"></link>
+            <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet"></link>
             <Container>
             <Link to='/Notice'>
             <CategoryName>공지사항/이벤트</CategoryName>

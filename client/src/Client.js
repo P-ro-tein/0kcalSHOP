@@ -1,4 +1,4 @@
-import Header from './Common/Header';
+import Header from './Common/SubHeader';
 import Item from './Item/Item';
 import Footer from './Common/Footer';
 import ItemDetail from './Item/ItemDetail';

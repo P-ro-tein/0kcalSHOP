@@ -55,7 +55,7 @@ const Container=styled.div`
     display:inline-flex;
 `;
 const Box=styled.div`
-    width:1100px;
+    width:1200px;
     margin:0 auto;
 `;
 
@@ -112,7 +112,7 @@ function ItemDetail(props){
                 setProduct(response.data[0])
             })
             .catch(err => alert(err))
-    }, [productId]);
+    }, [productId,Product.images]);
 
 
     const openDeliveryModal=()=>{
@@ -156,7 +156,10 @@ function ItemDetail(props){
                 <DetailText>
                     {Product.category}
                 </DetailText>
-                <img alt={Product._id} src={`http://localhost:9000/uploads/${Product.images}`} width="600" height="400"></img>
+                {
+                    Product.images&&Product.images.length>0 &&
+                <img alt={Product._id} src={`http://localhost:9000/uploads/${Product.images[0]}`} width="600" height="400"></img>
+                }
             </LeftContainer>
             <RightContainer>
                 <ItemName>
@@ -201,9 +204,10 @@ function ItemDetail(props){
             <DescriptionBox>상품 설명</DescriptionBox>
             <hr></hr>
             <DescriptionContainer>
-                <img alt="1" src="https://danoshop.net/mall/upload/2021/04/27/01_pro_danobar_2set_edit_x4WyBcv.png" width="500"></img>
-                <img alt="2" src="https://danoshop.net/mall/upload/2021/04/23/02_pro_danobar_2set_gu8cS4C.png" width="500"></img>
-                <img alt="3" src="https://danoshop.net/mall/upload/2021/04/23/03_pro_danobar_2set.png" width="500"></img>
+            {
+                    Product.images&&Product.images.length>0 &&
+                <img alt={Product._id} src={`http://localhost:9000/uploads/${Product.images[1]}`} width="500"></img>
+                }
             </DescriptionContainer> 
         </Box>
         </>

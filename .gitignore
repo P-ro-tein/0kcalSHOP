@@ -1,5 +1,7 @@
 /node_modules
 
+/uploads
+
 /server/config/dev.js
 
 /yarn-error.log
