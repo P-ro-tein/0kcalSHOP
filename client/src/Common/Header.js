@@ -7,7 +7,7 @@ import SubHeader from './SubHeader';
 const BoxHeader=styled.div`
     width:100%;
     height:80px;
-    background:#ff7777;
+    background:#ff9480;
 `;
 
 const ContainerHeader=styled.div`

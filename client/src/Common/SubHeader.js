@@ -8,38 +8,33 @@ import {useGlobalDispatch,useGlobalState} from "../GlobalContext";
 
 const BoxCategory=styled.div`
 width:1200px;
-display:flex;
+height:130px;
 margin:0 auto;
+padding-top:10px;
 `;
 
-const ContainerCategory=styled.div`
-width:550px;
-height:100px;
-padding-left:100px;
-padding-top:15px;
-
+const Logo=styled.div`
+    width:900px;
+    padding-top:30px;
+    font-family:"HY헤드라인M";
+    font-size:50px;
+    font-weight:bold;
 `;
-
-const ContainerLogin=styled.div`
-    width:250px;
+const Container=styled.div`
+    width:300px;
     height:50px;
-    padding:30px;
+    text-align:right;
 `;
 
 const LoginButton=styled.button`
-    background-color:#ff7777;
+    background:none;
+    color:black;
     border:none;
-    border-radius:10px;
-    color:white;
-    width:80px;
-    margin-right:10px;
+    width:70px;
     cursor:pointer;
+    font-size:12px;
 `;
 
-
-const Box=styled.div`
-display:inline-flex;
-`;
 
 function SubHeader(){
 
@@ -64,28 +59,34 @@ function SubHeader(){
     }
     return(
         <BoxCategory>
-            <div style={{width:'200px'}}></div>
-            <ContainerCategory>
-                <Search />
-            </ContainerCategory>
-            <ContainerLogin>
+            <div style={{display:"flex"}}>
+            <Link to ='/client' className="link">
+            <Logo>0KcalShop</Logo>
+            </Link>
+            <Container>
+                <div>
                 {
                     Active===true&&
-                    <Box>
+                    <>
                         <a href="/client/cart"><LoginButton>장바구니</LoginButton></a>
+                        <span>|</span>
                         <Link to="/client">
                         <LoginButton onClick={logoutHandler}>로그아웃</LoginButton>
                         </Link>
-                     </Box>
+                     </>
                 }
                 { 
                     Active===false&&
-                    <Box>
+                    <>
                         <a href="/client/login"><LoginButton>로그인</LoginButton></a>
+                        <span>|</span>
                         <a href="/client/register"><LoginButton>회원가입</LoginButton></a>
-                    </Box>
+                    </>
                 }
-            </ContainerLogin>
+                </div>
+                <Search />
+            </Container>
+            </div>
         </BoxCategory>
     );
 }

@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect} from 'react';
 
+import axios from "axios";
 import '../AllCss.css'
 import DaumPostcode from 'react-daum-postcode';
 
 
 const DeliveryModal = ( props ) => {
     const { open, close, header} = props;
-    const [Q1,setSelect]=useState("delivery0");
+    const [Q1,setSelect]=useState("");
     const [Div,setDiv]=useState(1); 
     const [isDaumPost,SetDaumPost]=useState(false);
     const [isAddress, setIsAddress] = useState("");
     const [isZoneCode, setIsZoneCode] = useState();
+    const [Address, setAddress] = useState({});
+
 
     const postCodeStyle = {
         display: "block",
@@ -19,7 +22,21 @@ const DeliveryModal = ( props ) => {
         right:"-10px",
         zIndex: "100",
         padding: "7px"
-      }
+    }
+
+    useEffect(() => {
+        axios.get('/api/shipAddr/list')
+        .then(response => {
+            console.log(response);
+        if(response.data.success) {
+            setAddress(response.data.shipAddrInfo)
+            setSelect(response.data.shipAddrInfo[1].shipAddrName);
+            console.log(Q1);
+        } else {
+            console.log('배송지 정보 가져오는데 실패');
+        }
+        })
+    }, []);
 
     const ChangeDiv1=()=>{
             setDiv(1);
@@ -30,6 +47,7 @@ const DeliveryModal = ( props ) => {
         console.log(Div);
     }
     const changeRadioQ1 = (e) => {
+        console.log(e.target.value);
         setSelect(e.target.value);
       };
 
@@ -111,32 +129,19 @@ const DeliveryModal = ( props ) => {
                                 </div>}
                                 {Div===1&&
                                 <div className="newbox">
-                                    <div style={{paddingBottom:"10px"}}>
-                                    <label htmlFor="delivery">
-                                        <input type="radio" id="delivery0" name="delivery0" value="delivery0" checked={Q1 === "delivery0" ? true : false} onChange={changeRadioQ1}></input>
-                                        [현재배송지]집<div style={{paddingTop:"10px",paddingLeft:"22px"}}>(공릉로 232 미래관 304호)</div>
-                                    </label>
-                                    </div>
-                                    <div style={{paddingBottom:"10px"}}>
-                                    <label htmlFor="delivery">
-                                        <input type="radio" id="delivery1" name="delivery1" value="delivery1" checked={Q1 === "delivery1" ? true : false} onChange={changeRadioQ1}></input>
-                                        delivery1<div style={{paddingTop:"10px",paddingLeft:"22px"}}>(저기도 저기시 저기동)</div>
-                                    </label>
-                                    </div>
-                                    <div style={{paddingBottom:"10px"}}>
-                                    <label htmlFor="delivery">
-                                        <input type="radio" id="delivery2" name="delivery2" value="delivery2" checked={Q1 === "delivery2" ? true : false} onChange={changeRadioQ1}></input>
-                                        delivery2
-                                        <div style={{paddingTop:"10px",paddingLeft:"22px"}}>(여기도 여기시 여기동)</div>
-                                    </label>
-                                    </div>
-                                    <div style={{paddingBottom:"10px"}}>
-                                    <label htmlFor="delivery">
-                                        <input type="radio" id="delivery3" name="delivery3" value="delivery3" checked={Q1 === "delivery3" ? true : false} onChange={changeRadioQ1}></input>
-                                        delivery3
-                                        <div style={{paddingTop:"10px",paddingLeft:"22px"}}>(거기도 거기시 거기동)</div>
-                                    </label>
-                                    </div>
+
+                                    {
+                                        Address.map((data)=>{
+                                            return(
+                                                <div style={{paddingBottom:"10px"}}>
+                                                 <label htmlFor="delivery">
+                                                <input type="radio" id={data._id} name={data._id} value={data.shipAddrName} checked={Q1 === data.shipAddrName ? true : false} onChange={changeRadioQ1}></input>
+                                                {data.shipAddrName}<div style={{paddingTop:"10px",paddingLeft:"22px"}}>{data.shipAddrDetail[0]}({data.shipAddrDetail[2]})</div>
+                                                </label>
+                                                </div>
+                                            );
+                                        })
+                                    }
                                 </div>}
                             </div>
                             <div>
