@@ -51,7 +51,7 @@ router.route('/modifyProduct') // 상품 정보 수정시, 클라이언트로 �
     .get(function(req, res) {
         Product.findOne({ _id: req.body._id }, (err, product) => {
             if (!product)
-                return res.json({ // NoticeID가 잘못 입력된 경우
+                return res.json({ // ProductID가 잘못 입력된 경우
                     success: false,
                     message: "ID not found"
                 });
@@ -67,8 +67,8 @@ router.route('/modifyProduct') // 상품 정보 수정시, 클라이언트로 �
                 sold : product.sold,
                 deleted : product.deleted,
                 views : product.views,
-                createdDate: notice.createdDate,
-                updatedDate: notice.updatedDate
+                createdDate: product.createdDate,
+                updatedDate: product.updatedDate
             });
         });
     })
@@ -118,66 +118,74 @@ router.post('/removeProduct', (req, res) => {
 
 // 상품 리스트 조회
 router.post('/products', (req, res) => {
-    let order = req.body.order ? req.body.order : "desc";
-    let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
-    // product collection에 들어 있는 모든 상품 정보를 가져오기 
-    let limit = req.body.limit ? parseInt(req.body.limit) : 20;
-    let skip = req.body.skip ? parseInt(req.body.skip) : 0;
-    let term = req.body.searchTerm
+    let order = req.body.order ? req.body.order : "asc"; // default 오름차순.(낮은 가격순) 내림차순으로 하고싶은경우 asc로 변경
+    let sortBy = req.body.sortBy ? req.body.sortBy : "_id"; // default _id값으로 정렬
+    // pagination을 위한 limit, skip 사용
+    let limit = req.body.limit ? parseInt(req.body.limit) : 16; // default로 한 페이지에서 16개의 상품만 띄우도록 함.
+    let skip = req.body.skip ? limit * (parseInt(req.body.pageNumber)-1) : 0;
+    // default 첫 페이지. 이후 페이지의 경우 skip = limit * (페이지 번호 -1) 하면 됨.
 
+    let term = req.body.searchTerm // 상품 검색을 위한 부분
+    let category = req.body.category ? req.body.category : ["식단세트","식사대용","건강간식"];
     let findArgs = {};
 
-    for (let key in req.body.filters) {
-        if (req.body.filters[key].length > 0) {
+    let leastPrice = req.body.leastPrice;
+    let highestPrice = req.body.highestPrice;
 
+    for (let key in req.body.filters) { // 가격 필터링
+        if (req.body.filters[key]) { // length가 1보다 클때 작동하는게 안에 들어있으면 동작하는것 이었던것 같은데 제대로 동작안해서 그냥 삭제
             console.log('key', key)
-
             if (key === "price") {
                 findArgs[key] = {
-                    //Greater than equal
                     $gte: req.body.filters[key][0],
                     //Less than equal
                     $lte: req.body.filters[key][1]
                 }
             } else {
-                findArgs[key] = req.body.filters[key];
+                findArgs[key] = req.body.filters[key]; // 필터의 필드에 대한 값과 일치하는 것들을 넣어줌
             }
-
+            console.log(findArgs[key])
         }
     }
-
 
     if (term) {
         Product.find(findArgs)
             .find({ $text: { $search: term } })
-            .populate("writer")
+            .find({
+                "deleted" : 0, // 삭제 처리되지 않은 상품 로드
+                "category" : category,
+            })
             .sort([[sortBy, order]])
             .skip(skip)
             .limit(limit)
             .exec((err, productInfo) => {
                 if (err) return res.status(400).json({ success: false, err })
                 return res.status(200).json({
-                    success: true, productInfo,
+                    success: true,
+                    productInfo,
                     postSize: productInfo.length
                 })
             })
     } else {
-        Product.find(findArgs)
-            .populate("writer")
+        Product
+            .find(findArgs)
+            .find({
+                "deleted" : 0, // 삭제 처리되지 않은 상품 로드
+                "category" : category,
+            })
             .sort([[sortBy, order]])
             .skip(skip)
             .limit(limit)
             .exec((err, productInfo) => {
                 if (err) return res.status(400).json({ success: false, err })
                 return res.status(200).json({
-                    success: true, productInfo,
+                    success: true,
+                    productInfo,
                     postSize: productInfo.length
                 })
             })
     }
-
 })
-
 
 // 상품 상세정보를 들어갈때 주소뒤에 쿼리로 질의가 오면 해당 상품의 정보를 보내준다
 router.get('/products_by_id', (req, res) => {
