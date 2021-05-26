@@ -1,71 +1,80 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import styled from 'styled-components';
-
+import axios from 'axios';
 const Box=styled.div`
     width:1200px;
-    display:flex;
-
-`;
-
-const Container=styled.div`
+    height:1500px;
     display:block;
-`;
-const ItemBox = styled.div`
-    width:200px;
-    height:200px;
-    cursor:pointer;
+
 `;
 
-const ItemName=styled.div`
-
+const BoxItem=styled.div`
+float:left;
+width:280px;
+height:280px;
+margin:10px;
+margin-bottom:100px;
+cursor:pointer;
+`;
+const ItemDetail=styled.div`
+font-family: 맑은고딕, Malgun Gothic, dotum, gulim, sans-serif;
+display:block;
+width:100%;
+padding-top:10px;
+font-size:14px;
+margin-bottom: 3px;
+`;
+const Title=styled.div`
+font-family: 맑은고딕, Malgun Gothic, dotum, gulim, sans-serif;
+font-weight:bold;
+font-size:20px;
+margin: 20px;
+margin-top: 30px;
+`;
+const ItemPrice=styled.span`
+font-family: 맑은고딕, Malgun Gothic, dotum, gulim, sans-serif;
+font-weight:bold;
+font-size:20px;
+`;
+const Won=styled.span`
+font-family: 맑은고딕, Malgun Gothic, dotum, gulim, sans-serif;
+font-weight:bold;
+font-size:15px;
 `;
 function HotItem(){
-    const item=[
-        {
-            id:1,
-            name:"다노 홈트 매트 (미끄럼 방지, 층간 소음 감소)",
-            imgUrl:"https://danoshop.net/mall/upload/2020/06/08/htmt_716x478.jpg",
-        },
-        {
-            id:2,
-            name:"다노 다노한끼 시즌4 저당 곤약 도시락(7팩/14팩)",
-            imgUrl:"https://danoshop.net/mall/upload/2020/12/15/hover_season4.png",
-        },
-        {
-            id:3,
-            name:"다노 다노한끼 도시락 시즌3(7팩/14팩)",
-            imgUrl:"https://danoshop.net/mall/upload/2020/12/15/hover_season3.png",
-        },
-        {
-            id:4,
-            name:"다노 닭가슴살 미니볼(오리지널/매운맛)",
-            imgUrl:"https://danoshop.net/mall/upload/2019/07/01/miniball_hover.jpg",
-        },
-        {
-            id:5,
-            name:"다노 다노한끼 닭가슴살 도시락 (7팩/14팩)",
-            imgUrl:"https://danoshop.net/mall/upload/2019/01/07/meal_hover.png",
-        },
-        {
-            id:6,
-            name:"다노 곤약비빔밥",
-            imgUrl:"https://danoshop.net/mall/upload/2020/09/03/hover_oV3jOjP.png",
-        },
-        {
-            id:7,
-            name:"베트남 쌀국수 2종(소고기/닭고기)",
-            imgUrl:"https://danoshop.net/mall/upload/2020/01/31/pho_716x478.jpg",
-        },
-        {
-            id:8,
-            name:"떡볶이 2종 (매콤/짜장)",
-            imgUrl:"https://danoshop.net/mall/upload/2020/12/15/hover_bbokki.jpg",
+    const [HotProducts, setHotProducts] = useState([]);
+    
+    useEffect(() => {
+    
+        axios.post('/api/product/products',{
+            sortBy: "sold",
+            order: "desc"
+        })
+        .then(response => {
+        if(response.data.success) {
+            setHotProducts(response.data.productInfo)
+        } else {
+            console.log('상품정보가져오는데실패');
         }
-    ];
+        })
+
+    }, []);
     return(
-        <>
-            
-        </>
+        <Box>
+            <Title>인기상품</Title>
+            {HotProducts.map((product) => {
+          return (
+            <a href={`/admin/product/${product._id}`}>
+              <BoxItem>
+                <img key={product._id} src={`http://localhost:9000/uploads/${product.images[0]}`} alt={product.title} width="100%" height="280px"/>
+                <ItemDetail>{product.title}</ItemDetail>
+                <ItemPrice>{product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</ItemPrice>
+                <Won>원</Won>
+              </BoxItem>
+            </a>
+          );
+        })}
+        </Box>
     );
 }
 
