@@ -130,6 +130,25 @@ a {
   align-items: center;
   animation: modal-bg-show 0.3s;
 }
+.modal.openModal {
+  display: flex;
+  align-items: center;
+  animation: modal-bg-show 0.3s;
+}
+.daumAddress {
+  display: flex;
+  position: fixed;
+  align-items: center;
+  text-align: center;
+  animation: modal-bg-show 0.3s;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX( -50% );
+  width: 500px;
+  z-index: 100;
+}
 @keyframes modal-show {
   from {
     opacity: 0;

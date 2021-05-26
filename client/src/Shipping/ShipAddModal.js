@@ -1,4 +1,4 @@
-import React, { useState,useEffect} from 'react';
+import React, { useState,useCallback,useEffect} from 'react';
 
 import axios from "axios";
 import '../AllCss.css'
@@ -10,18 +10,76 @@ const DeliveryModal = ( props ) => {
     const [isDaumPost,SetDaumPost]=useState(false);
     const [isAddress, setIsAddress] = useState("");
     const [isZoneCode, setIsZoneCode] = useState();
-    const [Address, setAddress] = useState({});
+
+    const [shipAddrName, setShipAddrName] = useState('');
+    const [shipAddrRecipient, setShipAddrRecipient] = useState('');
+    const [contactNumber, setContactNumber] = useState('');
+    const [shipDetailOne, setShipDetailOne] = useState('');
+    const [shipDetailTwo, setShipDetailTwo] = useState('');
+    const [shipDetailThree, setShipDetailThree] = useState('');
+    const [Address, setAddress] = useState([]);
+    const [defaultShip, setDefaultShip] = useState(0);
 
 
+    const shipAddrNameHandler = useCallback(e => {
+        setShipAddrName(e.target.value);
+    },[]);
+    const recipientHandler = useCallback(e => {
+        setShipAddrRecipient(e.target.value);
+    },[]);
+    const contactNumberHandler = useCallback(e => {
+        setContactNumber(e.target.value);
+    },[]);
+    const detailOneHandler = useCallback(e => {
+        setShipDetailOne(e.target.value);
+    },[]);
+    const detailTwoHandler = useCallback(e => {
+        setShipDetailTwo(e.target.value);
+    },[]);
+    const detailThreeHandler = useCallback(e => {
+        setShipDetailThree(e.target.value);
+    },[]);
+    const saveNew=()=>{
+        axios.post('/api/shipAddr/register', {
+            shipAddrRecipient: shipAddrRecipient,
+            shipAddrName: shipAddrName,
+            roadAddress: shipDetailOne,
+            postcode: shipDetailTwo,
+            detailAddress: shipDetailThree,
+            contactNumber: contactNumber,
+            defaultShip: defaultShip
+        })
+        .then(response => {
+            if(response.data.success){
+                alert('배송지 추가 완료');
+            } else {
+                console.log(response.data.err);
+                alert('배송지 추가 실패');
+            }
+        })
+    }
     const postCodeStyle = {
-        display: "block",
         position: "absolute",
         top:"150px",
         right:"-10px",
         zIndex: "100",
-        padding: "7px"
+        width: "500px",
+        border: "3px solid black"
     }
-
+const setShipAddress = () => {
+        axios.post('/api/shipAddr/list',{
+            order:"desc",
+            sortBy:"defaultShip"
+        })
+        .then(response => {
+        if(response.data.success) {
+            setAddress(response.data.shipAddrInfo)
+        }})
+        .catch();
+    }
+    useEffect(() => {
+        setShipAddress();
+    }, []);
     const ChangePost=()=>{
         SetDaumPost(true);
     }
@@ -40,6 +98,8 @@ const DeliveryModal = ( props ) => {
         }
         fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
       }
+      setShipDetailOne(fullAddress);
+      setShipDetailTwo(data.zonecode);
       setIsZoneCode(data.zonecode);
       setIsAddress(fullAddress);
       SetDaumPost(false);
@@ -58,8 +118,9 @@ const DeliveryModal = ( props ) => {
                             <div className="container">
                                 <div className="text"> 현재 배송지</div>
                                 <div style={{display:"block"}}>
-                                    <div className="dstination">집</div>
-                                    <div className="destination">공릉로 232 미래관 304호</div>
+                                    <div className="dstination">{Address[0].shipAddrName}</div>
+                                    <div className="destination">{Address[0].shipAddrDetail[0]}</div>
+                                    <div className="destination">{Address[0].shipAddrDetail[2]}</div>
                                 </div>
                             </div>
                             <div>
@@ -69,33 +130,35 @@ const DeliveryModal = ( props ) => {
                                 <div className="newbox">
                                     <div className="container">
                                     <div className="text">배송지 이름</div>
-                                    <input type="text" className="input"></input>
+                                    <input type="text" className="input" value={shipAddrName} onChange={shipAddrNameHandler}></input>
                                     </div>
                                     <div className="container">
                                         <div className="text">수령인</div>
-                                        <input type="text" className="input"></input>
+                                        <input type="text" className="input" value={shipAddrRecipient} onChange={recipientHandler}></input>
                                     </div>
                                     <div className="container">
                                         <div className="text">휴대전화</div>
-                                        <input type="tel" className="input"></input>
+                                        <input type="num" className="input" value={contactNumber} onChange={contactNumberHandler}></input>
                                     </div>
                                     <div className="container">
                                         <div className="text">배송지 주소</div>
-                                        <input type="text" className="input" style={{width:"245px"}} value={isAddress}></input>
-                                        <button onClick={ChangePost}>주소 찾기</button>
+                                        <input type="text" className="input" value={shipDetailOne} onChange={detailOneHandler} readOnly></input>
+                                        <button onClick={ChangePost}>찾기</button>
                                     </div>
                                     {
                                         isDaumPost?
-                                        <DaumPostcode 
-                                        autoClose
-                                        onComplete={handleComplete}
-                                        style={postCodeStyle}
-                                        height={300}
-                                        Address={isAddress}
-                                        ZoneCode={isZoneCode}/>:null
+                                        <div className="daumAddress">
+                                            <DaumPostcode
+                                            autoClose
+                                            onComplete={handleComplete}
+                                            style={postCodeStyle}
+                                            height={300}
+                                            Address={isAddress}
+                                            ZoneCode={isZoneCode}/>
+                                        </div>:null
                                     }
-                                    <input type="text" className="address" value={isZoneCode}></input>
-                                    <input type="text" className="address"></input>
+                                    <input className="address" type="text" value={shipDetailTwo} onChange={detailTwoHandler} readOnly></input>
+                                    <input className="address" type="text" value={shipDetailThree} onChange={detailThreeHandler}></input>
                                 </div>
                             </div>
                             <div>
@@ -103,7 +166,7 @@ const DeliveryModal = ( props ) => {
                         </div>
                     </main>
                     <footer>
-                    <button className="close" onClick={close}> 추가 </button>
+                    <button className="close" onClick={saveNew}> 추가 </button>
                     </footer>
                 </section>
             ) : null }
