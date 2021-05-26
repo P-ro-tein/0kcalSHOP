@@ -68,7 +68,6 @@ function Item(){
         .then(response => {
         if(response.data.success) {
             setProducts(response.data.productInfo)
-            console.log(response.data.productInfo.length)
         } else {
             console.log('상품정보가져오는데실패');
         }
