@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick-theme.css"
 import styled from 'styled-components';
 
 const Box= styled.div`
-    width:width:100%;
+    width:100%;
     height:100%;
     cursor:pointer;
     `;
@@ -37,7 +37,7 @@ function Event(){
     return(
         <Box>
             <Slider {...settings}>{events.map((data)=>{
-               return <img key={data.id} alt={data.id} src={data.imgUrl} height="350px"/>;
+               return <img key={data.id} alt={data.id} src={data.imgUrl} width="100%" height="400px"/>;
             })}</Slider>
         </Box>
     );

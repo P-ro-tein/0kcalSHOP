@@ -48,8 +48,9 @@ function HotItem(){
     useEffect(() => {
     
         axios.post('/api/product/products',{
-            sortBy: "sold",
-            order: "desc"
+            sortBy: "createdAt",
+            order: "desc",
+            pageNumber:1,
         })
         .then(response => {
         if(response.data.success) {
@@ -60,9 +61,10 @@ function HotItem(){
         })
 
     }, []);
+
     return(
         <Box>
-            <Title>인기상품</Title>
+            <Title>최신 상품</Title>
             {HotProducts.map((product) => {
           return (
             <a href={`/admin/product/${product._id}`}>

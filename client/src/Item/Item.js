@@ -6,7 +6,7 @@ import axios from "axios";
   const Box=styled.div`
 display:block;
 width:1200px;
-height:1000px;
+height:1800px;
 margin:0 auto;
 padding-top:30px;
 `;
@@ -36,20 +36,49 @@ const Text=styled.div`
   height:50px;
   padding-top:50px;
 `;
+
+const Pagination=styled.div`
+
+  width:400px;
+  margin:0 auto;
+`;
+
+const PaginationBox=styled.button`
+background:none;
+  border:#ff7777 0.5px solid;
+  color:#ff7777;
+  margin-right:20px;
+  width:40px;
+  height:38px;
+  padding-top:5px;
+  text-align:center;
+  font-size:20px;
+  cursor:pointer;
+`;
+
 function Item(){
   
-  const [Products, setProducts] = useState([])
+  const [Products, setProducts] = useState([]);
+  const [page,setPage]=useState(1);
   
     useEffect(() => {
-        axios.post('/api/product/products')
+        axios.post('/api/product/products',{
+          pageNumber:page,
+        })
         .then(response => {
         if(response.data.success) {
             setProducts(response.data.productInfo)
+            console.log(response.data.productInfo.length)
         } else {
             console.log('상품정보가져오는데실패');
         }
         })
     }, []);
+
+    
+    const ChangePage=()=>{
+      setPage();
+    }
 
     return(
       <Box>
@@ -64,6 +93,11 @@ function Item(){
             </a>
           );
         })}
+        <Pagination>
+          <div style={{display:"inline-flex"}}>
+          <PaginationBox>1</PaginationBox><PaginationBox>2</PaginationBox><PaginationBox>3</PaginationBox>
+          </div>
+        </Pagination>
       </Box>
     );
 }
