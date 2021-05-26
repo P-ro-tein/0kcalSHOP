@@ -4,6 +4,7 @@ const multer = require('multer');
 const { Product } = require("../models/Product");
 const fs = require('fs');
 const path = require('path');
+var async = require('async');
 //=================================
 //             Product
 //=================================
@@ -118,11 +119,6 @@ router.post('/removeProduct', (req, res) => {
 
 // 상품 리스트 조회
 router.post('/products', (req, res) => {
-    let productAllCount = 0;
-    Product.find().count(function (err, count) {
-        if (err) console.log(err)
-        productAllCount = parseInt(count);
-    });
 
     let order = req.body.order ? req.body.order : "asc"; // default 오름차순.(낮은 가격순) 내림차순으로 하고싶은경우 asc로 변경
     let sortBy = req.body.sortBy ? req.body.sortBy : "_id"; // default _id값으로 정렬
@@ -151,8 +147,30 @@ router.post('/products', (req, res) => {
         }
     }
 
+    var countQuery = function(callback){
+        Product.count({}, function(err, count){
+            if(err){ callback(err, null) }
+            else{
+                callback(null, count);
+            }
+        })
+    };
+
+    var retrieveQuery = function(callback){
+        Product
+            .find(findArgs)
+            .skip(skip)
+            .limit(limit)
+            .exec(function(err, doc){
+                if(err){ callback(err, null) }
+                else{
+                    callback(null, doc);
+                }
+            })
+    };
+
     if (term) {
-        Product.find(findArgs)
+        Product
             .find({ $text: { $search: term } })
             .find({
                 "deleted" : 0, // 삭제 처리되지 않은 상품 로드
@@ -161,18 +179,23 @@ router.post('/products', (req, res) => {
             .sort([[sortBy, order]])
             .skip(skip)
             .limit(limit)
-            .exec((err, productInfo) => {
-                if (err) return res.status(400).json({ success: false, err })
-                return res.status(200).json({
+            .exec(async.parallel([countQuery, retrieveQuery], function(err, results){
+                console.log(results[1].length)
+                //err contains the array of error of all the functions
+                //results contains an array of all the results
+                //results[0] will contain value of doc.length from countQuery function
+                //results[1] will contain doc of retrieveQuery function
+                //You can send the results as
+
+                return res.json({
                     success: true,
-                    productInfo,
-                    postSize: productInfo.length,
-                    productAllCount : productAllCount
-                })
-            })
+                    productInfo: results[1],
+                    postSize: results[1].length,
+                    productAllCount: results[0]});
+
+            }))
     } else {
         Product
-            .find(findArgs)
             .find({
                 "deleted" : 0, // 삭제 처리되지 않은 상품 로드
                 "category" : category,
@@ -180,15 +203,22 @@ router.post('/products', (req, res) => {
             .sort([[sortBy, order]])
             .skip(skip)
             .limit(limit)
-            .exec((err, productInfo) => {
-                if (err) return res.status(400).json({ success: false, err })
-                return res.status(200).json({
+            .exec(async.parallel([countQuery, retrieveQuery], function(err, results){
+                console.log(results[1].length)
+                //err contains the array of error of all the functions
+                //results contains an array of all the results
+                //results[0] will contain value of doc.length from countQuery function
+                //results[1] will contain doc of retrieveQuery function
+                //You can send the results as
+
+                return res.json({
                     success: true,
-                    productInfo,
-                    postSize: productInfo.length,
-                    productAllCount : productAllCount
-                })
-            })
+                    productInfo: results[1],
+                    postSize: results[1].length,
+                    productAllCount: results[0]});
+
+            }))
+
     }
 })
 
