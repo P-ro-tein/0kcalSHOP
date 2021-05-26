@@ -3,21 +3,17 @@ import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 
 import Event from './Event';
+import NewItem from './NewItem';    
 import HotItem from "./HotItem";
-
-const Box=styled.div`
-display: flex;
-justify-content: center;
-width:100%;
-`;
 
 function MainPage(){
     return(
         <>
-        <Event/>
-        <Box>
-            <HotItem/>
-        </Box>
+        <Link to="/">
+            <Event />
+        </Link>
+        <NewItem />
+        <HotItem />
         </>
     );
 }

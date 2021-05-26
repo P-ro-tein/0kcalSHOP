@@ -61,7 +61,7 @@ function SubHeader(){
         <BoxCategory>
             <div style={{display:"flex"}}>
             <Link to ='/client' className="link">
-            <Logo>0KcalShop</Logo>
+            <Logo><span style={{color:"#ff7777"}}>0</span>KcalShop</Logo>
             </Link>
             <Container>
                 <div>

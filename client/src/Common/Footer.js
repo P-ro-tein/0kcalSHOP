@@ -45,25 +45,19 @@ const TextTitle=styled.div`
     margin-bottom:20px;
 `;
 
-const Banner=styled.div`
+const Banner=styled.img`
     background:#121212;
-    width:100%;
-    height:100px;
-    margin-bottom:20px;
-    color:white;
-    font-family: Neuton;
-    font-style: normal;
-    font-size: 30px;
+    position:relative;
+    left:450px;
+    height:70px;
+    top:-80px;
 `;
 
 function Footer(){
     return(
         <>
-        <Banner>
-            <div style={{width:"1200px",margin:"0 auto"}}>
-            <img alt="footer" src={FooterPng} width="1200"></img>
-            </div>
-        </Banner>
+        <div style={{background:'#121212',width:"100%",height:"100px",position:"relative"}}></div>
+        <Banner alt="footer" src={FooterPng}/>
         <BoxFooter>
         <ContainerFooter>
         <Text>

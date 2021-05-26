@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import axios from 'axios';
-import DeliveryModal from './DeliveryModal';
+import ShipAddModal from '../Shipping/ShipAddModal';
 import CompleteModal from './CompleteModal';
+import ShipModifyModal from '../Shipping/ShipModifyModal';
 import '../AllCss.css';
 
 const DetailText=styled.div`
@@ -29,11 +30,8 @@ const Price=styled.div`
 `;
 
 const Number=styled.div`
-width: 190px;
-height:25px;
-  margin-right: 20px;
-  border-color: #ff7777;
-  border-radius: 8px;
+width: 200px;
+height:31px;
   text-align: center;
   font-size: 18px;
   border:2px solid #ff7777;
@@ -84,11 +82,9 @@ const DescriptionContainer=styled.div`
 `;
 
 const Destination=styled.div`
-    width:190px;
-    height:25px;
-    margin-right:20px;
+    width:170px;
+    height:30px;
     border:2px solid #ff7777;
-    border-radius:8px;
     text-align:right;
     font-size:18px;
     text-align-last: center;
@@ -101,7 +97,8 @@ const Destination=styled.div`
 function ItemDetail(props){
     const [number,setNumber]=useState(0);
     const [DeliverymodalOpen,setDeliveryModalOpen]=useState(false);
-    const [CompletemodalOpen,setCompletemodalOpen]=useState(false);
+    const [CompletemodalOpen,setCompleteModalOpen]=useState(false);
+    const [ModifymodalOpen,setModifyModalOpen]=useState(false);
     const productId = props.match.params.productId
 
     const [Product, setProduct] = useState({});
@@ -124,11 +121,19 @@ function ItemDetail(props){
     }
 
     const openCompleteModal=()=>{
-        setCompletemodalOpen(true);
+        setCompleteModalOpen(true);
     }
     
     const closeCompleteModal=()=>{
-        setCompletemodalOpen(false);
+        setCompleteModalOpen(false);
+    }
+
+    const openModifyModal=()=>{
+        setModifyModalOpen(true);
+    }
+
+    const closeModifyModal=()=>{
+        setModifyModalOpen(false);
     }
 
     const onIncrease=()=>{
@@ -182,8 +187,8 @@ function ItemDetail(props){
                 <DetailText>
                     수량
                 </DetailText>
-                <Number>{number}</Number>
                 <button onClick={onIncrease} className="num">+</button>
+                <Number>{number}</Number>
                 <button onClick={onDecrease} className="num">-</button>
                 </Container>
                 <Container>
@@ -191,10 +196,12 @@ function ItemDetail(props){
                     배송지
                 </DetailText>
                 <Destination>집</Destination>
-                <button onClick={openDeliveryModal} className="add">추가</button>
+                <button onClick={openModifyModal} className="modify">수정</button>
+                <button onClick={openDeliveryModal} className="modify">추가</button>
                 </Container>
-                <DeliveryModal open={DeliverymodalOpen} close={closeDeliveryModal} header="배송지">
-                </DeliveryModal>
+                <ShipModifyModal open={ModifymodalOpen} close={closeModifyModal} header="배송지 수정"></ShipModifyModal>
+                <ShipAddModal open={DeliverymodalOpen} close={closeDeliveryModal} header="배송지 cnrk">
+                </ShipAddModal>
                 <hr></hr>
                 <button className="cart" onClick={openCompleteModal}>장바구니</button>
                 <CompleteModal open={CompletemodalOpen} close={closeCompleteModal} header="완료"></CompleteModal>
