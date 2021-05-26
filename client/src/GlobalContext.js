@@ -1,7 +1,8 @@
 import React, { useReducer, createContext, useContext } from "react";
 
 const initState = {
-  user:false,
+  user: false,
+  search: null,
 };
 
 function StateReducer(state, action) {
@@ -14,6 +15,15 @@ function StateReducer(state, action) {
       return {
         ...state,
         user: !state.user,
+      };
+    case "SET_SEARCH":
+      return {
+        ...state,
+        search: action.searchText,
+      };
+    case "GET_SEARCH":
+      return {
+        state,
       };
     default:
       throw new Error(`Unhanded action type : ${action.type}`);
