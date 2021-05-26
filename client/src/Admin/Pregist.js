@@ -8,8 +8,8 @@ export default function Pregist(props) {
     const [price, setPrice] = useState("");
     const [shipCharge, setShipCharge] = useState("");
     const [remainStock, setRemainStock] = useState("");
+    const [description, setDescription] = useState("");
     const [images, setImages] = useState("");
-    const [description, setDescription] = useState("")
 
     const titleChangeHandler = (e) => {
         setTitle(e.currentTarget.value);
@@ -32,9 +32,18 @@ export default function Pregist(props) {
     const descriptionChangeHandler = (e) => {
         setDescription(e.currentTarget.value)
     }
+    
 
     const submitHandler = (event) => {
-        event.preventDefault();
+        /*const data = {
+            title: title,
+            category: category,
+            price: price,
+            shipCharge: shipCharge,
+            remainStock: remainStock,
+            description: description,
+            images: images,
+        }*/
         const formData = new FormData(); 
 
         formData.append('title', title);
@@ -43,32 +52,31 @@ export default function Pregist(props) {
         formData.append('shipCharge', shipCharge);
         formData.append('remainStock', remainStock);
         formData.append('description', description);
-        formData.append('images', event.target.images.files[0]);        
+        formData.append('images', event.target.images.files[0]);     
         
-        axios({
-            url: '/api/product/register',
-            method: 'post',
-            formData
-        })
-        .then(response => {
+        axios.post(
+            '/api/product/register',
+            {
+                formData
+            }
+        ).then(response => {
             if(response.data.success){
                 alert('등록완료');
                 props.history.push('/admin/psearch');
             } else { 
                 alert('');
-                console.log(response.data.message);
             }
         });
     }
-
 
     return(
         <div className="Page">
             <span><b>상품 관리 &gt; 상품 등록</b></span>
             <hr/>
 
-            <form action="/api/product/register" method="POST" enctype="multipart/form-data" onSubmit="submitHandler">
+            <form action="/api/product/register" method="POST" encType="multipart/form-data">
             <table>
+                <tbody>
                 <tr className="Ttitle">
                     <td colSpan="2">상품 등록</td>
                 </tr>
@@ -108,9 +116,10 @@ export default function Pregist(props) {
                 <tr>
                     <td>상품 상세설명</td><td><input type="file" name="images" accept="img/*" multiple onChange={imagesChangeHandler}/></td>
                 </tr>
+                </tbody>
             </table><br/>
-                
-                <input type="submit" value="등록"/>
+            
+            <button type="submit" onClick={submitHandler}>등록</button>
             </form>
         </div>
     )

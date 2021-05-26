@@ -67,7 +67,8 @@ router.route('/modifyNotice') // 공지 수정시, 클라이언트로 현재 선
             // 공지 수정 시, 이미 클라이언트로 모든 정보를 보내줬고 다시 받을 때 변경하지 않았으면 그대로 다시 올 것이고
             // 수정되었다면 수정된 사항이 올것이기 때문에 그 정보를 바탕으로 noticeID에 해당되는 DB에 그대로 등록
 
-            { _id: req.body._id },
+            { _id: req.body.noticeId },
+            
             {
                 $set: {"updatedDate": Date.now(),
                     "noticeTitle": notice.noticeTitle,
@@ -77,11 +78,11 @@ router.route('/modifyNotice') // 공지 수정시, 클라이언트로 현재 선
             },
             { new: true },
             (err, notice) => {
-                if (!notice)
+                if (!notice){console.log(req.body);
                     return res.json({ // 입력한 공지 ID에 해당하는 공지 못찾음
                         success: false,
                         message: "Noitce is not found"
-                    });
+                    })};
                 return res.status(200).json({success:true});
         });
     });
@@ -103,7 +104,7 @@ router.post('/removeNotice', (req, res) => {
 });
 
 // 공지사항 정렬및 검색
-router.get('/list', (req, res) => {
+router.post('/list', (req, res) => {
     let order = req.body.order ? req.body.order : "desc"; // default 내림차순. 오름차순으로 하고싶은경우 asc로 변경
     let sortBy = "expiredDate"; // 진행기간 기준으로만 정렬할 것이기 때문에 expiredDate값으로 정렬
     // pagination을 위한 limit, skip 사용
@@ -152,6 +153,29 @@ router.get('/list', (req, res) => {
                 })
             })
     }
+})
+
+router.get('/notice_by_id', (req, res) => {
+
+    let type = req.query.type
+    let noticeIds = req.query.id
+
+    if (type === "array") {
+        //id=123123123,324234234,324234234 이거를 
+        //productIds = ['123123123', '324234234', '324234234'] 이런식으로 바꿔주기
+        let ids = req.query.id.split(',')
+        noticeIds = ids.map(item => {
+            return item
+        })
+    }
+
+    //productId를 이용해서 DB에서  productId와 같은 상품의 정보를 가져온다.
+    Notice.find({ _id: { $in: noticeIds } })
+        .exec((err, notice) => {
+            if (err) return res.status(400).send(err)
+            return res.status(200).send(notice)
+        })
+
 })
 
 module.exports = router;

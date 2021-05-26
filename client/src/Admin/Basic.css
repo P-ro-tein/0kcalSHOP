@@ -22,7 +22,11 @@ table {
 }
 
 .Tname {
-    width: 200px;
+    width: 20%;
+}
+
+.Tnext {
+    width: 40%;
 }
 
 .Product {

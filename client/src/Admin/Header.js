@@ -10,7 +10,7 @@ export default function Header() {
                 top: "10px"
             }
         }>
-            <h1 style={{color: "white"}}> &nbsp;&nbsp;0Kal Shop</h1>
+            <h1 style={{color: "white"}}> &nbsp;&nbsp;0Kcal Shop</h1>
         </div>
     )
 }
