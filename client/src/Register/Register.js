@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState,useCallback} from 'react';
 import axios from 'axios';
 import InputWithLabel from './InputWithLabel';
 import AuthButton from './AuthButton';
 import styled from 'styled-components';
+import {useGlobalDispatch} from "../GlobalContext";
 const Box = styled.div `
 display:block;
 width:500px;
@@ -18,11 +19,17 @@ font-size: 30px;
 margin-bottom: 50px
 `;
 function Register (props) {
-        const [id, setId] = useState("");
-        const [pw, setPw] = useState("");
-        const [pwC, setPwC] = useState("");
-        const [email, setEmail] = useState("");
-        const [name, setName] = useState("");
+    const [id, setId] = useState("");
+    const [pw, setPw] = useState("");
+    const [pwC, setPwC] = useState("");
+    const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
+    const dispatch=useGlobalDispatch();
+    const onToggle=useCallback(()=>{
+        dispatch({
+            type:"TOGGLE_USER"
+        });
+    },[dispatch]);
         const idChangeHandler = (e) => {
             setId(e.currentTarget.value);
         }
@@ -39,6 +46,23 @@ function Register (props) {
         const nameChangeHandler = (e) => {
             setName(e.currentTarget.value);
         }
+        const login = () => {
+            axios.post('/api/users/login',{
+                id: id,
+                password: pw
+            }).then(res=>{
+                if(res.data.loginSuccess&&!res.data.isAdmin){
+                    onToggle();
+                    props.history.push('/client');
+                } 
+                else if(res.data.loginSuccess&&res.data.isAdmin){
+                    onToggle();
+                    props.history.push('/admin');
+                } else {
+                    alert('로그인 실패');
+                }
+            })
+        }
         const submitHandler = () => {
             
             const data = {
@@ -53,10 +77,9 @@ function Register (props) {
                 data
             })
             .then(res => {
-                //redux로 가져올 경우 payload, axios로 바로 가져올 경우 data
                 if(res.data.success){
                         alert('가입완료');
-                        props.history.push('/client');
+                        login();
                 } else { 
                     alert('가입할 수 없습니다');
                     console.log(res.data.err);
