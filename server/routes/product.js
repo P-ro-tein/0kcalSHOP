@@ -47,33 +47,9 @@ router.post('/register',upload, (req, res) => {
     })
 })
 
-router.route('/modifyProduct') // 상품 정보 수정시, 클라이언트로 현재 선택한 공지의 콘텐츠들을 보내고 다시 POST로 받는다
-    .get(function(req, res) {
-        Product.findOne({ _id: req.body._id }, (err, product) => {
-            if (!product)
-                return res.json({ // ProductID가 잘못 입력된 경우
-                    success: false,
-                    message: "ID not found"
-                });
-
-            res.status(200).json({ // 클라이언트로 상품 고유ID에 해당되는 모든 DB정보를 보낸다
-                _id : product._id,
-                title : product.title,
-                category : product.category,
-                description : product.description,
-                price : product.price,
-                images : product.images,
-                stock : product.stock,
-                sold : product.sold,
-                deleted : product.deleted,
-                views : product.views,
-                createdDate: product.createdDate,
-                updatedDate: product.updatedDate
-            });
-        });
-    })
-    .post(function(req, res) {
+router.post('/modifyProduct', (req, res) => {
         const product = new Product(req.body);
+        console.log(req.body);
 
         Product.findOneAndUpdate(
             // 상품 수정 시, 이미 클라이언트로 모든 정보를 보내줬고 다시 받을 때 변경하지 않았으면 그대로 다시 올 것이고

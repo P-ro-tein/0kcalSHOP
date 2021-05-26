@@ -1,40 +1,63 @@
 import './Basic.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
 export default function Nsearch() {
+    const [notices, setNotices] = useState([]);
+
+    useEffect(() => {
+        axios.post('/api/notice/list')
+        .then(response => {
+        if(response.data.success) {
+            setNotices(response.data.noticeInfo)
+            console.log(response.data.noticeInfo)
+        } else {
+            alert('공지정보 가져오는데 실패');
+        }
+        })
+    }, []);
     
+
     return (
     <div className="Page">
         <b>공지사항/이벤트 관리 &gt; 공지사항/이벤트 조회</b>
         <hr/>
-
-        <input type="text" value=""/> &nbsp;
-        <input type="submit" value="검색"/>
-        <br/><br/>
         <table>
-            <colgroup>
-                <col width="50"/>
-                <col width="300"/>
-                <col width="200"/>
-            </colgroup>
             <thead>
+                <tr className="Ttitle"><td colSpan="3">공지사항/이벤트 조회</td></tr>
                 <tr>
-                    <th><input type="checkbox" name="check" id="checkboxAll" /></th>
-                    <th>번호</th>
-                    <th>공지사항 제목</th>
-                    <th>진행기간</th>
+                    <td>검색기간</td>
+                    <td><input type="date" name="start" /> ~ <input type="date" name="finish"/></td>
+                    <td><button type="submit">검색</button></td>
                 </tr>
-            </thead>
+            </thead>    
+        </table>    
+
+        <br/>
+
+        <table>
             <tbody>
-                <td align="center">
-                    <input type="checkbox" name="check"/>
-                </td>
-                <td align="center"> 1 </td>
-                <td align="center"> <a href="test.html">임시 아무말</a></td>
-                <td align="center">2021.04.07~2021.04.10</td>
+            <tr>
+                <td className="Tname">제목</td>
+                <td className="Tnext">등록일자</td>
+                <td>만료일자</td>
+            </tr>
             </tbody>
         </table>
-        <br/>
-        <button id="modify">수정</button><span>&nbsp;</span>
-        <button id="delete">삭제</button>
+
+        {notices.map((notice) => {
+            return (
+                <table>
+                    <tbody>
+                    <tr>
+                        <td className="Tname"><a href={`/admin/notice/${notice._id}`}>{notice.noticeTitle}</a></td>
+                        <td className="Tnext">{notice.updatedDate}</td>
+                        <td>{notice.expiredDate}</td>
+                    </tr>
+                    </tbody>
+                </table>
+        );
+        })}
     </div>
     )
 }

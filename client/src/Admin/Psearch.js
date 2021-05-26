@@ -24,13 +24,13 @@ export default function Psearch() {
     const [Products, setProducts] = useState([])
   
     useEffect(() => {
-    
         axios.post('/api/product/products')
         .then(response => {
         if(response.data.success) {
             setProducts(response.data.productInfo)
+            console.log(response.data.productInfo)
         } else {
-            console.log('상품정보가져오는데실패');
+            console.log('상품정보 가져오는데 실패');
         }
         })
 
@@ -40,12 +40,13 @@ export default function Psearch() {
             <span><b>상품 관리 &gt; 상품 조회</b></span>
             <hr/>
             <table>
+                <tbody>
                 <tr className="Ttitle"><td colSpan="2">상품 검색</td></tr>
                 <tr>
                     <td className="Tname">상품 분류</td>
                     <td>
-                        <select name="dnpmescription">
-                            <option>카테고리 선택</option>
+                        <select name="description">
+                            <option selected disabeld hidden>카테고리 선택</option>
                             <option>식단세트</option>
                             <option>식사대용</option>
                             <option>건강간식</option>
@@ -56,7 +57,7 @@ export default function Psearch() {
                     <td>상품 상태</td>
                     <td>
                         <select name="state">
-                            <option>상태 선택</option>
+                            <option selected disabeld hidden>상태 선택</option>
                             <option>판매 가능</option>
                             <option>판매 완료</option>
                             <option>상품 준비중</option>
@@ -65,13 +66,13 @@ export default function Psearch() {
                 </tr>
                 <tr>
                     <td>가격대</td>
-                    <td><input type="number" />~<input type="number"/></td>
+                    <td><input type="number" /> ~ <input type="number"/></td>
                 </tr>
                 <tr>
                     <td>나열 조건</td>
                     <td>
                         <select name="state">
-                            <option>조건 선택</option>
+                            <option selected disabeld hidden>조건 선택</option>
                             <option>인기순</option>
                             <option>높은 가격순</option>
                             <option>낮은 가격순</option>
@@ -81,11 +82,15 @@ export default function Psearch() {
                     </td>
                 </tr>
                 <tr>
-                    <td>검색</td>
+                    <td>검색어</td>
                     <td>
-                        <input type="text" value=""/>&nbsp;<input type="submit" value="검색"/>
+                        <input type="text" value=""/>
                     </td>
                 </tr>
+                <tr>
+                    <td colSpan="2"><input type="submit" value="검색"/></td>
+                </tr>
+                </tbody>
             </table>
             
             <br/>
