@@ -7,7 +7,7 @@ import SubHeader from './SubHeader';
 const BoxHeader=styled.div`
     width:100%;
     height:80px;
-    background:#ff7777;
+    background:#ff9480;
 `;
 
 const ContainerHeader=styled.div`
@@ -32,7 +32,7 @@ function Header(){
         <>
         <BoxHeader>
             <ContainerHeader>
-                <Link to ='/' class="link">
+                <Link to ='/client' className="link">
                 <Logo>0kcal Shop</Logo>
                 </Link>
             </ContainerHeader>

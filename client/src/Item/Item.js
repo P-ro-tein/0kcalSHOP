@@ -1,14 +1,14 @@
 import React,{useEffect,useState} from 'react';
 import styled from 'styled-components';
-import {Link} from 'react-router-dom';
 
 import axios from "axios";
 
   const Box=styled.div`
 display:block;
 width:1200px;
-height:1200px;
+height:1000px;
 margin:0 auto;
+padding-top:30px;
 `;
 
 const BoxItem=styled.div`
@@ -28,6 +28,14 @@ padding-top:10px;
 font-size:15px;
 `;
 
+const Text=styled.div`
+  width:100%;
+  font-family: 맑은고딕, Malgun Gothic, dotum, gulim, sans-serif;
+  font-weight:bold;
+  font-size:20px;
+  height:50px;
+  padding-top:50px;
+`;
 function Item(){
   
   const [Products, setProducts] = useState([])
@@ -45,11 +53,12 @@ function Item(){
 
     return(
       <Box>
+        <Text>전체보기</Text>
         {Products.map((product) => {
           return (
             <a href={`/client/ItemDetail/${product._id}`}>
               <BoxItem>
-                <img src={`http://localhost:9000/uploads/${product.images[0]}`} alt={product.title} width="100%" height="280px"/>
+                <img key={product._id} src={`http://localhost:9000/uploads/${product.images[0]}`} alt={product.title} width="100%" height="280px"/>
                 <ItemDetail>{product.title}</ItemDetail>
               </BoxItem>
             </a>

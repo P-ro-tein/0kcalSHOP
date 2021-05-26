@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect} from 'react';
 
+import axios from "axios";
 import '../AllCss.css'
 import DaumPostcode from 'react-daum-postcode';
 
 
 const DeliveryModal = ( props ) => {
     const { open, close, header} = props;
-    const [Q1,setSelect]=useState("delivery0");
+    const [Q1,setSelect]=useState("");
     const [Div,setDiv]=useState(1); 
     const [isDaumPost,SetDaumPost]=useState(false);
     const [isAddress, setIsAddress] = useState("");
     const [isZoneCode, setIsZoneCode] = useState();
+    const [Address, setAddress] = useState({});
+
 
     const postCodeStyle = {
         display: "block",
@@ -19,7 +22,21 @@ const DeliveryModal = ( props ) => {
         right:"-10px",
         zIndex: "100",
         padding: "7px"
-      }
+    }
+
+    useEffect(() => {
+        axios.get('/api/shipAddr/list')
+        .then(response => {
+            console.log(response);
+        if(response.data.success) {
+            setAddress(response.data.shipAddrInfo)
+            setSelect(response.data.shipAddrInfo[1].shipAddrName);
+            console.log(Q1);
+        } else {
+            console.log('배송지 정보 가져오는데 실패');
+        }
+        })
+    }, []);
 
     const ChangeDiv1=()=>{
             setDiv(1);
@@ -30,6 +47,7 @@ const DeliveryModal = ( props ) => {
         console.log(Div);
     }
     const changeRadioQ1 = (e) => {
+        console.log(e.target.value);
         setSelect(e.target.value);
       };
 
@@ -66,34 +84,34 @@ const DeliveryModal = ( props ) => {
                         <button className="close" onClick={close}> &times; </button>
                     </header>
                     <main>
-                        <div class="box">
-                            <div class="container">
-                                <div class="text"> 현재 배송지</div>
+                        <div className="box">
+                            <div className="container">
+                                <div className="text"> 현재 배송지</div>
                                 <div style={{display:"block"}}>
-                                    <div class="dstination">집</div>
-                                    <div class="destination">공릉로 232 미래관 304호</div>
+                                    <div className="dstination">집</div>
+                                    <div className="destination">공릉로 232 미래관 304호</div>
                                 </div>
                             </div>
                             <div>
                                 <div style={{display:'inline-flex'}}>
-                                <button class="_text" onClick={ChangeDiv1}>배송지 목록</button><button class="_text" onClick={ChangeDiv2}>신규 배송지</button>
+                                <button className="_text" onClick={ChangeDiv1}>배송지 목록</button><button className="_text" onClick={ChangeDiv2}>신규 배송지</button>
                                 </div>
-                                { Div===2 &&<div class="newbox">
-                                    <div class="container">
-                                    <div class="text">배송지 이름</div>
-                                    <input type="text" class="input"></input>
+                                { Div===2 &&<div className="newbox">
+                                    <div className="container">
+                                    <div className="text">배송지 이름</div>
+                                    <input type="text" className="input"></input>
                                     </div>
-                                    <div class="container">
-                                        <div class="text">수령인</div>
-                                        <input type="text" class="input"></input>
+                                    <div className="container">
+                                        <div className="text">수령인</div>
+                                        <input type="text" className="input"></input>
                                     </div>
-                                    <div class="container">
-                                        <div class="text">휴대전화</div>
-                                        <input type="tel" class="input"></input>
+                                    <div className="container">
+                                        <div className="text">휴대전화</div>
+                                        <input type="tel" className="input"></input>
                                     </div>
-                                    <div class="container">
-                                        <div class="text">배송지 주소</div>
-                                        <div type="text" class="input" style={{width:"245px"}}>{isAddress}</div>
+                                    <div className="container">
+                                        <div className="text">배송지 주소</div>
+                                        <div type="text" className="input" style={{width:"245px"}}>{isAddress}</div>
                                         <button onClick={ChangePost}>주소 찾기</button>
                                     </div>
                                     {
@@ -106,37 +124,24 @@ const DeliveryModal = ( props ) => {
                                         Address={isAddress}
                                         ZoneCode={isZoneCode}/>:null
                                     }
-                                    <div class="address">{isZoneCode}</div>
-                                    <div class="address"></div>
+                                    <div className="address">{isZoneCode}</div>
+                                    <div className="address"></div>
                                 </div>}
                                 {Div===1&&
-                                <div class="newbox">
-                                    <div style={{paddingBottom:"10px"}}>
-                                    <label htmlFor="delivery">
-                                        <input type="radio" id="delivery0" name="delivery0" value="delivery0" checked={Q1 === "delivery0" ? true : false} onChange={changeRadioQ1}></input>
-                                        [현재배송지]집<div style={{paddingTop:"10px",paddingLeft:"22px"}}>(공릉로 232 미래관 304호)</div>
-                                    </label>
-                                    </div>
-                                    <div style={{paddingBottom:"10px"}}>
-                                    <label htmlFor="delivery">
-                                        <input type="radio" id="delivery1" name="delivery1" value="delivery1" checked={Q1 === "delivery1" ? true : false} onChange={changeRadioQ1}></input>
-                                        delivery1<div style={{paddingTop:"10px",paddingLeft:"22px"}}>(저기도 저기시 저기동)</div>
-                                    </label>
-                                    </div>
-                                    <div style={{paddingBottom:"10px"}}>
-                                    <label htmlFor="delivery">
-                                        <input type="radio" id="delivery2" name="delivery2" value="delivery2" checked={Q1 === "delivery2" ? true : false} onChange={changeRadioQ1}></input>
-                                        delivery2
-                                        <div style={{paddingTop:"10px",paddingLeft:"22px"}}>(여기도 여기시 여기동)</div>
-                                    </label>
-                                    </div>
-                                    <div style={{paddingBottom:"10px"}}>
-                                    <label htmlFor="delivery">
-                                        <input type="radio" id="delivery3" name="delivery3" value="delivery3" checked={Q1 === "delivery3" ? true : false} onChange={changeRadioQ1}></input>
-                                        delivery3
-                                        <div style={{paddingTop:"10px",paddingLeft:"22px"}}>(거기도 거기시 거기동)</div>
-                                    </label>
-                                    </div>
+                                <div className="newbox">
+
+                                    {
+                                        Address.map((data)=>{
+                                            return(
+                                                <div style={{paddingBottom:"10px"}}>
+                                                 <label htmlFor="delivery">
+                                                <input type="radio" id={data._id} name={data._id} value={data.shipAddrName} checked={Q1 === data.shipAddrName ? true : false} onChange={changeRadioQ1}></input>
+                                                {data.shipAddrName}<div style={{paddingTop:"10px",paddingLeft:"22px"}}>{data.shipAddrDetail[0]}({data.shipAddrDetail[2]})</div>
+                                                </label>
+                                                </div>
+                                            );
+                                        })
+                                    }
                                 </div>}
                             </div>
                             <div>

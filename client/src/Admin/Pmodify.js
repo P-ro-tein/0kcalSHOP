@@ -12,7 +12,7 @@ function Pmodify(props) {
                 setProduct(response.data[0])
             })
             .catch(err => alert(err))
-    }, [])
+    }, [productId])
 
     const removeHandler=() => {
         const _id = productId;

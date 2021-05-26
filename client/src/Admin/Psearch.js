@@ -94,7 +94,7 @@ export default function Psearch() {
           return (
             <a href={`/admin/product/${product._id}`}>
               <BoxItem>
-                <img src={`http://localhost:9000/uploads/${product.images[0]}`} alt={product.title} width="100%" height="280px"/>
+                <img key={product._id} src={`http://localhost:9000/uploads/${product.images[0]}`} alt={product.title} width="100%" height="280px"/>
                 <ItemDetail>{product.title}</ItemDetail>
               </BoxItem>
             </a>

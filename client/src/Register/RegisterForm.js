@@ -9,6 +9,7 @@ const Box = styled.div `
 display:block;
 width:500px;
 margin:0 auto;
+margin-top:50px;
 margin-bottom: 100px;
 `;
 const Title = styled.div `

@@ -1,53 +1,92 @@
-import React, {useState, useEffect} from "react";
+import React, {useCallback} from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import Search from "./Search";
-import Login from "./Login";
-import UserInfo from "./UserInfo";
+
+import {useGlobalDispatch,useGlobalState} from "../GlobalContext";
+
 const BoxCategory=styled.div`
 width:1200px;
-display:flex;
-margin:0 auto;
-`;
-
-const ContainerCategory=styled.div`
-width:550px;
 height:130px;
-padding-left:100px;
-padding-top:15px;
-
+margin:0 auto;
+padding-top:10px;
 `;
 
-const ContainerLogin=styled.div`
-    width:250px;
+const Logo=styled.div`
+    width:900px;
+    padding-top:30px;
+    font-family:"HY헤드라인M";
+    font-size:50px;
+    font-weight:bold;
+`;
+const Container=styled.div`
+    width:300px;
     height:50px;
-    padding:30px;
+    text-align:right;
 `;
 
+const LoginButton=styled.button`
+    background:none;
+    color:black;
+    border:none;
+    width:70px;
+    cursor:pointer;
+    font-size:12px;
+`;
 
 
 function SubHeader(){
 
-    const [User, setUser]=useState({});
+    const state=useGlobalState();
+    const Active=state.user;
+    const dispatch=useGlobalDispatch();
+    const onToggle=useCallback(()=>{
+        dispatch({
+            type:"TOGGLE_USER"
+        });
+    },[dispatch]);
 
-    useEffect(() => {
-        axios.get('/api/users/auth')
-        .then(response=>{
-            setUser(response.data);
-        }
-    )},[])
+    const logoutHandler = () => {
+
+        axios.get('/api/users/logout')
+            .then(response=>{
+                if(response.data.success){
+                    alert('로그아웃');
+                    onToggle();
+                }
+            });
+    }
     return(
         <BoxCategory>
-            <div style={{width:'200px'}}></div>
-            <ContainerCategory>
-                <Search />
-            </ContainerCategory>
-            <ContainerLogin>
+            <div style={{display:"flex"}}>
+            <Link to ='/client' className="link">
+            <Logo>0KcalShop</Logo>
+            </Link>
+            <Container>
+                <div>
                 {
-                    User.isAuth?
-                    <UserInfo/>:<Login />
+                    Active===true&&
+                    <>
+                        <a href="/client/cart"><LoginButton>장바구니</LoginButton></a>
+                        <span>|</span>
+                        <Link to="/client">
+                        <LoginButton onClick={logoutHandler}>로그아웃</LoginButton>
+                        </Link>
+                     </>
                 }
-            </ContainerLogin>
+                { 
+                    Active===false&&
+                    <>
+                        <a href="/client/login"><LoginButton>로그인</LoginButton></a>
+                        <span>|</span>
+                        <a href="/client/register"><LoginButton>회원가입</LoginButton></a>
+                    </>
+                }
+                </div>
+                <Search />
+            </Container>
+            </div>
         </BoxCategory>
     );
 }
