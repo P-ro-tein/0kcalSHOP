@@ -100,7 +100,7 @@ function ItemDetail(props){
     const [CompletemodalOpen,setCompleteModalOpen]=useState(false);
     const [ModifymodalOpen,setModifyModalOpen]=useState(false);
     const productId = props.match.params.productId
-
+    const [defaultShip, setDefaultShip] = useState('');
     const [Product, setProduct] = useState({});
 
     useEffect(() => {
@@ -109,6 +109,11 @@ function ItemDetail(props){
                 setProduct(response.data[0])
             })
             .catch(err => alert(err))
+        axios.get('/api/users/auth')
+            .then(response => {
+                if(response.data.isAuth)
+                setDefaultShip(response.data.defaultShipAddrName);
+            })
     }, [productId,Product.images]);
 
 
@@ -195,12 +200,11 @@ function ItemDetail(props){
                 <DetailText>
                     배송지
                 </DetailText>
-                <Destination>집</Destination>
                 <button onClick={openModifyModal} className="modify">수정</button>
                 <button onClick={openDeliveryModal} className="modify">추가</button>
                 </Container>
                 <ShipModifyModal open={ModifymodalOpen} close={closeModifyModal} header="배송지 수정"></ShipModifyModal>
-                <ShipAddModal open={DeliverymodalOpen} close={closeDeliveryModal} header="배송지 cnrk">
+                <ShipAddModal open={DeliverymodalOpen} close={closeDeliveryModal} header="배송지 추가">
                 </ShipAddModal>
                 <hr></hr>
                 <button className="cart" onClick={openCompleteModal}>장바구니</button>
