@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
+import { useGlobalState } from "../GlobalContext";
 import axios from "axios";
 
 const Box = styled.div`
   display: block;
   width: 1200px;
-  height: 1800px;
+  height: 1600px;
   margin: 0 auto;
   padding-top: 30px;
 `;
@@ -34,27 +35,8 @@ const Text = styled.div`
   font-family: 맑은고딕, Malgun Gothic, dotum, gulim, sans-serif;
   font-weight: bold;
   font-size: 20px;
-  height: 40px;
+  height: 50px;
   padding-top: 50px;
-`;
-
-const Pagination = styled.div`
-  width: 400px;
-  height: 100px;
-  margin: 0 auto;
-`;
-
-const PaginationBox = styled.button`
-  background: none;
-  border: #ff7777 0.5px solid;
-  color: #ff7777;
-  margin-right: 20px;
-  width: 40px;
-  height: 38px;
-  padding-top: 5px;
-  text-align: center;
-  font-size: 20px;
-  cursor: pointer;
 `;
 
 const ItemPrice = styled.span`
@@ -77,23 +59,23 @@ const PriceFilter = styled.input`
   text-align: right;
 `;
 
-let pages = [];
-
 function Item() {
-  const [Products, setProducts] = useState([]);
-  const [page, setPage] = useState(1);
   const [sort, setSort] = useState("이름");
+  const [Products, setProducts] = useState([]);
+  const [category, setCategory] = useState("");
   const [lowPrice, setlowPrice] = useState(0);
   const [highPrice, setHighPrice] = useState(1000000);
-  const [category, setCategory] = useState("");
+
+  const state = useGlobalState();
+  const Active = state.search;
+  console.log(state);
 
   useEffect(() => {
-    console.log(lowPrice, highPrice);
     axios
       .post("/api/product/products", {
-        pageNumber: page,
-        category: category,
+        searchTerm: Active,
         sortBy: sort,
+        category: category,
         filters: {
           price: [lowPrice, highPrice],
         },
@@ -101,22 +83,16 @@ function Item() {
       .then((response) => {
         if (response.data.success) {
           setProducts(response.data.productInfo);
-          pages = new Array(
-            parseInt(response.data.productAllCount / 16, 10) + 1
-          );
         } else {
           console.log("상품정보가져오는데실패");
         }
       });
-  }, [category, page, sort, lowPrice, highPrice]);
-
-  const ChangePage = () => {
-    setPage();
-  };
+  }, [Active, sort, category, lowPrice, highPrice]);
 
   const ChangeSort = (e) => {
     setSort(e.target.value);
   };
+
   const ChangeCategory = (e) => {
     setCategory(e.target.value);
   };
@@ -146,7 +122,7 @@ function Item() {
         ></PriceFilter>
       </div>
       <div style={{ display: "flex" }}>
-        <Text>전체 상품</Text>
+        <Text>검색 상품 : {Active}</Text>
         <div>
           <select
             style={{
@@ -158,7 +134,7 @@ function Item() {
             value={category}
             onChange={ChangeCategory}
           >
-            <option value="">전체상품</option>
+            <option value="">전체보기</option>
             <option value="식단세트">식단세트</option>
             <option value="식사대용">식사대용</option>
             <option value="건강간식">건강간식</option>
@@ -201,15 +177,6 @@ function Item() {
           </a>
         );
       })}
-      <div>
-        <Pagination>
-          <div style={{ display: "inline-flex" }}>
-            {pages.map((item, index) => (
-              <PaginationBox>{index + 1}</PaginationBox>
-            ))}
-          </div>
-        </Pagination>
-      </div>
     </Box>
   );
 }
