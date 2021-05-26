@@ -7,8 +7,6 @@ import DaumPostcode from 'react-daum-postcode';
 
 const DeliveryModal = ( props ) => {
     const { open, close, header} = props;
-    const [Q1,setSelect]=useState("");
-    const [Div,setDiv]=useState(1); 
     const [isDaumPost,SetDaumPost]=useState(false);
     const [isAddress, setIsAddress] = useState("");
     const [isZoneCode, setIsZoneCode] = useState();
@@ -23,33 +21,6 @@ const DeliveryModal = ( props ) => {
         zIndex: "100",
         padding: "7px"
     }
-
-    useEffect(() => {
-        axios.get('/api/shipAddr/list')
-        .then(response => {
-            console.log(response);
-        if(response.data.success) {
-            setAddress(response.data.shipAddrInfo)
-            setSelect(response.data.shipAddrInfo[1].shipAddrName);
-            console.log(Q1);
-        } else {
-            console.log('배송지 정보 가져오는데 실패');
-        }
-        })
-    }, []);
-
-    const ChangeDiv1=()=>{
-            setDiv(1);
-            console.log(Div);
-    };
-    const ChangeDiv2=()=>{
-        setDiv(2);
-        console.log(Div);
-    }
-    const changeRadioQ1 = (e) => {
-        console.log(e.target.value);
-        setSelect(e.target.value);
-      };
 
     const ChangePost=()=>{
         SetDaumPost(true);
@@ -71,8 +42,7 @@ const DeliveryModal = ( props ) => {
       }
       setIsZoneCode(data.zonecode);
       setIsAddress(fullAddress);
-      console.log(data.zonecode)
-      console.log(fullAddress);
+      SetDaumPost(false);
     };
     
     return (
@@ -94,9 +64,9 @@ const DeliveryModal = ( props ) => {
                             </div>
                             <div>
                                 <div style={{display:'inline-flex'}}>
-                                <button className="_text" onClick={ChangeDiv1}>배송지 목록</button><button className="_text" onClick={ChangeDiv2}>신규 배송지</button>
+                                <button className="_text">신규 배송지</button>
                                 </div>
-                                { Div===2 &&<div className="newbox">
+                                <div className="newbox">
                                     <div className="container">
                                     <div className="text">배송지 이름</div>
                                     <input type="text" className="input"></input>
@@ -111,7 +81,7 @@ const DeliveryModal = ( props ) => {
                                     </div>
                                     <div className="container">
                                         <div className="text">배송지 주소</div>
-                                        <div type="text" className="input" style={{width:"245px"}}>{isAddress}</div>
+                                        <input type="text" className="input" style={{width:"245px"}} value={isAddress}></input>
                                         <button onClick={ChangePost}>주소 찾기</button>
                                     </div>
                                     {
@@ -124,32 +94,16 @@ const DeliveryModal = ( props ) => {
                                         Address={isAddress}
                                         ZoneCode={isZoneCode}/>:null
                                     }
-                                    <div className="address">{isZoneCode}</div>
-                                    <div className="address"></div>
-                                </div>}
-                                {Div===1&&
-                                <div className="newbox">
-
-                                    {
-                                        Address.map((data)=>{
-                                            return(
-                                                <div style={{paddingBottom:"10px"}}>
-                                                 <label htmlFor="delivery">
-                                                <input type="radio" id={data._id} name={data._id} value={data.shipAddrName} checked={Q1 === data.shipAddrName ? true : false} onChange={changeRadioQ1}></input>
-                                                {data.shipAddrName}<div style={{paddingTop:"10px",paddingLeft:"22px"}}>{data.shipAddrDetail[0]}({data.shipAddrDetail[2]})</div>
-                                                </label>
-                                                </div>
-                                            );
-                                        })
-                                    }
-                                </div>}
+                                    <input type="text" className="address" value={isZoneCode}></input>
+                                    <input type="text" className="address"></input>
+                                </div>
                             </div>
                             <div>
                             </div>
                         </div>
                     </main>
                     <footer>
-                        <button className="close" onClick={close}> 추가 </button>
+                    <button className="close" onClick={close}> 추가 </button>
                     </footer>
                 </section>
             ) : null }

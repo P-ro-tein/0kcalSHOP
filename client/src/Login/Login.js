@@ -56,6 +56,7 @@ function Login ({history}) {
                     history.push('/client');
                 } 
                 else if(res.data.loginSuccess&&res.data.isAdmin){
+                    onToggle();
                     history.push('/admin');
                 } else {
                     alert('로그인 실패');

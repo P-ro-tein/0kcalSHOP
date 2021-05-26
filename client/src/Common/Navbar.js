@@ -18,7 +18,6 @@ const Container=styled.div`
 `
 
 const CategoryName=styled.button`
-    margin-right:70px;
     font-size:17px; 
     cursor:pointer;
     border:none;
@@ -35,18 +34,23 @@ function Navbar(){
             <Link to='/Notice'>
             <CategoryName>공지사항/이벤트</CategoryName>
             </Link>
+            <div style={{width:"70px"}} />
             <Link to='/식단세트'>
             <CategoryName>식단세트</CategoryName>
             </Link>
+            <div style={{width:"70px"}} />
             <Link to ='/식사대용'>
             <CategoryName>식사대용</CategoryName>
             </Link>
+            <div style={{width:"70px"}} />
             <Link to='/건강간식'>
             <CategoryName>건강간식</CategoryName>
             </Link>
+            <div style={{width:"70px"}} />
             <Link to='/client/Item'>
             <CategoryName>전체상품</CategoryName>
             </Link>
+            <div style={{width:"70px"}} />
             </Container>
         </Bar>
     );
