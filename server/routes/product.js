@@ -4,7 +4,6 @@ const multer = require('multer');
 const { Product } = require("../models/Product");
 const fs = require('fs');
 const path = require('path');
-var async = require('async');
 //=================================
 //             Product
 //=================================
@@ -50,8 +49,6 @@ router.post('/register',upload, (req, res) => {
 
 router.post('/modifyProduct', (req, res) => {
         const product = new Product(req.body);
-        console.log(req.body);
-
         Product.findOneAndUpdate(
             // 상품 수정 시, 이미 클라이언트로 모든 정보를 보내줬고 다시 받을 때 변경하지 않았으면 그대로 다시 올 것이고
             // 수정되었다면 수정된 사항이 올것이기 때문에 그 정보를 바탕으로 상품 고유ID에 해당되는 DB에 그대로 등록
@@ -95,7 +92,11 @@ router.post('/removeProduct', (req, res) => {
 
 // 상품 리스트 조회
 router.post('/products', (req, res) => {
-
+    let productAllCount = 0;
+    Product.find().count(function (err, count) {
+        if (err) console.log(err)
+        productAllCount = parseInt(count);
+    });
     let order = req.body.order ? req.body.order : "asc"; // default 오름차순.(낮은 가격순) 내림차순으로 하고싶은경우 asc로 변경
     let sortBy = req.body.sortBy ? req.body.sortBy : "_id"; // default _id값으로 정렬
     // pagination을 위한 limit, skip 사용
@@ -109,7 +110,7 @@ router.post('/products', (req, res) => {
 
     for (let key in req.body.filters) { // 가격 필터링
         if (req.body.filters[key]) { // length가 1보다 클때 작동하는게 안에 들어있으면 동작하는것 이었던것 같은데 제대로 동작안해서 그냥 삭제
-            console.log('key', key)
+            //console.log('key', key)
             if (key === "price") {
                 findArgs[key] = {
                     $gte: req.body.filters[key][0],
@@ -119,34 +120,12 @@ router.post('/products', (req, res) => {
             } else {
                 findArgs[key] = req.body.filters[key]; // 필터의 필드에 대한 값과 일치하는 것들을 넣어줌
             }
-            console.log(findArgs[key])
+            //console.log(findArgs[key])
         }
     }
 
-    var countQuery = function(callback){
-        Product.count({}, function(err, count){
-            if(err){ callback(err, null) }
-            else{
-                callback(null, count);
-            }
-        })
-    };
-
-    var retrieveQuery = function(callback){
-        Product
-            .find(findArgs)
-            .skip(skip)
-            .limit(limit)
-            .exec(function(err, doc){
-                if(err){ callback(err, null) }
-                else{
-                    callback(null, doc);
-                }
-            })
-    };
-
     if (term) {
-        Product
+        Product.find(findArgs)
             .find({ $text: { $search: term } })
             .find({
                 "deleted" : 0, // 삭제 처리되지 않은 상품 로드
@@ -155,23 +134,18 @@ router.post('/products', (req, res) => {
             .sort([[sortBy, order]])
             .skip(skip)
             .limit(limit)
-            .exec(async.parallel([countQuery, retrieveQuery], function(err, results){
-                console.log(results[1].length)
-                //err contains the array of error of all the functions
-                //results contains an array of all the results
-                //results[0] will contain value of doc.length from countQuery function
-                //results[1] will contain doc of retrieveQuery function
-                //You can send the results as
-
-                return res.json({
+            .exec((err, productInfo) => {
+                if (err) return res.status(400).json({ success: false, err })
+                return res.status(200).json({
                     success: true,
-                    productInfo: results[1],
-                    postSize: results[1].length,
-                    productAllCount: results[0]});
-
-            }))
+                    productInfo,
+                    postSize: productInfo.length,
+                    productAllCount : productAllCount
+                })
+            })
     } else {
         Product
+            .find(findArgs)
             .find({
                 "deleted" : 0, // 삭제 처리되지 않은 상품 로드
                 "category" : category,
@@ -179,22 +153,15 @@ router.post('/products', (req, res) => {
             .sort([[sortBy, order]])
             .skip(skip)
             .limit(limit)
-            .exec(async.parallel([countQuery, retrieveQuery], function(err, results){
-                console.log(results[1].length)
-                //err contains the array of error of all the functions
-                //results contains an array of all the results
-                //results[0] will contain value of doc.length from countQuery function
-                //results[1] will contain doc of retrieveQuery function
-                //You can send the results as
-
-                return res.json({
+            .exec((err, productInfo) => {
+                if (err) return res.status(400).json({ success: false, err })
+                return res.status(200).json({
                     success: true,
-                    productInfo: results[1],
-                    postSize: results[1].length,
-                    productAllCount: results[0]});
-
-            }))
-
+                    productInfo,
+                    postSize: productInfo.length,
+                    productAllCount : productAllCount
+                })
+            })
     }
 })
 

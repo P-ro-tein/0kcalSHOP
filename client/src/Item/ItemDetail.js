@@ -168,7 +168,7 @@ function ItemDetail(props){
                 </DetailText>
                 {
                     Product.images&&Product.images.length>0 &&
-                <img alt={Product._id} src={`http://localhost:9000/uploads/${Product.images[0]}`} width="600" height="400"></img>
+                <img alt={Product._id} src={`http://ec2-52-79-226-115.ap-northeast-2.compute.amazonaws.com:9000/uploads/${Product.images[0]}`} width="600" height="400"></img>
                 }
             </LeftContainer>
             <RightContainer>
@@ -217,7 +217,7 @@ function ItemDetail(props){
             <DescriptionContainer>
             {
                     Product.images&&Product.images.length>0 &&
-                <img alt={Product._id} src={`http://localhost:9000/uploads/${Product.images[1]}`} width="500"></img>
+                <img alt={Product._id} src={`http://ec2-52-79-226-115.ap-northeast-2.compute.amazonaws.com:9000/uploads/${Product.images[1]}`} width="500"></img>
                 }
             </DescriptionContainer> 
         </Box>
