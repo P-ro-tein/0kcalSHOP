@@ -84,15 +84,16 @@ const DeliveryModal = ( props ) => {
             {
                 setSelectAddress(i);
             }
+        }if(Address.length){
+            setShipAddrName(Address[SelectAddress].shipAddrName);
+            setShipAddrRecipient(Address[SelectAddress].shipAddrRecipient);
+            setContactNumber(Address[SelectAddress].contactNumber);
+            setShipDetailOne(Address[SelectAddress].shipAddrDetail[0]);
+            setShipDetailTwo(Address[SelectAddress].shipAddrDetail[1]);
+            setShipDetailThree(Address[SelectAddress].shipAddrDetail[2]);
+            setDefaultShip(Address[SelectAddress].defaultShip);
+            setDiv(false);
         }
-        setShipAddrName(Address[SelectAddress].shipAddrName);
-        setShipAddrRecipient(Address[SelectAddress].shipAddrRecipient);
-        setContactNumber(Address[SelectAddress].contactNumber);
-        setShipDetailOne(Address[SelectAddress].shipAddrDetail[0]);
-        setShipDetailTwo(Address[SelectAddress].shipAddrDetail[1]);
-        setShipDetailThree(Address[SelectAddress].shipAddrDetail[2]);
-        setDefaultShip(Address[SelectAddress].defaultShip);
-        setDiv(false);
     }
 
     const saveModify=()=>{
