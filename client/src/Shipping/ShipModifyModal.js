@@ -8,7 +8,7 @@ import DaumPostcode from 'react-daum-postcode';
 const DeliveryModal = ( props ) => {
     const { open, close, header} = props;
     const [Q1,setSelect]=useState("");
-    const [Div,setDiv]=useState(true); 
+    const [Div,setDiv]=useState(true);
     const [isDaumPost,SetDaumPost]=useState(false);
     const [isAddress, setIsAddress] = useState("");
     const [isZoneCode, setIsZoneCode] = useState();
@@ -54,12 +54,12 @@ const DeliveryModal = ( props ) => {
             order:"desc",
             sortBy:"defaultShip"
         })
-        .then(response => {
-        if(response.data.success) {
-            setAddress(response.data.shipAddrInfo)
-            setSelect(response.data.shipAddrInfo[0]._id);
-        }})
-        .catch();
+            .then(response => {
+                if(response.data.success&&response.data.postSize) {
+                    setAddress(response.data.shipAddrInfo)
+                    setSelect(response.data.shipAddrInfo[0]._id);
+                }})
+            .catch();
     }
     useEffect(() => {
         setShipAddress();
@@ -68,7 +68,7 @@ const DeliveryModal = ( props ) => {
     const changeRadioQ1 = (e) => {
         setSelect(e.target.value);
         console.log(e.target.value);
-      };
+    };
 
     const ChangePost=()=>{
         SetDaumPost(true);
@@ -106,29 +106,29 @@ const DeliveryModal = ( props ) => {
             contactNumber: contactNumber,
             defaultShip: defaultShip
         })
-        .then(response => {
-            if(response.data.success){
-                alert('배송지 수정 완료');
-                setDiv(true);
-                setShipAddress();
-            } else {
-                alert('배송지 수정 실패');
-            }
-        })
+            .then(response => {
+                if(response.data.success){
+                    alert('배송지 수정 완료');
+                    setDiv(true);
+                    setShipAddress();
+                } else {
+                    alert('배송지 수정 실패');
+                }
+            })
     }
 
     const deleteShipAddr=()=>{
         axios.post('/api/shipAddr/removeShipAddr', {
             _id: Q1
         })
-        .then(res => {
-            if(res.data.success){
-                alert('삭제 완료');
-                setShipAddress();
-            } else{
-                alert('삭제 실패');
-            }
-        })
+            .then(res => {
+                if(res.data.success){
+                    alert('삭제 완료');
+                    setShipAddress();
+                } else{
+                    alert('삭제 실패');
+                }
+            })
     }
     const saveDefault=()=>{
         console.log(Q1);
@@ -136,43 +136,43 @@ const DeliveryModal = ( props ) => {
             _id:Q1,
             defaultShip: 1
         })
-        .then(response=>{
-            if(response.data.success){
-                alert('기본배송지 변경 완료');
-                setShipAddress();
-            } else{
-                alert('기본배송지 변경 실패');
-            }
-        })
+            .then(response=>{
+                if(response.data.success){
+                    alert('기본배송지 변경 완료');
+                    setShipAddress();
+                } else{
+                    alert('기본배송지 변경 실패');
+                }
+            })
     }
     const save=()=>{
         setDiv(true);
     }
-  
+
     const handleComplete = (data) => {
         let fullAddress = data.address;
         let extraAddress = "";
-    
+
         if (data.addressType === "R") {
-          if (data.bname !== "") {
-            extraAddress += data.bname;
-          }
-          if (data.buildingName !== "") {
-            extraAddress +=
-              extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
-          }
-          fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+            if (data.bname !== "") {
+                extraAddress += data.bname;
+            }
+            if (data.buildingName !== "") {
+                extraAddress +=
+                    extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
+            }
+            fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
         }
         setShipDetailOne(fullAddress);
         setShipDetailTwo(data.zonecode);
         setIsZoneCode(data.zonecode);
         setIsAddress(fullAddress);
         SetDaumPost(false);
-      };
-    
+    };
+
     return (
         <div className={ open ? 'openModal modal' : 'modal' }>
-            { open ? (  
+            { open ? (
                 <section>
                     <header>
                         {header}
@@ -183,11 +183,14 @@ const DeliveryModal = ( props ) => {
                         <div className="box">
                             <div className="container">
                                 <div className="text"> 현재 배송지</div>
-                                <div style={{display:"block"}}>
-                                    <div className="dstination">{Address[0].shipAddrName}</div>
-                                    <div className="destination">{Address[0].shipAddrDetail[0]}</div>
-                                    <div className="destination">{Address[0].shipAddrDetail[2]}</div>
-                                </div>
+                                {
+                                    Address.length?
+                                        <div style={{display:"block"}}>
+                                            <div className="dstination">{Address[0].shipAddrName}</div>
+                                            <div className="destination">{Address[0].shipAddrDetail[0]}</div>
+                                            <div className="destination">{Address[0].shipAddrDetail[2]}</div>
+                                        </div>
+                                        :null}
                             </div>
                             <div>
                                 {Div===true&&
@@ -197,10 +200,10 @@ const DeliveryModal = ( props ) => {
                                         Address.map((data)=>{
                                             return(
                                                 <div style={{paddingBottom:"10px"}}>
-                                                 <label htmlFor="delivery">
-                                                <input type="radio" id={data._id} name={data._id} value={data._id} checked={Q1 === data._id ? true : false} onChange={changeRadioQ1}></input>
-                                                {data.shipAddrName}<div style={{paddingTop:"10px",paddingLeft:"22px"}}>{data.shipAddrDetail[0]}({data.shipAddrDetail[2]})</div>
-                                                </label>
+                                                    <label htmlFor="delivery">
+                                                        <input type="radio" id={data._id} name={data._id} value={data._id} checked={Q1 === data._id ? true : false} onChange={changeRadioQ1}></input>
+                                                        {data.shipAddrName}<div style={{paddingTop:"10px",paddingLeft:"22px"}}>{data.shipAddrDetail[0]}({data.shipAddrDetail[2]})</div>
+                                                    </label>
                                                 </div>
                                             );
                                         })
@@ -209,8 +212,8 @@ const DeliveryModal = ( props ) => {
                                 {Div===false &&
                                 <div className="newbox">
                                     <div className="container">
-                                    <div className="text">배송지 이름</div>
-                                    <input type="text" className="input" value={shipAddrName} onChange={shipAddrNameHandler}></input>
+                                        <div className="text">배송지 이름</div>
+                                        <input type="text" className="input" value={shipAddrName} onChange={shipAddrNameHandler}></input>
                                     </div>
                                     <div className="container">
                                         <div className="text">수령인</div>
@@ -227,20 +230,20 @@ const DeliveryModal = ( props ) => {
                                     </div>
                                     {
                                         isDaumPost?
-                                        <div className="daumAddress">
-                                            <DaumPostcode
-                                            autoClose
-                                            onComplete={handleComplete}
-                                            style={postCodeStyle}
-                                            height={300}
-                                            Address={isAddress}
-                                            ZoneCode={isZoneCode}/>
-                                        </div>:null
+                                            <div className="daumAddress">
+                                                <DaumPostcode
+                                                    autoClose
+                                                    onComplete={handleComplete}
+                                                    style={postCodeStyle}
+                                                    height={300}
+                                                    Address={isAddress}
+                                                    ZoneCode={isZoneCode}/>
+                                            </div>:null
                                     }
                                     <input className="address" type="text" value={shipDetailTwo} onChange={detailTwoHandler} readOnly></input>
                                     <input className="address" type="text" value={shipDetailThree} onChange={detailThreeHandler} readOnly></input>
                                 </div>
-                                
+
                                 }
                             </div>
                             <div>
@@ -252,13 +255,13 @@ const DeliveryModal = ( props ) => {
                         <button className="close" onClick={saveDefault}>저장</button>
                         <button className="close" onClick={deleteShipAddr}>삭제</button>
                         <button className="close" onClick={modify}>수정</button>
-                        <button className="close" onClick={close}>닫기</button> 
+                        <button className="close" onClick={close}>닫기</button>
                     </footer>
                     }
                     {Div===false&&
                     <footer>
-                        <button className="close" onClick={saveModify}>저장</button> 
-                        <button className="close" onClick={close}>닫기</button>    
+                        <button className="close" onClick={saveModify}>저장</button>
+                        <button className="close" onClick={close}>닫기</button>
                     </footer>}
                 </section>
             ) : null }
