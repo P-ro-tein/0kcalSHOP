@@ -1,0 +1,49 @@
+POST http://localhost:9000/api/users/addToCart HTTP/1.1
+Content-Type: application/json
+
+{
+    "productId":"60892958cf73693c1092f2f7"
+}
+
+###
+POST http://localhost:9000/api/users/removeFromCart HTTP/1.1
+Content-Type: application/json
+
+{
+    "productId":"60892958cf73693c1092f2f7"
+}
+
+###
+
+POST http://localhost:9000/api/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "id":"test",
+    "password":"asdfasdf"
+}
+
+###
+
+POST http://localhost:9000/api/users/register HTTP/1.1
+Content-Type: application/json
+
+{
+    "id":"test",
+    "password":"asdfasdf",
+    "email":"test@gmail.com",
+    "phone":"01045918177",
+    "name":"테스트"
+}
+
+###
+GET http://localhost:9000/api/users/logout HTTP/1.1
+
+###
+
+GET http://localhost:9000/api/users/auth HTTP/1.1
+
+###
+
+GET http://localhost:9000/api/product/list HTTP/1.
+###
