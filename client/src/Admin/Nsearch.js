@@ -16,6 +16,15 @@ export default function Nsearch() {
         }
         })
     }, []);
+
+    const getFormDate = (date) => {
+        const year = date.getFullYear();
+        let month = 1 + date.getMonth();
+        month = month >= 10 ? month : '0' + month;
+        let day = date.getDate();
+        day = day >= 10 ? day : '0' + day;
+        return year + '-' + month + '-' + day; 
+    };
     
 
     return (
@@ -51,8 +60,8 @@ export default function Nsearch() {
                     <tbody>
                     <tr>
                         <td className="Tname"><a href={`/admin/notice/${notice._id}`}>{notice.noticeTitle}</a></td>
-                        <td className="Tnext">{notice.updatedDate}</td>
-                        <td>{notice.expiredDate}</td>
+                        <td className="Tnext">{getFormDate(new Date(notice.updatedDate))}</td>
+                        <td>{getFormDate(new Date(notice.expiredDate))}</td>
                     </tr>
                     </tbody>
                 </table>

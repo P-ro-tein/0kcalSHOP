@@ -1,6 +1,7 @@
 import './Basic.css';
 import React, { useState } from 'react';
 import axios from 'axios';
+//import e from 'express';
 
 export default function Pregist(props) {
     const [title, setTitle] = useState("");
@@ -26,24 +27,57 @@ export default function Pregist(props) {
     const remainStockChangeHandler = (e) => {
         setRemainStock(e.currentTarget.value);
     }
-    const imagesChangeHandler = (e) => {
-        setImages(e.currentTarget.value);
-    }
     const descriptionChangeHandler = (e) => {
         setDescription(e.currentTarget.value)
     }
-    
+    const imagesChangeHandler = (e) => {
+        setImages(e.target.files[0]);
+    }
 
     const submitHandler = (event) => {
-        /*const data = {
-            title: title,
-            category: category,
-            price: price,
-            shipCharge: shipCharge,
-            remainStock: remainStock,
-            description: description,
-            images: images,
-        }*/
+        //페이지 이동 막기
+        //event.preventDefault();
+
+        //유효성 검사
+        if(title.length === 1){
+            event.preventDefault();
+            return alert("상품명을 입력하세요.")
+        }
+        if(category.length === 1){
+            event.preventDefault();
+            return alert("카테고리를 선택해주세요.")
+        }
+        if(price === 0){
+            event.preventDefault();
+            return alert("가격을 입력해주세요.")
+        } else if(price < 0){
+            event.preventDefault();
+            return alert("가격은 음수가 될 수 없습니다.")
+        }
+        if(shipCharge === 0){
+            event.preventDefault();
+            return alert("배송비를 입력해주세요.")
+        } else if (shipCharge < 0){
+            event.preventDefault();
+            return alert("배송비는 음수가 될 수 없습니다.")
+        }
+        if(remainStock === 0){
+            event.preventDefault();
+            return alert("재고량을 입력해주세요.")
+        } else if(remainStock < 0) {
+            event.preventDefault();
+            return alert("재고량은 음수가 될 수 없습니다.")
+        }
+        if(description.length < 1){
+            event.preventDefault();
+            return alert("상품소개를 입력해주세요.")
+        }
+        if(!images){
+            event.preventDefault();
+            return alert("이미지를 입력해주세요.")
+        }
+
+        //데이터 전송
         const formData = new FormData(); 
 
         formData.append('title', title);
@@ -52,8 +86,8 @@ export default function Pregist(props) {
         formData.append('shipCharge', shipCharge);
         formData.append('remainStock', remainStock);
         formData.append('description', description);
-        formData.append('images', event.target.images.files[0]);     
-        
+        formData.append('images', images);     
+
         axios.post(
             '/api/product/register',
             {
@@ -61,12 +95,13 @@ export default function Pregist(props) {
             }
         ).then(response => {
             if(response.data.success){
-                alert('등록완료');
+                alert('등록 완료');
                 props.history.push('/admin/psearch');
             } else { 
-                alert('');
+                alert('등록 실패');
             }
         });
+
     }
 
     return(
@@ -111,7 +146,7 @@ export default function Pregist(props) {
                     <td><input type="text" name="description" name="description" onChange={descriptionChangeHandler} /> </td>
                 </tr>
                 <tr>
-                    <td>대표이미지</td><td><input type="file" name="images" accept="img/*" onChange={imagesChangeHandler}/></td>
+                    <td>대표이미지</td><td><input type="file" name="images" accept="img/*" multiple onChange={imagesChangeHandler}/></td>
                 </tr>
                 <tr>
                     <td>상품 상세설명</td><td><input type="file" name="images" accept="img/*" multiple onChange={imagesChangeHandler}/></td>
@@ -119,7 +154,7 @@ export default function Pregist(props) {
                 </tbody>
             </table><br/>
             
-            <button type="submit" onClick={submitHandler}>등록</button>
+            <button onClick={submitHandler}>등록</button>
             </form>
         </div>
     )
