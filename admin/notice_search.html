@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>0Kcal Shop | 공지사항 조회</title>
+    </head>
+    <body>
+        <div> 공지사항 조회 (조회 및 삭제, 검색/정렬 구현) </div>
+
+        <!--검색-->
+        <p>
+            <input type="text" value=""/>
+            <input type="submit" value="검색"/>
+        </p>
+
+        <!--공지사항 목록-->
+        <table>
+            <colgroup>
+                <col width="50"/>
+                <col width="300"/>
+                <col width="200"/>
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>
+                        <div>
+                            <input type="checkbox" name="check" id="checkboxAll">
+                        </div>
+                    </th>
+                    <th>번호</th>
+                    <th>공지사항 제목</th>
+                    <th>진행기간</th>
+                </tr>
+            </thead>
+            <tbody>
+                <td align="center">
+                    <div>
+                        <input type="checkbox" name="check">
+                    </div>
+                </td>
+                <td align="center"> 1 </td>
+                <td align="center"> <a href="test.html">임시 아무말</a></td>
+                <td align="center">2021.04.07~2021.04.10</td>
+            </tbody>
+        </table>
+
+        <div>
+            <button id="regist" onClick="location.href='regist.html'" >등록</button>
+            <button id="modify" onClick="location.href='modify.html'">수정</button>
+            <button id="delete">삭제</button>
+        </div>
+    </body>
+</html>
