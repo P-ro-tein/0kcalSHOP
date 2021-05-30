@@ -23,37 +23,50 @@ router.post('/register', auth, (req, res) => {
 router.post('/changeOrderState', auth, (req, res) => {
     //받아온 정보들을 DB에 넣어 준다.
     const orderList = new OrderList(req.body);
-    orderList.userID = req.user.id; // 현재 로그인한 ID로 주문내역 확인
-/*
-    OrderList.findOne(
-        { userID: orderList.userID, orderProductID: orderList.orderProductID }, function (err, orderProduct){
-            if (err) return res.status(400).json({success: false, err})
-            console.log(orderProduct.orderState)
-            let currentState = orderProduct.orderState;
-            console.log(orderList.userID, currentState);
-        }
-    )
-*/
-    OrderList.findOneAndUpdate(
-        { userID: orderList.userID, orderProductID: orderList.orderProductID },
-        {
-            $inc: { // number을 이용해서 state상태를 파악및 변경
-                "orderState": 1
+
+    if(req.user.role === 0) { // 일반 유저인 경우 배송 완료 단계에서만 상태변경 가능
+        orderList.userID = req.user.id; // 현재 로그인한 ID로 주문내역 확인
+        OrderList.findOneAndUpdate(
+            { userID: orderList.userID, _id: orderList._id, orderState: 3 },
+            {
+                $inc: { // number을 이용해서 state상태를 파악및 변경
+                    "orderState": 1
+                }
+            },
+            { new: true },
+            (err, orderProduct) => {
+                if (!orderProduct)
+                    return res.json({
+                        success: false,
+                        message: "OrderProduct is not found"
+                    });
+                return res.status(200).json({success:true});
             }
-        },
-        { new: true },
-        (err, orderProduct) => {
-            if (!orderProduct)
-                return res.json({
-                    success: false,
-                    message: "OrderList is not found"
-                });
-            return res.status(200).json({success:true});
-        });
+        );
+    } else if(req.user.role === 1) {// 관리자인 경우 결제완료, 배송중 단계에서만 상태변경 가능
+        orderList.userID = req.body.userID; // 수정하고자 하는 상품 내역 주문자의 ID
+        OrderList.findOneAndUpdate(
+            { userID: orderList.userID, _id: orderList._id, orderState: {"$gte": 1, "$lte": 2}},
+            {
+                $inc: { // number을 이용해서 state상태를 파악및 변경
+                    "orderState": 1
+                }
+            },
+            { new: true },
+            (err, orderProduct) => {
+                if (!orderProduct)
+                    return res.json({
+                        success: false,
+                        message: "OrderProduct is not found"
+                    });
+                return res.status(200).json({success:true});
+            }
+        );
+    }
 })
 
 // 주문내역 조회
-router.get('/list', auth, (req, res) => {
+router.post('/list', auth, (req, res) => {
     let order = req.body.order? req.body.order : "desc"; //주문 내역 표시 순서. default 내림차순. 오름차순으로 하고싶은경우 asc로 변경
     let sortBy = "orderDate"; // 주문날짜 기준 정렬
     // pagination을 위한 limit, skip 사용
