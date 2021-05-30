@@ -59,7 +59,7 @@ function Nmodify(props) {
         }
         if(expiredDate.length === 0){
             event.preventDefault();
-            return alert("만료일자를 입력하세요.")
+            return alert("만료일자를 입력하세요.") 
         } else if(new Date(expiredDate) < Date.now()){
             event.preventDefault();
             return alert("만료일자는 현재보다 늦을 수 없습니다.")
@@ -77,19 +77,22 @@ function Nmodify(props) {
             formData.append("expriedDate", expiredDate);
             formData.append("image", image);
 
+
+            console.log("두번하지맛요");
             axios.post('/api/notice/modifyNotice', { _id, formData }).then(response => {
                 if(response.data.success){
                     event.preventDefault();
                     alert('등록 완료');
-                    props.history.push('/admin/psearch');
+                    return window.location.href='/admin/nsearch'
+                    //props.history.push('/admin/psearch');
                 } else { 
                     event.preventDefault();
                     alert('등록 실패');
                 }
             });
-
-            return window.location.href='/admin/nsearch'
+            
         } else{
+            console.log("두번일까요?")
             event.preventDefault();
         }
         
