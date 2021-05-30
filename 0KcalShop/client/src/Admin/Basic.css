@@ -1,0 +1,35 @@
+.Page {
+    position : absolute;
+    height : 600px;
+    right : 40px;
+    left : 250px;
+    top : 110px;
+}
+
+table, tr, td {
+    border: 1px solid #8d8d8d;
+    border-collapse: collapse;
+    padding: 5px;
+}
+
+table {
+    width: 100%;
+}
+
+.Ttitle {
+    color: white;
+    background-color: #8d8d8d;
+}
+
+.Tname {
+    width: 20%;
+}
+
+.Tnext {
+    width: 40%;
+}
+
+.Product {
+    text-align: center;
+    height: 300px;
+}
