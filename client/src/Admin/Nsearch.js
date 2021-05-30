@@ -59,9 +59,10 @@ export default function Nsearch() {
                 <table>
                     <tbody>
                     <tr>
-                        <td className="Tname"><a href={`/admin/notice/${notice._id}`}>{notice.noticeTitle}</a></td>
+                        <td className="Tname">{notice.noticeTitle}</td>
                         <td className="Tnext">{getFormDate(new Date(notice.updatedDate))}</td>
                         <td>{getFormDate(new Date(notice.expiredDate))}</td>
+                        <td><a href={`/admin/notice/${notice._id}`}><button>수정/삭제하기</button></a></td>
                     </tr>
                     </tbody>
                 </table>

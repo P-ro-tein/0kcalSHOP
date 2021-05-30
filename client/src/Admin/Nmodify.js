@@ -37,7 +37,7 @@ function Nmodify(props) {
         setImage(e.target.files[0]);
     }
 
-    const removeHandler=() => {
+    const removeHandler=(e) => {
         const _id = noticeId;
 
         if(window.confirm('삭제 하시겠습니까?')){
@@ -45,6 +45,8 @@ function Nmodify(props) {
 
             alert('삭제 되었습니다')
             return window.location.href='/admin/nsearch'
+        } else{
+            e.preventDefault();
         }
     }
 
@@ -67,15 +69,30 @@ function Nmodify(props) {
             return alert("이미지를 입력하세요.")
         }
 
-        const formData = new FormData();
+        if(window.confirm('수정 하시겠습니까?')){
+            const formData = new FormData();
+            const _id = noticeId;
 
-        formData.append("_id", noticeId);
-        formData.append("noticeTitle", noticeTitle);
-        formData.append("expriedDate", expiredDate);
-        formData.append("image", image);
+            formData.append("noticeTitle", noticeTitle);
+            formData.append("expriedDate", expiredDate);
+            formData.append("image", image);
 
-        console.log(noticeTitle)
-        axios.post('/api/notice/modifyNotice', { formData })
+            axios.post('/api/notice/modifyNotice', { _id, formData }).then(response => {
+                if(response.data.success){
+                    event.preventDefault();
+                    alert('등록 완료');
+                    props.history.push('/admin/psearch');
+                } else { 
+                    event.preventDefault();
+                    alert('등록 실패');
+                }
+            });
+
+            return window.location.href='/admin/nsearch'
+        } else{
+            event.preventDefault();
+        }
+        
     }
 
     return(
