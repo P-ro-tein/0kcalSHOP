@@ -20,6 +20,18 @@
   font-weight: bold;
 }
 
+.modify {
+  border: none;
+  background-color: #ff7777;
+  border-right: white 0.5px solid;
+  color: white;
+  width: 50px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+}
+
 .cart {
   border: none;
   width: 180px;
@@ -118,6 +130,25 @@ a {
   align-items: center;
   animation: modal-bg-show 0.3s;
 }
+.modal.openModal {
+  display: flex;
+  align-items: center;
+  animation: modal-bg-show 0.3s;
+}
+.daumAddress {
+  display: flex;
+  position: fixed;
+  align-items: center;
+  text-align: center;
+  animation: modal-bg-show 0.3s;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX( -50% );
+  width: 500px;
+  z-index: 100;
+}
 @keyframes modal-show {
   from {
     opacity: 0;
@@ -150,7 +181,7 @@ a {
 }
 
 .input {
-  width: 320px;
+  width: 250px;
   margin-right: 5px;
 }
 

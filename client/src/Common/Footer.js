@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import FooterPng from '../Footer.png';
 
 const BoxFooter=styled.div`
 width:100%;
@@ -8,7 +9,7 @@ width:100%;
 
 const BoxUnderFooter=styled.div`
 width:100%;
-background:#ff7777;
+background:#f8f8f8;
 height:200px;
 `;
 
@@ -44,35 +45,24 @@ const TextTitle=styled.div`
     margin-bottom:20px;
 `;
 
-const Banner=styled.div`
-    background:black;
-    width:100%;
-    height:100px;
-    margin-bottom:20px;
-    color:white;
-    font-family: Neuton;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 30px;
+const Banner=styled.img`
+    background:#121212;
+    position:relative;
+    left:450px;
+    height:70px;
+    top:-80px;
 `;
 
 function Footer(){
     return(
         <>
-        <Banner>
-            <div style={{width:'550px',margin:'0 auto', padding:'30px'}}> 
-            
-            <div style={{float:'left'}}>
-            올해의 신규 브랜드 대상 수상
-            </div>
-            <img style={{float:'left',marginLeft:'50px'}} alt="prize" src="https://www.flaticon.com/svg/vstatic/svg/744/744984.svg?token=exp=1619601165~hmac=6fa618b421c122a7e7877c185edff386" width="50"></img>
-            </div>
-        </Banner>
+        <div style={{background:'#121212',width:"100%",height:"100px",position:"relative"}}></div>
+        <Banner alt="footer" src={FooterPng}/>
         <BoxFooter>
         <ContainerFooter>
         <Text>
             <TextTitle style={{display:'inline',}}>
-            <img alt="call" src="https://www.flaticon.com/svg/vstatic/svg/1170/1170646.svg?token=exp=1619598312~hmac=81ff415b8f57e2a1b87eda33e82a99d9" width="20" height="20"></img>
+            <img alt="call" src="https://image.flaticon.com/icons/png/512/1176/1176894.png" width="20" height="20"></img>
             <span>무엇을 도와드릴까요?</span>
             </TextTitle>
             <div style={{color:'grey',fontSize:'12px'}}>
@@ -101,10 +91,10 @@ function Footer(){
         <Text>
             <TextTitle>SNS</TextTitle>
             <div style={{display:'inline'}}>
-                <img style={{padding:'10px',cursor:'pointer'}} src="https://www.flaticon.com/svg/vstatic/svg/1384/1384063.svg?token=exp=1619600148~hmac=cf2d28ac47c44d19eae3728527a34653" width="40" alt="instagram"></img>
-                <img style={{padding:'10px',cursor:'pointer'}} src="https://www.flaticon.com/svg/vstatic/svg/187/187209.svg?token=exp=1619600195~hmac=1b9e4eca64bfd4ef10965ab7e87e8754" width="40" alt="youtube"></img>
-                <img style={{padding:'10px',cursor:'pointer'}} src="https://www.flaticon.com/svg/vstatic/svg/145/145802.svg?token=exp=1619600217~hmac=ac5849888806da952d29c49e717943f3" width="40" alt="facebook"></img>
-                <img style={{padding:'10px',cursor:'pointer'}} src="https://www.flaticon.com/svg/vstatic/svg/2111/2111466.svg?token=exp=1619600369~hmac=064ad33a7a27b091564948f0fdb2e2b7" width="40" alt="kakao"></img>
+                <img style={{padding:'10px',cursor:'pointer'}} src="https://image.flaticon.com/icons/png/512/2111/2111463.png" width="40" alt="instagram"></img>
+                <img style={{padding:'10px',cursor:'pointer'}} src="https://image.flaticon.com/icons/png/512/1384/1384060.png" width="40" alt="youtube"></img>
+                <img style={{padding:'10px',cursor:'pointer'}} src="https://image.flaticon.com/icons/png/512/2111/2111398.png" width="40" alt="facebook"></img>
+                <img style={{padding:'10px',cursor:'pointer'}} src="https://image.flaticon.com/icons/png/512/2111/2111466.png" width="40" alt="kakao"></img>
             </div>
         </Text>
         </ContainerFooter>

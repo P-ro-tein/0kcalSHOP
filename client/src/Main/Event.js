@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick-theme.css"
 import styled from 'styled-components';
 
 const Box= styled.div`
-    width:width:100%;
+    width:100%;
     height:100%;
     cursor:pointer;
     `;
@@ -13,7 +13,7 @@ function Event(){
     const events=[
         {
             id:1,
-            imgUrl:"https://serybox.wisacdn.com/_data/banner/30bf3bd36f566aeccff20a2f4e76b425.jpg",
+            imgUrl:"https://serybox.wisacdn.com/_data/banner/a87bddd1d7e087d2dddc05ed2b079c5a.jpg",
         },
         {
             id:2,
@@ -37,7 +37,7 @@ function Event(){
     return(
         <Box>
             <Slider {...settings}>{events.map((data)=>{
-               return <img key={data.id} alt={data.id} src={data.imgUrl}/>;
+               return <img key={data.id} alt={data.id} src={data.imgUrl} width="100%" height="400px"/>;
             })}</Slider>
         </Box>
     );

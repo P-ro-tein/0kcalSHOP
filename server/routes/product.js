@@ -38,8 +38,8 @@ router.post('/register',upload, (req, res) => {
     const product = new Product(req.body)
     // single이니까 file 속성 안에 filename이 들어있으므로 안넘겨져서 그냥 타이틀사진을 그냥 넣어버렸다
     // 몇 장 사진이 추가되면 for문 돌리든지..나중에 방법을 강구해보자.
-   for(let i=0 ; i<req.files.length; i+=1){
-       product.images[i]=req.files[i].filename
+    for(let i=0 ; i<req.files.length; i+=1){
+        product.images[i]=req.files[i].filename
     }
     product.save((err) => {
         if (err) return res.status(400).json({ success: false, err })
@@ -49,8 +49,6 @@ router.post('/register',upload, (req, res) => {
 
 router.post('/modifyProduct', (req, res) => {
         const product = new Product(req.body);
-        console.log(req.body);
-
         Product.findOneAndUpdate(
             // 상품 수정 시, 이미 클라이언트로 모든 정보를 보내줬고 다시 받을 때 변경하지 않았으면 그대로 다시 올 것이고
             // 수정되었다면 수정된 사항이 올것이기 때문에 그 정보를 바탕으로 상품 고유ID에 해당되는 DB에 그대로 등록
@@ -94,23 +92,25 @@ router.post('/removeProduct', (req, res) => {
 
 // 상품 리스트 조회
 router.post('/products', (req, res) => {
+    let productAllCount = 0;
+    Product.find().count(function (err, count) {
+        if (err) console.log(err)
+        productAllCount = parseInt(count);
+    });
     let order = req.body.order ? req.body.order : "asc"; // default 오름차순.(낮은 가격순) 내림차순으로 하고싶은경우 asc로 변경
     let sortBy = req.body.sortBy ? req.body.sortBy : "_id"; // default _id값으로 정렬
     // pagination을 위한 limit, skip 사용
     let limit = req.body.limit ? parseInt(req.body.limit) : 16; // default로 한 페이지에서 16개의 상품만 띄우도록 함.
-    let skip = req.body.skip ? limit * (parseInt(req.body.pageNumber)-1) : 0;
+    let skip = req.body.pageNumber ? limit * (req.body.pageNumber-1) : 0;
     // default 첫 페이지. 이후 페이지의 경우 skip = limit * (페이지 번호 -1) 하면 됨.
 
     let term = req.body.searchTerm // 상품 검색을 위한 부분
     let category = req.body.category ? req.body.category : ["식단세트","식사대용","건강간식"];
     let findArgs = {};
 
-    let leastPrice = req.body.leastPrice;
-    let highestPrice = req.body.highestPrice;
-
     for (let key in req.body.filters) { // 가격 필터링
         if (req.body.filters[key]) { // length가 1보다 클때 작동하는게 안에 들어있으면 동작하는것 이었던것 같은데 제대로 동작안해서 그냥 삭제
-            console.log('key', key)
+            //console.log('key', key)
             if (key === "price") {
                 findArgs[key] = {
                     $gte: req.body.filters[key][0],
@@ -120,7 +120,7 @@ router.post('/products', (req, res) => {
             } else {
                 findArgs[key] = req.body.filters[key]; // 필터의 필드에 대한 값과 일치하는 것들을 넣어줌
             }
-            console.log(findArgs[key])
+            //console.log(findArgs[key])
         }
     }
 
@@ -139,7 +139,8 @@ router.post('/products', (req, res) => {
                 return res.status(200).json({
                     success: true,
                     productInfo,
-                    postSize: productInfo.length
+                    postSize: productInfo.length,
+                    productAllCount : productAllCount
                 })
             })
     } else {
@@ -157,7 +158,8 @@ router.post('/products', (req, res) => {
                 return res.status(200).json({
                     success: true,
                     productInfo,
-                    postSize: productInfo.length
+                    postSize: productInfo.length,
+                    productAllCount : productAllCount
                 })
             })
     }
