@@ -4,7 +4,7 @@ import styled from "styled-components";
 import CartItem from "./CartItem";
 import "../AllCss.css";
 import { Link } from "react-router-dom";
-
+import axios from 'axios';
 const Box = styled.div`
   width: 1200px;
   margin: 0 auto;
@@ -56,34 +56,29 @@ const PriceText = styled.div`
 `;
 
 function CartPage() {
-  const Item = [
-    {
-      imgUrl:
-        "https://danoshop.net/mall/upload/2020/03/11/dumpling_716x478.jpg",
-      name: "다노 닭가슴살 곤약만두 3종 (오리지널/청양고추/불닭) 10팩",
-      quantity: 2,
-      price: 26900,
-    },
-    {
-      imgUrl:
-        "https://danoshop.net/mall/upload/2020/07/27/%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%90%E1%85%B5%E1%86%AB%E1%84%87%E1%85%B3%E1%84%85%E1%85%A1%E1%84%89%E1%85%A9%E1%86%AF%E1%84%92%E1%85%A9%E1%84%87%E1%85%A5.png",
-      name: "다노 브라운라이스소울 프로틴베리&프로틴초코",
-      quantity: 10,
-      price: 2300,
-    },
-    {
-      imgUrl: "https://danoshop.net/mall/upload/2020/07/20/hover_oe.png",
-      name: "스키니피그 저칼로리 아이스크림",
-      quantity: 2,
-      price: 29900,
-    },
-  ];
+  const [Items, setItems]=useState([]);
+  const [Total, setTotal]=useState(0);
 
-  let i = 0;
-  let Total = 0;
+  useEffect(() => {
+    axios.get('/api/users/auth')
+      .then(response => {
+          setItems(response.data.cart)
+        })
+      .catch(err => alert(err))
+     
+      
+  }, [Items]);
 
-  for (i; i < Item.length; i++) {
-    Total += Item[0].quantity * Item[0].price;
+  const setTotalPrice = () =>{
+    setTotal(0);
+    let total=0;
+    for (let i=0; i < Items.length; i++) {
+      axios.get(`/api/product/products_by_id?id=${Items[i].id}&type=single`)
+        .then(res => {
+          total+=res.data[0].price*Items[i].quantity;
+       });
+    }
+    setTotal(total);
   }
 
   return (
@@ -104,8 +99,8 @@ function CartPage() {
         <BarText width="190px">수량</BarText>
         <BarText width="200px">주문 금액</BarText>
       </Bar>
-      {Item.map((item) => {
-        return <CartItem key={item.price} Item={item} />;
+      {Items.map((item) => {
+        return <CartItem key={item.id} Item={item} />;
       })}
       <div style={{ height: "80px" }}></div>
       <Bar>

@@ -126,7 +126,19 @@ function ItemDetail(props){
     }
 
     const openCompleteModal=()=>{
-        setCompleteModalOpen(true);
+        console.log(productId);
+        axios.post('/api/users/addToCart',{
+            productId: productId,
+            quantity: number
+        })
+        .then(res => {
+            if(res.data.success){
+                alert('장바구니에 추가하였습니다');
+            } else {
+                alert('로그인 해주세요');
+            }
+            
+        })
     }
     
     const closeCompleteModal=()=>{

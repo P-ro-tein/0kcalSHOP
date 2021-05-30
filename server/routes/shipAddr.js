@@ -106,7 +106,6 @@ router.post('/list', auth, (req, res) => {
     const shipAddr = new ShipAddr(req.body);
     let order = req.body.order ? req.body.order : "desc"; // default 내림차순. 오름차순으로 하고싶은경우 asc로 변경
     let sortBy = req.body.sortBy ? req.body.sortBy:"shipAddrName"; // 배송지 이름 기준 정렬
-
         ShipAddr
             .find({"userID": req.user.id})
             .sort([[sortBy, order]])
