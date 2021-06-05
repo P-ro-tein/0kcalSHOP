@@ -86,9 +86,7 @@ function CartPage() {
         </SmallText>
       </Top>
       <Bar>
-        <div style={{ paddingLeft: "50px", paddingRight: "10px" }}>
-          <input type="checkbox"></input>
-        </div>
+        <div style={{ paddingLeft: "50px", paddingRight: "10px" }}></div>
         <BarText width="400px">상품 이미지</BarText>
         <BarText width="310px">상품 이름</BarText>
         <BarText width="190px">수량</BarText>

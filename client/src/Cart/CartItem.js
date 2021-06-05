@@ -122,9 +122,7 @@ function CartItem({ Item }) {
           padding: "100px 30px 0px 50px",
           borderBottom: "#D8D8D8 0.5px solid",
         }}
-      >
-        <input type="checkbox"></input>
-      </div>
+      ></div>
       {item.images && item.images.length > 0 && (
         <ItemImg
           src={`http://ec2-52-79-226-115.ap-northeast-2.compute.amazonaws.com:9000/uploads/${item.images[0]}`}
