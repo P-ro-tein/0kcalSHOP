@@ -21,12 +21,12 @@ var storage = multer.diskStorage({
         cb(null, `${Date.now()}_${file.originalname}`)
     }
 })
-var upload = multer({ storage: storage }).single("images")
+var upload = multer({ storage: storage }).array("images")
 
 router.post('/register', upload,(req, res) => {
     //받아온 정보들을 DB에 넣어 준다.
     const notice = new Notice(req.body)
-    notice.images[0] = req.file.filename;
+    notice.images[0] = req.files[0].filename;
     if(!notice.expiredDate) { // 공지 유효기간 미설정시, 등록 날짜 기준 자동으로 한 달뒤로 설정되도록 작성
         const currentDate = new Date();
         notice.expiredDate = currentDate.setMonth(currentDate.getMonth() + 1);

@@ -15,10 +15,11 @@ export default function Nregist(props) {
         setExpiredDate(e.currentTarget.value);
     }
     const imageChangeHandler = (e) => {
-        setImage(e.currentTarget.value);
+        setImage(e.target.files);
     }
 
     const submitHandler = (event) => {
+        event.preventDefault();
         /*const data = {
             noticeTitle: noticeTitle,
             expiredDate: expiredDate,
@@ -29,35 +30,18 @@ export default function Nregist(props) {
 
         formData.append('noticeTitle', noticeTitle);
         formData.append('expiredDate', expiredDate);
-        formData.append('image', event.target.images.files[0]);
+        formData.append('images', image[0]);
 
-        const res = axios.post(
-            '/api/notice/register',
-            {
+        axios.post('/api/notice/register',{
                 formData
-            }
-        )
-
-        if(res.formData) {
-            alert('등록이 완료되었습니다.')
-
-            return window.location.href="/admin/nsearch"
-        }
-
-        /*
-        axios.post(
-            '/api/notice/register',
-            {
-                formData
-            }
-        ).then(response => {
-            if(response.data.success){
+        })
+        .then(res=>{
+            if(res.data.success){
                 alert('등록 완료');
-                props.history.push('/admin/nsearch');
-            } else { 
-                alert('');
+            } else {
+                alert('등록 실패');
             }
-        });*/
+        })
     }
 
     return(
@@ -65,7 +49,7 @@ export default function Nregist(props) {
             <span><b>공지사항/이벤트 관리 &gt; 공지사항/이벤트 등록</b></span>
             <hr/>
 
-            <form action="/api/notice/register" method="POST" encType="multipart/form-data">
+            <form>
                 <table>
                     <tbody>
                     <tr className="Ttitle">
