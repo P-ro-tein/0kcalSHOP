@@ -10,6 +10,7 @@ const ItemImg = styled.img`
   padding: 20px 30px 20px 30px;
   border: #d8d8d8 0.5px solid;
   border-top: none;
+  border-left: none;
 `;
 
 const ItemContainer = styled.div`
@@ -17,7 +18,7 @@ const ItemContainer = styled.div`
 `;
 
 const ItemName = styled.div`
-  width: 200px;
+  width: 160px;
   border: #d8d8d8 0.5px solid;
   padding: 60px 20px 0px 30px;
   border-top: none;
@@ -25,13 +26,13 @@ const ItemName = styled.div`
 `;
 
 const ItemNumber = styled.input`
-  width: 50px;
+  width: 30px;
   height: 23px;
 `;
 
 const Number = styled.div`
   display: flex;
-  width: 120px;
+  width: 80px;
   border: #d8d8d8 0.5px solid;
   border-top: none;
   border-left: none;
@@ -39,24 +40,44 @@ const Number = styled.div`
 `;
 
 const ItemPrice = styled.div`
-  width: 100px;
-  padding: 60px 30px 0px 75px;
+  width: 50px;
+  padding: 60px 30px 0px 30px;
   border-bottom: #d8d8d8 0.5px solid;
   border-right: #d8d8d8 0.5px solid;
 `;
 const ItemShip = styled.div`
-  width: 50px;
-  padding: 60px 30px 0px 55px;
+  width: 35px;
+  padding: 60px 30px 0px 40px;
   border-right: #d8d8d8 0.5px solid;
   border-bottom: #d8d8d8 0.5px solid;
 `;
 const OrderState = styled.div`
   width: 70px;
+  padding: 60px 30px 0px 40px;
+  border: #d8d8d8 0.5px solid;
+  border-left: none;
+`;
+const OrderDate = styled.div`
+  width: 70px;
 
   padding: 60px 30px 0px 40px;
-  border-bottom: #d8d8d8 0.5px solid;
+  border: #d8d8d8 0.5px solid;
+  border-left: none;
 `;
+
+const OrderButton = styled.div`
+  width: 80px;
+
+  padding: 60px 30px 0px 40px;
+  border: #d8d8d8 0.5px solid;
+  border-left: none;
+  border-right: none;
+`;
+
 function OrderItem({ Item }) {
+  const date = `${new Date(Item.orderDate).getMonth() + 1}월${new Date(
+    Item.orderDate
+  ).getDate()}일`;
   const [item, setItem] = useState({});
   const [quantity, setQuantity] = useState(Item.orderProductCount);
 
@@ -77,12 +98,6 @@ function OrderItem({ Item }) {
   };
   return (
     <ItemContainer>
-      <div
-        style={{
-          padding: "60px 30px 0px 50px",
-          borderBottom: "#D8D8D8 0.5px solid",
-        }}
-      ></div>
       {item.images && item.images.length > 0 && (
         <ItemImg
           src={`http://ec2-52-79-226-115.ap-northeast-2.compute.amazonaws.com:9000/uploads/${item.images[0]}`}
@@ -95,28 +110,22 @@ function OrderItem({ Item }) {
       <ItemPrice>{Item.orderProductPrice}</ItemPrice>
       <ItemShip>{Item.orderProductShipAddrName}</ItemShip>
       <OrderState>
-        {Item.orderState === 1 ? (
-          <>
-            <span>결제완료</span>
-            <button>문의하기</button>
-          </>
-        ) : null}
-        {Item.orderState === 2 ? (
-          <>
-            <span>배송중</span>
-            <button>문의하기</button>
-          </>
-        ) : null}
-        {Item.orderState === 3 ? (
-          <>
-            <span>배송완료</span>
-            <button onClick={changeState}>구매확정</button>
-          </>
-        ) : null}
-        <a href={`/client/review/${Item.orderProductID}`}>
-          {Item.orderState === 4 ? <button>리뷰쓰기</button> : null}
-        </a>
+        {Item.orderState === 1 ? "결제완료" : null}
+        {Item.orderState === 2 ? "배송중" : null}
+        {Item.orderState === 3 ? "배송완료" : null}
+        {Item.orderState === 4 ? "구매확정" : null}
       </OrderState>
+      <OrderDate>{date}</OrderDate>
+      <OrderButton>
+        {Item.orderState === 1 ? <button>문의하기</button> : null}
+        {Item.orderState === 2 ? <button>문의하기</button> : null}
+        {Item.orderState === 3 ? <button>구매확정</button> : null}
+        {Item.orderState === 4 ? (
+          <a href={`/client/review/${Item.orderProductID}`}>
+            <button>상품평</button>
+          </a>
+        ) : null}
+      </OrderButton>
     </ItemContainer>
   );
 }
