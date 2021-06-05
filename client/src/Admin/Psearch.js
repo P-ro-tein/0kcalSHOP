@@ -99,13 +99,12 @@ export default function Psearch() {
           return (
             <a href={`/admin/product/${product._id}`}>
               <BoxItem>
-                <img key={product._id} src={`http://ec2-52-79-226-115.ap-northeast-2.compute.amazonaws.com:9000/uploads/${product.images[0]}`} alt={product.title} width="100%" height="280px"/>
+                <img key={product._id} src={`http://localhost:9000/uploads/${product.images[0]}`} alt={product.title} width="100%" height="280px"/>
                 <ItemDetail>{product.title}</ItemDetail>
               </BoxItem>
             </a>
           );
         })}
-
         </div>
     )
 }
