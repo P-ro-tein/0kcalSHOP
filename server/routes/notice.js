@@ -51,6 +51,7 @@ router.route('/modifyNotice') // 공지 수정시, 클라이언트로 현재 선
                 createdDate: notice.createdDate,
                 updatedDate: notice.updatedDate,
                 expiredDate: notice.expiredDate,
+                description: notice.description,
                 images : notice.images,
                 deleted : notice.deleted
             });
@@ -73,6 +74,7 @@ router.route('/modifyNotice') // 공지 수정시, 클라이언트로 현재 선
                 $set: {"updatedDate": Date.now(),
                     "noticeTitle": notice.noticeTitle,
                     "expiredDate": notice.expiredDate,
+                    "description": notice.description,
                     "images" : notice.images
                     },
             },
