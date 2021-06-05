@@ -36,21 +36,22 @@ const LoginButton = styled.button`
 `;
 
 const CartButton = styled.button`
-background: none;
-color: black;
-border: none;
-width: 90px;
-cursor: pointer;
-font-size: 12px;
+  background: none;
+  color: black;
+  border: none;
+  width: 90px;
+  cursor: pointer;
+  font-size: 12px;
 `;
-
 
 function SubHeader() {
   const state = useGlobalState();
   const Active = state.user;
-  console.log(Active);
+  const Active2 = state.num;
+
   const dispatch = useGlobalDispatch();
-  const [CartQuantity, setCartQuantity] = useState(0);
+  const [CartQuantity, setCartQuantity] = useState(Active2);
+
   const onToggle = useCallback(() => {
     dispatch({
       type: "TOGGLE_USER",
@@ -69,15 +70,13 @@ function SubHeader() {
 
   useEffect(() => {
     axios.get("/api/users/auth").then((response) => {
-
-      if (response.data.isAuth) 
-      {
+      if (response.data.isAuth) {
         setCartQuantity(response.data.cart.length);
         if (!Active) onToggle();
       }
     });
-  }, [Active, onToggle]);
-  
+  }, [Active, Active2, onToggle]);
+
   return (
     <BoxCategory>
       <div style={{ display: "flex" }}>
@@ -90,9 +89,9 @@ function SubHeader() {
           <div>
             {Active === true && (
               <>
-                  <a href="/client/cart">
-                    <CartButton>장바구니({CartQuantity})</CartButton>
-                  </a>
+                <a href="/client/cart">
+                  <CartButton>장바구니({CartQuantity})</CartButton>
+                </a>
                 <span>|</span>
                 <a href="/client/order">
                   <LoginButton>주문내역</LoginButton>
