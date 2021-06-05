@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
@@ -94,7 +95,7 @@ function CartPage() {
         <BarText width="190px">수량</BarText>
         <BarText width="200px">주문 금액</BarText>
       </Bar>
-      {Item.map((item) => {
+      {Items.map((item) => {
         return <CartItem key={item.price} Item={item} />;
       })}
       <div style={{ height: "80px" }}></div>

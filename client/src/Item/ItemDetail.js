@@ -95,7 +95,7 @@ const Destination = styled.div`
   text-align: center;
   -ms-text-align-last: center;
   -moz-text-align-last: center;
-
+`;
 const StyledSlider = styled(Slider)`
   .slick-slide div {
     outline: none;
@@ -137,10 +137,6 @@ function ItemDetail(props) {
             
         })
     }
-    
-    const closeCompleteModal=()=>{
-        setCompleteModalOpen(false);
-    }
 
   useEffect(() => {
     axios
@@ -162,10 +158,6 @@ function ItemDetail(props) {
 
   const closeDeliveryModal = () => {
     setDeliveryModalOpen(false);
-  };
-
-  const openCompleteModal = () => {
-    alert("장바구니에 상품이 담겼습니다.");
   };
 
   const openModifyModal = () => {
