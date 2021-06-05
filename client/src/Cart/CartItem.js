@@ -1,3 +1,4 @@
+import axios from "axios";
 import React,{useEffect,useState} from "react";
 import styled from 'styled-components';
 
@@ -13,7 +14,6 @@ border-top:none;
 
 const ItemContainer=styled.div`
 display:inline-flex;
-
 `;
 
 const ItemName=styled.div`
@@ -55,16 +55,38 @@ border: none;
 cursor: point;
 `;
 function CartItem({Item}){
-
+    const [item,setItem] = useState({});
     const [quantity,setQuantity]=useState(Item.quantity);
     
-
+    useEffect(() => {
+        axios.get(`/api/product/products_by_id?id=${Item.id}&type=single`)
+        .then(res=>{
+                setItem(res.data[0])
+        })
+        .catch(err => alert(err))
+    },[Item])
     const onIncrease=()=>{
-        setQuantity(number=>number+1);
+        axios.post('/api/users/addToCart',{
+            productId: Item.id,
+            quantity: 1
+        }).then(res => {
+            if(res.data.success){
+                setQuantity(number=>number+1);
+            }
+        })
     };
 
     const onDecrease=()=>{
-        setQuantity(number=>number-1);
+        if(quantity>1){
+            axios.post('/api/users/addToCart',{
+                productId: Item.id,
+                quantity: -1
+            }).then(res => {
+                if(res.data.success){
+                    setQuantity(number=>number-1);
+                }
+            })
+        }
     };
     
     const deleteHandler = () => {
@@ -84,8 +106,11 @@ function CartItem({Item}){
             <div style={{padding:'100px 30px 0px 50px',borderBottom:'#D8D8D8 0.5px solid'}}>
             <input type="checkbox"></input>
             </div>
-            <ItemImg src={Item.imgUrl}></ItemImg>
-            <ItemName>{Item.name}</ItemName>
+            {
+                item.images&&item.images.length>0 &&
+                <ItemImg src={`http://ec2-52-79-226-115.ap-northeast-2.compute.amazonaws.com:9000/uploads/${item.images[0]}`}></ItemImg>
+            }
+            <ItemName>{item.title}</ItemName>
             <Number>
             <ItemNumber placeholder={quantity}></ItemNumber>
                 <button onClick={onIncrease} className="num" style={{height:'30px'}}>+</button>
