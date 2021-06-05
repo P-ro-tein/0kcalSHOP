@@ -200,16 +200,18 @@ function ItemDetail(props) {
             <div style={{ width: "600px" }}>
               {Product.images && Product.images.length > 0 && (
                 <StyledSlider {...settings}>
-                  {Product.images.map((data) => {
-                    return (
-                      <img
-                        alt={data._id}
-                        src={`http://ec2-52-79-226-115.ap-northeast-2.compute.amazonaws.com:9000/uploads/${data}`}
-                        width="100%"
-                        height="400"
-                      ></img>
-                    );
-                  })}
+                  <img
+                    alt={Product._id}
+                    src={`http://ec2-52-79-226-115.ap-northeast-2.compute.amazonaws.com:9000/uploads/${Product.images[0]}`}
+                    width="100%"
+                    height="400"
+                  ></img>
+                  <img
+                    alt={Product._id}
+                    src={`http://ec2-52-79-226-115.ap-northeast-2.compute.amazonaws.com:9000/uploads/${Product.images[1]}`}
+                    width="100%"
+                    height="400"
+                  ></img>
                 </StyledSlider>
               )}
             </div>
@@ -276,7 +278,7 @@ function ItemDetail(props) {
           {Product.images && Product.images.length > 0 && (
             <img
               alt={Product._id}
-              src={`http://ec2-52-79-226-115.ap-northeast-2.compute.amazonaws.com:9000/uploads/${Product.images[1]}`}
+              src={`http://ec2-52-79-226-115.ap-northeast-2.compute.amazonaws.com:9000/uploads/${Product.images[2]}`}
               width="500"
             ></img>
           )}
