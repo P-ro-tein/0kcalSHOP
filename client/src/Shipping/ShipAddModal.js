@@ -20,7 +20,10 @@ const DeliveryModal = ( props ) => {
     const [Address, setAddress] = useState([]);
     const [defaultShip, setDefaultShip] = useState(0);
 
-
+    const checkContact = () => {
+        const regExp = /^\d{3}\d{3,4}\d{4}$/;
+        return regExp.test(contactNumber);
+    }
     const shipAddrNameHandler = useCallback(e => {
         setShipAddrName(e.target.value);
     },[]);
@@ -40,23 +43,32 @@ const DeliveryModal = ( props ) => {
         setShipDetailThree(e.target.value);
     },[]);
     const saveNew=()=>{
-        axios.post('/api/shipAddr/register', {
-            shipAddrRecipient: shipAddrRecipient,
-            shipAddrName: shipAddrName,
-            roadAddress: shipDetailOne,
-            postcode: shipDetailTwo,
-            detailAddress: shipDetailThree,
-            contactNumber: contactNumber,
-            defaultShip: defaultShip
-        })
-        .then(response => {
-            if(response.data.success){
-                alert('배송지 추가 완료');
-            } else {
-                console.log(response.data.err);
-                alert('배송지 추가 실패');
-            }
-        })
+        if(!(shipAddrRecipient&&shipAddrName&&shipDetailOne&&shipDetailTwo&&shipDetailThree&&contactNumber)) {
+            alert('빈칸이 있습니다');
+        } else if(!checkContact()) {
+            alert('유효하지 않은 전화번호입니다');
+        }
+        else{
+            axios.post('/api/shipAddr/register', {
+                shipAddrRecipient: shipAddrRecipient,
+                shipAddrName: shipAddrName,
+                roadAddress: shipDetailOne,
+                postcode: shipDetailTwo,
+                detailAddress: shipDetailThree,
+                contactNumber: contactNumber,
+                defaultShip: defaultShip
+            })
+            .then(response => {
+                if(response.data.success){
+                    alert('배송지 추가 완료');
+                } else {
+                    console.log(response.data.err);
+                    alert('배송지 추가 실패');
+                }
+                setShipAddress();
+                window.location.reload();
+            })
+        }
     }
     const postCodeStyle = {
         position: "absolute",
@@ -74,6 +86,7 @@ const setShipAddress = () => {
         .then(response => {
         if(response.data.success) {
             setAddress(response.data.shipAddrInfo)
+            console.log(Address);
         }})
         .catch();
     }
@@ -117,11 +130,14 @@ const setShipAddress = () => {
                         <div className="box">
                             <div className="container">
                                 <div className="text"> 현재 배송지</div>
-                                <div style={{display:"block"}}>
-                                    <div className="dstination">{Address[0].shipAddrName}</div>
-                                    <div className="destination">{Address[0].shipAddrDetail[0]}</div>
-                                    <div className="destination">{Address[0].shipAddrDetail[2]}</div>
-                                </div>
+                                {
+                                Address[0]?
+                                    <div style={{display:"block"}}>
+                                        <div className="dstination">{Address[0].shipAddrName}</div>
+                                        <div className="destination">{Address[0].shipAddrDetail[0]}</div>
+                                        <div className="destination">{Address[0].shipAddrDetail[2]}</div>
+                                    </div>:null
+                                }
                             </div>
                             <div>
                                 <div style={{display:'inline-flex'}}>

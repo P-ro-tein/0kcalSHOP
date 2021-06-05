@@ -55,7 +55,7 @@ const DeliveryModal = ( props ) => {
             sortBy:"defaultShip"
         })
         .then(response => {
-        if(response.data.success) {
+        if(response.data.success&&response.data.shipAddrInfo) {
             setAddress(response.data.shipAddrInfo)
             setSelect(response.data.shipAddrInfo[0]._id);
         }})
@@ -132,18 +132,20 @@ const DeliveryModal = ( props ) => {
     }
     const saveDefault=()=>{
         console.log(Q1);
-        axios.post('/api/shipAddr/setDefault',{
-            _id:Q1,
-            defaultShip: 1
-        })
-        .then(response=>{
-            if(response.data.success){
-                alert('기본배송지 변경 완료');
-                setShipAddress();
-            } else{
-                alert('기본배송지 변경 실패');
-            }
-        })
+        if(Q1){
+            axios.post('/api/shipAddr/setDefault',{
+                _id:Q1,
+                defaultShip: 1
+            })
+            .then(response=>{
+                if(response.data.success){
+                    alert('기본배송지 변경 완료');
+                    setShipAddress();
+                } else{
+                    alert('기본배송지 변경 실패');
+                }
+            })
+        }
     }
     const save=()=>{
         setDiv(true);
@@ -183,11 +185,14 @@ const DeliveryModal = ( props ) => {
                         <div className="box">
                             <div className="container">
                                 <div className="text"> 현재 배송지</div>
-                                <div style={{display:"block"}}>
-                                    <div className="dstination">{Address[0].shipAddrName}</div>
-                                    <div className="destination">{Address[0].shipAddrDetail[0]}</div>
-                                    <div className="destination">{Address[0].shipAddrDetail[2]}</div>
-                                </div>
+                                {
+                                    Address[0]?
+                                    <div style={{display:"block"}}>
+                                        <div className="dstination">{Address[0].shipAddrName}</div>
+                                        <div className="destination">{Address[0].shipAddrDetail[0]}</div>
+                                        <div className="destination">{Address[0].shipAddrDetail[2]}</div>
+                                    </div>:null
+                                }
                             </div>
                             <div>
                                 {Div===true&&

@@ -107,10 +107,13 @@ function ItemDetail(props){
                 setProduct(response.data[0])
             })
             .catch(err => alert(err))
-        axios.get('/api/users/auth')
+        axios.post('/api/shipAddr/list',{
+            order:"desc",
+            sortBy:"defaultShip"
+        })
             .then(response => {
-                if(response.data.isAuth)
-                setDefaultShip(response.data.defaultShipAddrName);
+                if(response.data.success&&response.data.shipAddrInfo)
+                setDefaultShip(response.data.shipAddrInfo[0].shipAddrName);
             })
     }, [productId,Product.images]);
 
@@ -208,6 +211,9 @@ function ItemDetail(props){
                 <DetailText>
                     배송지
                 </DetailText>
+                <Destination>
+                    {defaultShip}
+                </Destination>
                 <button onClick={openModifyModal} className="modify">수정</button>
                 <button onClick={openDeliveryModal} className="modify">추가</button>
                 </Container>
