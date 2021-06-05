@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 import axios from 'axios';
 import ShipAddModal from '../Shipping/ShipAddModal';
-import CompleteModal from './CompleteModal';
 import ShipModifyModal from '../Shipping/ShipModifyModal';
 import '../AllCss.css';
 const DetailText=styled.div`
@@ -97,7 +96,6 @@ const Destination=styled.div`
 function ItemDetail(props){
     const [number,setNumber]=useState(0);
     const [DeliverymodalOpen,setDeliveryModalOpen]=useState(false);
-    const [CompletemodalOpen,setCompleteModalOpen]=useState(false);
     const [ModifymodalOpen,setModifyModalOpen]=useState(false);
     const productId = props.match.params.productId
     const [defaultShip, setDefaultShip] = useState('');
@@ -125,7 +123,7 @@ function ItemDetail(props){
         setDeliveryModalOpen(false);
     }
 
-    const openCompleteModal=()=>{
+    const addToCart=()=>{
         console.log(productId);
         axios.post('/api/users/addToCart',{
             productId: productId,
@@ -141,10 +139,6 @@ function ItemDetail(props){
             }
             
         })
-    }
-    
-    const closeCompleteModal=()=>{
-        setCompleteModalOpen(false);
     }
 
     const openModifyModal=()=>{
@@ -221,8 +215,7 @@ function ItemDetail(props){
                 <ShipAddModal open={DeliverymodalOpen} close={closeDeliveryModal} header="배송지 추가">
                 </ShipAddModal>
                 <hr></hr>
-                <button className="cart" onClick={openCompleteModal}>장바구니</button>
-                <CompleteModal open={CompletemodalOpen} close={closeCompleteModal} header="완료"></CompleteModal>
+                <button className="cart" onClick={addToCart}>장바구니</button>
                 <button className="cart">바로구매</button>
             </RightContainer>
             </TopBox>
