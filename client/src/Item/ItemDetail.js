@@ -6,7 +6,6 @@ import ShipAddModal from '../Shipping/ShipAddModal';
 import CompleteModal from './CompleteModal';
 import ShipModifyModal from '../Shipping/ShipModifyModal';
 import '../AllCss.css';
-
 const DetailText=styled.div`
     width:100px;
     font-size:15px;
@@ -81,6 +80,7 @@ const DescriptionContainer=styled.div`
     padding-bottom:200px;
 `;
 
+
 const Destination=styled.div`
     width:170px;
     height:30px;
@@ -129,7 +129,9 @@ function ItemDetail(props){
         console.log(productId);
         axios.post('/api/users/addToCart',{
             productId: productId,
-            quantity: number
+            quantity: number,
+            price: Product.price,
+            ship: Product.shipCharge
         })
         .then(res => {
             if(res.data.success){

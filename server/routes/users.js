@@ -39,7 +39,7 @@ router.post('/login', (req, res) => {
                     .cookie("x_auth", val = user.token) // 사용자의 Token을 x_auth 이름으로 저장
                     .status(200)
                     .json({
-                        loginSuccess: true, userId: user._id, isAdmin: user.role?true:false
+                        loginSuccess: true, userId: user._id, userName: user.name, isAdmin: user.role?true:false
                     });
             });
         });
@@ -134,7 +134,9 @@ router.post("/addToCart", auth, (req, res) => {
                         $push: {
                             cart: {
                                 id: req.body.productId,
+                                price: req.body.price,
                                 quantity: req.body.quantity,
+                                ship: req.body.ship,
                                 date: Date.now()
                             }
                         }
@@ -173,8 +175,7 @@ router.post('/removeFromCart', auth, (req, res) => {
                 .populate('writer')
                 .exec((err, productInfo) => {
                     return res.status(200).json({
-                        productInfo,
-                        cart
+                        success: true
                     })
                 })
         }

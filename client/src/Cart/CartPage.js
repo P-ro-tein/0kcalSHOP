@@ -58,28 +58,23 @@ const PriceText = styled.div`
 function CartPage() {
   const [Items, setItems]=useState([]);
   const [Total, setTotal]=useState(0);
-
+  const [ShipCharge, setShipCharge]=useState(0);
   useEffect(() => {
     axios.get('/api/users/auth')
-      .then(response => {
-          setItems(response.data.cart)
+    .then(response => {
+      setItems(response.data.cart)
+        let totalPrice = 0;
+        let ship = 0;
+          for(let i=0;i<Items.length;i+=1){
+            totalPrice+=Items[i].price*Items[i].quantity; 
+            ship=ship>Items[i].ship?ship:Items[i].ship;          
+          }
+          setTotal(totalPrice)
+          setShipCharge(ship);
         })
       .catch(err => alert(err))
      
-      
   }, [Items]);
-
-  const setTotalPrice = () =>{
-    setTotal(0);
-    let total=0;
-    for (let i=0; i < Items.length; i++) {
-      axios.get(`/api/product/products_by_id?id=${Items[i].id}&type=single`)
-        .then(res => {
-          total+=res.data[0].price*Items[i].quantity;
-       });
-    }
-    setTotal(total);
-  }
 
   return (
     <Box>
@@ -110,8 +105,8 @@ function CartPage() {
       </Bar>
       <PriceBox>
         <PriceText>{Total}원</PriceText>
-        <PriceText>0원</PriceText>
-        <PriceText>0원</PriceText>
+        <PriceText>{ShipCharge}원</PriceText>
+        <PriceText>{Total+ShipCharge}원</PriceText>
       </PriceBox>
       <div style={{ paddingTop: "100px", width: "250px", margin: "0 auto" }}>
         <button
