@@ -28,23 +28,29 @@ var storage = multer.diskStorage({
 })
 
 // 앞에서 만든 storage를 넣어서 저장될 파일의 이름을 유지하는 upload 미들웨어.
+
 // 하나의 파일을 처리하기 위해 .single()을 사용
 // .single()에는 html form에서 사용된 파일 input 필드의 이름(name)이 삽입.
-var upload = multer({ storage: storage }).array("images")
+var upload = multer({ storage: storage }).array('images');
 
 // 폼 액션이 /product/register
-router.post('/register',upload, (req, res) => {
+router.post('/register', upload, (req, res) => {
     //받아온 정보들을 DB에 넣어 준다.
+    console.log("등록시작");
     const product = new Product(req.body)
-    // single이니까 file 속성 안에 filename이 들어있으므로 안넘겨져서 그냥 타이틀사진을 그냥 넣어버렸다
-    // 몇 장 사진이 추가되면 for문 돌리든지..나중에 방법을 강구해보자.
+    console.log("객체생성");
+    console.log(req.files);
     for(let i=0 ; i<req.files.length; i+=1){
         product.images[i]=req.files[i].filename
     }
+    console.log('이미지등록완료');
+    console.log(product);
     product.save((err) => {
-        if (err) return res.status(400).json({       success: false, err 
+        if (err) return res.status(400).json({       
+            success: false, err 
         })
-        return res.status(200).json({success:true});
+        console.log('세이브');
+        return res.status(200).json({ success:true });
     })
 })
 

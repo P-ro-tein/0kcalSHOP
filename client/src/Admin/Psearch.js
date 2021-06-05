@@ -117,7 +117,7 @@ export default function Psearch() {
             <BoxItem>
               <img
                 key={product._id}
-                src={`http://ec2-52-79-226-115.ap-northeast-2.compute.amazonaws.com:9000/uploads/${product.images[0]}`}
+                src={`/uploads/${product.images[0]}`}
                 alt={product.title}
                 width="100%"
                 height="280px"
