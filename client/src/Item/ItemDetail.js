@@ -90,7 +90,6 @@ const Destination=styled.div`
     text-align: center;
     -ms-text-align-last: center;
     -moz-text-align-last: center;
-    
 `;
 
 function ItemDetail(props){
@@ -98,7 +97,7 @@ function ItemDetail(props){
     const [DeliverymodalOpen,setDeliveryModalOpen]=useState(false);
     const [ModifymodalOpen,setModifyModalOpen]=useState(false);
     const productId = props.match.params.productId
-    const [defaultShip, setDefaultShip] = useState('');
+    const [defaultShip, setDefaultShip] = useState({});
     const [Product, setProduct] = useState({});
 
     useEffect(() => {
@@ -113,7 +112,8 @@ function ItemDetail(props){
         })
             .then(response => {
                 if(response.data.success&&response.data.shipAddrInfo)
-                setDefaultShip(response.data.shipAddrInfo[0].shipAddrName);
+                setDefaultShip(response.data.shipAddrInfo[0]);
+                console.log(defaultShip);
             })
     }, [productId,Product.images]);
 
@@ -211,12 +211,18 @@ function ItemDetail(props){
                 <DetailText>
                     배송지
                 </DetailText>
-                <Destination>
-                    {defaultShip}
-                </Destination>
+                <Destination>{defaultShip.shipAddrName}</Destination>
                 <button onClick={openModifyModal} className="modify">수정</button>
                 <button onClick={openDeliveryModal} className="modify">추가</button>
+                <br />
                 </Container>
+                    <Destination style={{width:"270px", height:"auto", marginLeft:"115px"}}>
+                        {!defaultShip.shipAddrName?
+                            " ":defaultShip.shipAddrDetail
+                        }
+                    </Destination>
+               
+
                 <ShipModifyModal open={ModifymodalOpen} close={closeModifyModal} header="배송지 수정"></ShipModifyModal>
                 <ShipAddModal open={DeliverymodalOpen} close={closeDeliveryModal} header="배송지 추가">
                 </ShipAddModal>

@@ -126,7 +126,7 @@ router.post('/products', (req, res) => {
 
     if (term) {
         Product.find(findArgs)
-            .find({ $text: { $search: term } })
+            .find({ title: { $text: { $search: term } } })
             .find({
                 "deleted" : 0, // 삭제 처리되지 않은 상품 로드
                 "category" : category,

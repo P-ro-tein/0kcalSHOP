@@ -55,6 +55,7 @@ const PriceText = styled.div`
 const OrderList = () => {
     const [Orders, setOrders] = useState([]);
     const [Period, setPeriod] = useState("today");
+    const [Total, setTotal]=useState(0);
     const getOrder=()=>{
         console.log(Period);
         axios.post('/api/orderList/list',{
@@ -64,6 +65,11 @@ const OrderList = () => {
             console.log(res.data);
             if(res.data.success){
                 setOrders(res.data.orderListInfo);
+                let totalPrice = 0;
+                for(let i=0;i<Orders.length;i+=1){
+                  totalPrice+=Orders[i].orderProductPrice*Orders[i].orderProductCount;
+              }
+              setTotal(totalPrice);
             } else{
                 alert('주문내역조회실패');
             }
@@ -87,21 +93,24 @@ const OrderList = () => {
         </select>
       </Top>
       <Bar>
-        <div style={{ paddingLeft: "50px", paddingRight: "10px" }}>
-          <input type="checkbox"></input>
-        </div>
-        <BarText width="250px">상품 이미지</BarText>
-        <BarText width="190px">상품 이름</BarText>
-        <BarText width="230px">수량</BarText>
-        <BarText width="150px">주문 금액</BarText>
-        <BarText width="180px">배송지</BarText>
-        <BarText width="100px">주문상태</BarText>
+        <BarText width="220px">상품 이미지</BarText>
+        <BarText width="180px">상품 이름</BarText>
+        <BarText width="165px">수량</BarText>
+        <BarText width="70px">주문 금액</BarText>
+        <BarText width="140px">배송지</BarText>
+        <BarText width="110px">주문상태</BarText>
+        <BarText width="160px">주문날짜</BarText>
       </Bar>
       {Orders.map((item) => {
         return <OrderItem key={item.id} Item={item} />;
       })}
       <div style={{ height: "80px" }}></div>
-
+      <Bar>
+                <BarText width="400px">총 상품 금액</BarText>
+            </Bar>
+            <PriceBox>
+                <PriceText>{Total}원</PriceText>
+            </PriceBox>
       <div style={{ paddingTop: "100px", width: "250px", margin: "0 auto" }}>
       </div>
     </Box>
