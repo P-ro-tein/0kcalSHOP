@@ -33,18 +33,12 @@ function Search() {
   }, [dispatch, searchText]);
 
   const handleChange = (e) => {
-    if (e.target.value !== "") {
-      setSearch(e.target.value);
-    }
+    setSearch(e.target.value);
   };
 
   return (
     <>
-      <SearchBox
-        onChange={handleChange}
-        value={searchText}
-        placeholder="다노닭"
-      ></SearchBox>
+      <SearchBox onChange={handleChange} value={searchText}></SearchBox>
       <Link to="/client/SearchItem">
         <SearchImg
           alt="search"

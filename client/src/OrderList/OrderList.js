@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
 import styled from "styled-components";
-import React,{useState,useEffect} from 'react'
+import React, { useState, useEffect } from "react";
 import OrderItem from "./OrderItem";
 
 const Box = styled.div`
@@ -86,10 +86,10 @@ const OrderList = () => {
       <Top>
         <BigText>주문내역</BigText>
         <select name="period" value={Period} onChange={periodHandler}>
-            <option value="today">오늘</option>            
-            <option value="week">일주일</option>            
-            <option value="month">1개월</option>            
-            <option value="year">1년</option>            
+          <option value="today">오늘</option>
+          <option value="week">일주일</option>
+          <option value="month">1개월</option>
+          <option value="year">1년</option>
         </select>
       </Top>
       <Bar>
@@ -114,7 +114,7 @@ const OrderList = () => {
       <div style={{ paddingTop: "100px", width: "250px", margin: "0 auto" }}>
       </div>
     </Box>
-    )
-}
+  );
+};
 
-export default OrderList
+export default OrderList;

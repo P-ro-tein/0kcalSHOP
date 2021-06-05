@@ -3,6 +3,7 @@ import React, { useReducer, createContext, useContext } from "react";
 const initState = {
   user: false,
   search: null,
+  num: 0,
 };
 
 function StateReducer(state, action) {
@@ -24,6 +25,15 @@ function StateReducer(state, action) {
     case "GET_SEARCH":
       return {
         state,
+      };
+    case "GET_NUM":
+      return {
+        state,
+      };
+    case "SET_NUM":
+      return {
+        ...state,
+        num: action.number,
       };
     default:
       throw new Error(`Unhanded action type : ${action.type}`);

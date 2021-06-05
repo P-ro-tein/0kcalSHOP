@@ -1,8 +1,8 @@
 import axios from "axios";
-import React,{useEffect,useState} from "react";
-import styled from 'styled-components';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 
-import '../AllCss.css';
+import "../AllCss.css";
 
 const ItemImg=styled.img`
 width:150px;
@@ -13,9 +13,8 @@ border-top:none;
 border-left: none;
 `;
 
-const ItemContainer=styled.div`
-display:inline-flex;
-
+const ItemContainer = styled.div`
+  display: inline-flex;
 `;
 
 const ItemName=styled.div`
@@ -52,9 +51,8 @@ const ItemShip=styled.div`
     border-right:#D8D8D8 0.5px solid;
     border-bottom:#D8D8D8 0.5px solid;
 `;
-const OrderState=styled.div`
-width:70px;
-
+const OrderState = styled.div`
+    width: 70px;
     padding: 60px 30px 0px 40px;
     border:#D8D8D8 0.5px solid;
     border-left:none;
@@ -66,6 +64,7 @@ width:70px;
     border:#D8D8D8 0.5px solid;
     border-left:none;
 `;
+
 const OrderButton=styled.div`
 width:80px;
 
@@ -74,6 +73,7 @@ width:80px;
     border-left:none;
     border-right:none;
 `;
+
 function OrderItem({Item}){
     const date = `${new Date(Item.orderDate).getMonth()+1}월${new Date(Item.orderDate).getDate()}일`;
     const [item,setItem] = useState({});

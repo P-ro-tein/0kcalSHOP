@@ -103,9 +103,6 @@ function Item() {
       .then((response) => {
         if (response.data.success) {
           setProducts(response.data.productInfo);
-          console.log(category, "post then");
-          console.log(response.data.productAllCount);
-
           pages = new Array(
             parseInt(response.data.productAllCount / 16, 10) + 1
           );
