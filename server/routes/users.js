@@ -39,7 +39,7 @@ router.post('/login', (req, res) => {
                     .cookie("x_auth", val = user.token) // 사용자의 Token을 x_auth 이름으로 저장
                     .status(200)
                     .json({
-                        loginSuccess: true, userId: user._id, isAdmin: user.role?true:false
+                        loginSuccess: true, userId: user._id, userName: user.name, isAdmin: user.role?true:false
                     });
             });
         });

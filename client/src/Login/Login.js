@@ -54,7 +54,7 @@ function Login ({history}) {
                 if(res.data.loginSuccess&&!res.data.isAdmin){
                     onToggle();
                     history.push('/client');
-                    alert('환영합니다');
+                    alert(`${res.data.userName}님 환영합니다`);
                 } 
                 else if(res.data.loginSuccess&&res.data.isAdmin){
                     onToggle();
