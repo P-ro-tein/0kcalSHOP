@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -35,11 +35,22 @@ const LoginButton = styled.button`
   font-size: 12px;
 `;
 
+const CartButton = styled.button`
+background: none;
+color: black;
+border: none;
+width: 90px;
+cursor: pointer;
+font-size: 12px;
+`;
+
+
 function SubHeader() {
   const state = useGlobalState();
   const Active = state.user;
   console.log(Active);
   const dispatch = useGlobalDispatch();
+  const [CartQuantity, setCartQuantity] = useState(0);
   const onToggle = useCallback(() => {
     dispatch({
       type: "TOGGLE_USER",
@@ -58,10 +69,15 @@ function SubHeader() {
 
   useEffect(() => {
     axios.get("/api/users/auth").then((response) => {
-      if (response.data.isAuth) if (!Active) onToggle();
-    });
-  }, [Active, onToggle]);
 
+      if (response.data.isAuth) 
+      {
+        setCartQuantity(response.data.cart.length);
+        if (!Active) onToggle();
+      }
+    });
+  }, [Active, onToggle, CartQuantity]);
+  
   return (
     <BoxCategory>
       <div style={{ display: "flex" }}>
@@ -74,8 +90,12 @@ function SubHeader() {
           <div>
             {Active === true && (
               <>
-                <a href="/client/Cart">
-                  <LoginButton>장바구니</LoginButton>
+                  <a href="/client/cart">
+                    <CartButton>장바구니({CartQuantity})</CartButton>
+                  </a>
+                <span>|</span>
+                <a href="/client/order">
+                  <LoginButton>주문내역</LoginButton>
                 </a>
                 <span>|</span>
                 <Link to="/client">

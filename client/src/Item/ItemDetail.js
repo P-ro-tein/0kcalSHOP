@@ -95,7 +95,6 @@ const Destination = styled.div`
   text-align: center;
   -ms-text-align-last: center;
   -moz-text-align-last: center;
-`;
 
 const StyledSlider = styled(Slider)`
   .slick-slide div {
@@ -120,6 +119,28 @@ function ItemDetail(props) {
     centerMode: false,
     autoplay: true,
   };
+  
+    const openCompleteModal=()=>{
+        console.log(productId);
+        axios.post('/api/users/addToCart',{
+            productId: productId,
+            quantity: number,
+            price: Product.price,
+            ship: Product.shipCharge
+        })
+        .then(res => {
+            if(res.data.success){
+                alert('장바구니에 추가하였습니다');
+            } else {
+                alert('로그인 해주세요');
+            }
+            
+        })
+    }
+    
+    const closeCompleteModal=()=>{
+        setCompleteModalOpen(false);
+    }
 
   useEffect(() => {
     axios

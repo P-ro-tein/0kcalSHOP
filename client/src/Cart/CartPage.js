@@ -56,35 +56,25 @@ const PriceText = styled.div`
 `;
 
 function CartPage() {
-  const Item = [
-    {
-      imgUrl:
-        "https://danoshop.net/mall/upload/2020/03/11/dumpling_716x478.jpg",
-      name: "다노 닭가슴살 곤약만두 3종 (오리지널/청양고추/불닭) 10팩",
-      quantity: 2,
-      price: 26900,
-    },
-    {
-      imgUrl:
-        "https://danoshop.net/mall/upload/2020/07/27/%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%90%E1%85%B5%E1%86%AB%E1%84%87%E1%85%B3%E1%84%85%E1%85%A1%E1%84%89%E1%85%A9%E1%86%AF%E1%84%92%E1%85%A9%E1%84%87%E1%85%A5.png",
-      name: "다노 브라운라이스소울 프로틴베리&프로틴초코",
-      quantity: 10,
-      price: 2300,
-    },
-    {
-      imgUrl: "https://danoshop.net/mall/upload/2020/07/20/hover_oe.png",
-      name: "스키니피그 저칼로리 아이스크림",
-      quantity: 2,
-      price: 29900,
-    },
-  ];
-
-  let i = 0;
-  let Total = 0;
-
-  for (i; i < Item.length; i++) {
-    Total += Item[0].quantity * Item[0].price;
-  }
+  const [Items, setItems]=useState([]);
+  const [Total, setTotal]=useState(0);
+  const [ShipCharge, setShipCharge]=useState(0);
+  useEffect(() => {
+    axios.get('/api/users/auth')
+    .then(response => {
+      setItems(response.data.cart)
+        let totalPrice = 0;
+        let ship = 0;
+          for(let i=0;i<Items.length;i+=1){
+            totalPrice+=Items[i].price*Items[i].quantity; 
+            ship=ship>Items[i].ship?ship:Items[i].ship;          
+          }
+          setTotal(totalPrice)
+          setShipCharge(ship);
+        })
+      .catch(err => alert(err))
+     
+  }, [Items]);
 
   return (
     <Box>
@@ -115,8 +105,8 @@ function CartPage() {
       </Bar>
       <PriceBox>
         <PriceText>{Total}원</PriceText>
-        <PriceText>0원</PriceText>
-        <PriceText>0원</PriceText>
+        <PriceText>{ShipCharge}원</PriceText>
+        <PriceText>{Total+ShipCharge}원</PriceText>
       </PriceBox>
       <div style={{ paddingTop: "100px", width: "250px", margin: "0 auto" }}>
         <button

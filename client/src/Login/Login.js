@@ -38,56 +38,39 @@ function Login({ history }) {
     setPw(e.currentTarget.value);
   };
   const submitHandler = () => {
-    const data = {
-      id: id,
-      password: pw,
-    };
-    axios({
-      url: "/api/users/login",
-      method: "post",
-      data,
-    }).then((res) => {
-      //redux로 가져올 경우 payload, axios로 바로 가져올 경우 data
-      if (res.data.loginSuccess && !res.data.isAdmin) {
-        onToggle();
-        console.log("여기는 login.js에 if문 입니당");
-        history.push("/client");
-        alert("환영합니다");
-      } else if (res.data.loginSuccess && res.data.isAdmin) {
-        onToggle();
-        console.log("여기는 login.js에 else if문 입니당");
-        history.push("/admin");
-      } else {
-        alert("로그인 실패");
-      }
-    });
-  };
-  return (
-    <Box>
-      <Title>로그인</Title>
-      <InputWithLabel
-        label="아이디"
-        name="id"
-        placeholder="아이디"
-        value={id}
-        onChange={idChangeHandler}
-      />
-      <InputWithLabel
-        label="비밀번호"
-        name="password"
-        placeholder="비밀번호"
-        type="password"
-        value={pw}
-        onChange={pwChangeHandler}
-      />
-      <AuthButton onClick={submitHandler}>로그인</AuthButton>
-      <a href="/client/register">
-        <AuthButton style={{ background: "#ff7777", color: "white" }}>
-          회원가입
-        </AuthButton>
-      </a>
-    </Box>
-  );
+        const data = {
+            id: id,
+            password: pw
+        }
+        axios({
+            url: '/api/users/login',
+            method: 'post',
+            data
+        })
+            .then(res => {
+                //redux로 가져올 경우 payload, axios로 바로 가져올 경우 data
+                if(res.data.loginSuccess&&!res.data.isAdmin){
+                    onToggle();
+                    history.push('/client');
+                    alert(`${res.data.userName}님 환영합니다`);
+                } 
+                else if(res.data.loginSuccess&&res.data.isAdmin){
+                    onToggle();
+                    history.push('/admin');
+                } else {
+                    alert('로그인 실패');
+                }
+        });
+    }
+    return (
+        <Box>
+            <Title>로그인</Title>
+            <InputWithLabel label="아이디" name="id" placeholder="아이디" value={id} onChange={idChangeHandler}/>
+            <InputWithLabel label="비밀번호" name="password" placeholder="비밀번호" type="password" value={pw} onChange={pwChangeHandler}/>
+            <AuthButton onClick={submitHandler}>로그인</AuthButton>
+            <a href="/client/register"><AuthButton style={{background:"#ff7777",color:"white"}}>회원가입</AuthButton></a>
+        </Box>
+    );
 }
 
 export default Login;
