@@ -2,18 +2,32 @@ import React, { useState } from "react";
 import Star from "../Stars/Star";
 
 const createArray = (length) => Array.from({ length });
-function ItemReview({ totalStars = 5 }) {
-  const [selectedStars, setSelectedStars] = useState(3);
+function ItemReview({ product }) {
+  const totalStars = 5;
+  const [selectedStars, setSelectedStars] = useState(product.starRating);
+
+  const getFormatDate = (date) => {
+    const year = date.getFullYear();
+    let month = 1 + date.getMonth();
+    month = month >= 10 ? month : "0" + month;
+    let day = date.getDate();
+    day = day >= 10 ? day : "0" + day;
+    return year + "-" + month + "-" + day;
+  };
 
   return (
     <>
       <div style={{ display: "flex" }}>
         {createArray(totalStars).map((n, i) => (
-          <Star key={i} selected={selectedStars > i} onSelect={3} />
+          <Star key={i} selected={selectedStars > i} onSelect={selectedStars} />
         ))}
-        <div style={{ width: "200px" }}>"작성자"</div>
-        <div style={{ width: "200px" }}>"작성날짜"</div>
-        <div style={{ width: "500px" }}>"작성내용"</div>
+        <div style={{ width: "200px" }}>
+          {product.userID.replace(/(?<=.{1})./gi, "*")}
+        </div>
+        <div style={{ width: "200px" }}>
+          {getFormatDate(new Date(product.createdDate))}
+        </div>
+        <div style={{ width: "500px" }}>{product.description}</div>
       </div>
     </>
   );
