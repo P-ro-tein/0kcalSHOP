@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 
 import { Link } from "react-router-dom";
-import { useGlobalDispatch, useGlobalState } from "../GlobalContext";
+import { useGlobalDispatch } from "../GlobalContext";
 import "../AllCss.css";
 
 const SearchBox = styled.input`
@@ -21,27 +21,24 @@ const SearchImg = styled.img`
 function Search() {
   const [searchText, setSearch] = useState("");
   const dispatch = useGlobalDispatch();
-  const state = useGlobalState();
-  const Active = state.search;
-
-  console.log(state);
-
-  const handleChange = (e) => {
-    if (e.target.value !== "") {
-      setSearch(e.target.value);
-    }
-  };
 
   const onChangeSearch = useCallback(() => {
+    console.log(searchText);
     dispatch({
       type: "SET_SEARCH",
       searchText,
     });
+
+    setSearch("");
   }, [dispatch, searchText]);
+
+  const handleChange = (e) => {
+    setSearch(e.target.value);
+  };
 
   return (
     <>
-      <SearchBox value={Active} onChange={handleChange}></SearchBox>
+      <SearchBox onChange={handleChange} value={searchText}></SearchBox>
       <Link to="/client/SearchItem">
         <SearchImg
           alt="search"
