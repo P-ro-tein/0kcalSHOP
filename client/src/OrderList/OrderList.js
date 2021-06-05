@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
 import styled from "styled-components";
-import React,{useState,useEffect} from 'react'
+import React, { useState, useEffect } from "react";
 import OrderItem from "./OrderItem";
 
 const Box = styled.div`
@@ -53,43 +53,42 @@ const PriceText = styled.div`
   text-align: center;
 `;
 const OrderList = () => {
-    const [Orders, setOrders] = useState([]);
-    const [Period, setPeriod] = useState("today");
-    const getOrder=()=>{
-        console.log(Period);
-        axios.post('/api/orderList/list',{
-            periodCriterion: Period
-        })
-        .then(res=>{
-            console.log(res.data);
-            if(res.data.success){
-                setOrders(res.data.orderListInfo);
-            } else{
-                alert('주문내역조회실패');
-            }
-        })
-    }
-    useEffect(()=>{
-        getOrder();
-    },[Period, Orders])
-    const periodHandler = (e) => {
-        setPeriod(e.target.value);
-    }
-    return (
-            <Box>
+  const [Orders, setOrders] = useState([]);
+  const [Period, setPeriod] = useState("today");
+  const getOrder = () => {
+    console.log(Period);
+    axios
+      .post("/api/orderList/list", {
+        periodCriterion: Period,
+      })
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.success) {
+          setOrders(res.data.orderListInfo);
+        } else {
+          alert("주문내역조회실패");
+        }
+      });
+  };
+  useEffect(() => {
+    getOrder();
+  }, [Period, Orders]);
+  const periodHandler = (e) => {
+    setPeriod(e.target.value);
+  };
+  return (
+    <Box>
       <Top>
         <BigText>주문내역</BigText>
         <select name="period" value={Period} onChange={periodHandler}>
-            <option value="today">오늘</option>            
-            <option value="week">일주일</option>            
-            <option value="month">1개월</option>            
-            <option value="year">1년</option>            
+          <option value="today">오늘</option>
+          <option value="week">일주일</option>
+          <option value="month">1개월</option>
+          <option value="year">1년</option>
         </select>
       </Top>
       <Bar>
-        <div style={{ paddingLeft: "50px", paddingRight: "10px" }}>
-          <input type="checkbox"></input>
-        </div>
+        <div style={{ paddingLeft: "50px", paddingRight: "10px" }}></div>
         <BarText width="250px">상품 이미지</BarText>
         <BarText width="190px">상품 이름</BarText>
         <BarText width="230px">수량</BarText>
@@ -102,10 +101,11 @@ const OrderList = () => {
       })}
       <div style={{ height: "80px" }}></div>
 
-      <div style={{ paddingTop: "100px", width: "250px", margin: "0 auto" }}>
-      </div>
+      <div
+        style={{ paddingTop: "100px", width: "250px", margin: "0 auto" }}
+      ></div>
     </Box>
-    )
-}
+  );
+};
 
-export default OrderList
+export default OrderList;
