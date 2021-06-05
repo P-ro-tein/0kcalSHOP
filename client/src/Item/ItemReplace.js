@@ -68,6 +68,7 @@ function Item() {
       .post("/api/product/products", {
         category: "식사대용",
         sortBy: sort,
+        order: "desc",
         filters: {
           price: [lowPrice, highPrice],
         },

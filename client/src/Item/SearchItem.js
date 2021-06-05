@@ -75,6 +75,7 @@ function Item() {
       .post("/api/product/products", {
         searchTerm: Active,
         sortBy: sort,
+        order: "desc",
         category: category,
         filters: {
           price: [lowPrice, highPrice],

@@ -69,6 +69,7 @@ function Item() {
         category: "식단세트",
         pageNumber: 1,
         sortBy: sort,
+        order: "desc",
         filters: {
           price: [lowPrice, highPrice],
         },
