@@ -53,7 +53,7 @@ router.post('/changeOrderState', auth, (req, res) => {
 })
 
 // 주문내역 조회
-router.get('/list', auth, (req, res) => {
+router.post('/list', auth, (req, res) => {
     let order = req.body.order? req.body.order : "desc"; //주문 내역 표시 순서. default 내림차순. 오름차순으로 하고싶은경우 asc로 변경
     let sortBy = "orderDate"; // 주문날짜 기준 정렬
     // pagination을 위한 limit, skip 사용
