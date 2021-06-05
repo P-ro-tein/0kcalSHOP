@@ -6,9 +6,10 @@ import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
 
 import ShipAddModal from "../Shipping/ShipAddModal";
-import CompleteModal from "./CompleteModal";
 import ShipModifyModal from "../Shipping/ShipModifyModal";
+import Review from "./Review";
 import "../AllCss.css";
+import ItemReview from "./ItemReview";
 
 const DetailText = styled.div`
   width: 100px;
@@ -105,7 +106,6 @@ const StyledSlider = styled(Slider)`
 function ItemDetail(props) {
   const [number, setNumber] = useState(0);
   const [DeliverymodalOpen, setDeliveryModalOpen] = useState(false);
-  const [CompletemodalOpen, setCompleteModalOpen] = useState(false);
   const [ModifymodalOpen, setModifyModalOpen] = useState(false);
   const productId = props.match.params.productId;
   const [defaultShip, setDefaultShip] = useState("");
@@ -144,11 +144,7 @@ function ItemDetail(props) {
   };
 
   const openCompleteModal = () => {
-    setCompleteModalOpen(true);
-  };
-
-  const closeCompleteModal = () => {
-    setCompleteModalOpen(false);
+    alert("장바구니에 상품이 담겼습니다.");
   };
 
   const openModifyModal = () => {
@@ -242,11 +238,6 @@ function ItemDetail(props) {
             <button className="cart" onClick={openCompleteModal}>
               장바구니
             </button>
-            <CompleteModal
-              open={CompletemodalOpen}
-              close={closeCompleteModal}
-              header="완료"
-            ></CompleteModal>
             <button className="cart">바로구매</button>
           </RightContainer>
         </TopBox>
@@ -261,9 +252,13 @@ function ItemDetail(props) {
             ></img>
           )}
         </DescriptionContainer>
+        <DescriptionBox>상품 리뷰</DescriptionBox>
+        <hr></hr>
+        <Review></Review>
+        <ItemReview></ItemReview>
       </Box>
     </>
   );
 }
 
-export default ItemDetail;
+export default React.memo(ItemDetail);
