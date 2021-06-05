@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import Slider from "react-slick";
+import { useGlobalDispatch } from "../GlobalContext";
 
 import axios from "axios";
 import ShipAddModal from "../Shipping/ShipAddModal";
 import ShipModifyModal from "../Shipping/ShipModifyModal";
-import Review from "./Review";
 import ItemReview from "./ItemReview";
 import "../AllCss.css";
 const DetailText = styled.div`
@@ -108,6 +108,8 @@ function ItemDetail(props) {
   const [defaultShip, setDefaultShip] = useState("");
   const [Product, setProduct] = useState({});
 
+  const dispatch = useGlobalDispatch();
+
   const settings = {
     dots: true,
     speed: 500,
@@ -139,8 +141,7 @@ function ItemDetail(props) {
     setDeliveryModalOpen(false);
   };
 
-  const addToCart = () => {
-    console.log(productId);
+  const addToCart = useCallback(() => {
     axios
       .post("/api/users/addToCart", {
         productId: productId,
@@ -155,7 +156,11 @@ function ItemDetail(props) {
           alert("로그인 해주세요");
         }
       });
-  };
+    dispatch({
+      type: "SET_NUM",
+      number,
+    });
+  }, [dispatch, number]);
 
   const openModifyModal = () => {
     setModifyModalOpen(true);
@@ -264,7 +269,6 @@ function ItemDetail(props) {
         </DescriptionContainer>
         <DescriptionBox>상품 리뷰</DescriptionBox>
         <hr></hr>
-        <Review></Review>
         <ItemReview></ItemReview>
       </Box>
     </>

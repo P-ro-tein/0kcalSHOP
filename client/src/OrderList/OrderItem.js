@@ -95,12 +95,27 @@ function OrderItem({ Item }) {
       <ItemPrice>{Item.orderProductPrice}</ItemPrice>
       <ItemShip>{Item.orderProductShipAddrName}</ItemShip>
       <OrderState>
-        {Item.orderState === 1 ? <button>결제완료</button> : null}
-        {Item.orderState === 2 ? <button>배송중</button> : null}
-        {Item.orderState === 3 ? (
-          <button onClick={changeState}>배송완료</button>
+        {Item.orderState === 1 ? (
+          <>
+            <span>결제완료</span>
+            <button>문의하기</button>
+          </>
         ) : null}
-        {Item.orderState === 4 ? <button>구매확정</button> : null}
+        {Item.orderState === 2 ? (
+          <>
+            <span>배송중</span>
+            <button>문의하기</button>
+          </>
+        ) : null}
+        {Item.orderState === 3 ? (
+          <>
+            <span>배송완료</span>
+            <button onClick={changeState}>구매확정</button>
+          </>
+        ) : null}
+        <a href={`/client/review/${Item.orderProductID}`}>
+          {Item.orderState === 4 ? <button>리뷰쓰기</button> : null}
+        </a>
       </OrderState>
     </ItemContainer>
   );
