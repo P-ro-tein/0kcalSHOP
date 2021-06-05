@@ -134,7 +134,9 @@ router.post("/addToCart", auth, (req, res) => {
                         $push: {
                             cart: {
                                 id: req.body.productId,
+                                price: req.body.price,
                                 quantity: req.body.quantity,
+                                ship: req.body.ship,
                                 date: Date.now()
                             }
                         }
@@ -173,8 +175,7 @@ router.post('/removeFromCart', auth, (req, res) => {
                 .populate('writer')
                 .exec((err, productInfo) => {
                     return res.status(200).json({
-                        productInfo,
-                        cart
+                        success: true
                     })
                 })
         }

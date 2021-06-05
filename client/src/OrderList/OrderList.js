@@ -71,7 +71,7 @@ const OrderList = () => {
     }
     useEffect(()=>{
         getOrder();
-    },[Period])
+    },[Period, Orders])
     const periodHandler = (e) => {
         setPeriod(e.target.value);
     }

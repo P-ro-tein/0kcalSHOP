@@ -129,7 +129,9 @@ function ItemDetail(props){
         console.log(productId);
         axios.post('/api/users/addToCart',{
             productId: productId,
-            quantity: number
+            quantity: number,
+            price: Product.price,
+            ship: Product.shipCharge
         })
         .then(res => {
             if(res.data.success){
