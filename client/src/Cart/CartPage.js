@@ -4,7 +4,7 @@ import styled from "styled-components";
 import CartItem from "./CartItem";
 import "../AllCss.css";
 import { Link } from "react-router-dom";
-import axios from 'axios';
+
 const Box = styled.div`
   width: 1200px;
   margin: 0 auto;
@@ -94,8 +94,8 @@ function CartPage() {
         <BarText width="190px">수량</BarText>
         <BarText width="200px">주문 금액</BarText>
       </Bar>
-      {Items.map((item) => {
-        return <CartItem key={item.id} Item={item} />;
+      {Item.map((item) => {
+        return <CartItem key={item.price} Item={item} />;
       })}
       <div style={{ height: "80px" }}></div>
       <Bar>

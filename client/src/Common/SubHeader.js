@@ -48,6 +48,7 @@ font-size: 12px;
 function SubHeader() {
   const state = useGlobalState();
   const Active = state.user;
+  console.log(Active);
   const dispatch = useGlobalDispatch();
   const [CartQuantity, setCartQuantity] = useState(0);
   const onToggle = useCallback(() => {
@@ -59,11 +60,13 @@ function SubHeader() {
   const logoutHandler = () => {
     axios.get("/api/users/logout").then((response) => {
       if (response.data.success) {
+        console.log("여기는 subheader.js입니당");
         alert("로그아웃");
         onToggle();
       }
     });
   };
+
   useEffect(() => {
     axios.get("/api/users/auth").then((response) => {
 
@@ -74,6 +77,7 @@ function SubHeader() {
       }
     });
   }, [Active, onToggle, CartQuantity]);
+  
   return (
     <BoxCategory>
       <div style={{ display: "flex" }}>
@@ -118,4 +122,4 @@ function SubHeader() {
   );
 }
 
-export default SubHeader;
+export default React.memo(SubHeader);

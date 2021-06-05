@@ -38,14 +38,9 @@ const productSchema = mongoose.Schema({
     },
     views: {
         type: Number,
-        default: 0,
-    },
-    reviews: {
-        type: Array,
-        default : ['userID', Date.now(), 3, 3, 5, '짧은글후기'],
-        // 상품평 작성 유저ID, 작성일자, 상품추천점수, 배송평가점수, 총 별점, 짧은글 후기
+        default: 0
     }
-})
+}, { timestamps: true })
 
 productSchema.index({
     title: 'text'

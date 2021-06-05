@@ -50,19 +50,17 @@ router.post('/login', (req, res) => {
 router.get('/auth', auth, (req, res) => {
     //auth 미들웨어를 통과한 상태 이므로
     //req.user에 user값을 넣어줬으므로
-    if(req.user){
-        res.status(200).json({
-            _id: req._id,
-            id: req.id,
-            isAdmin: req.user.role === 0? false : true,
-            isAuth: true,
-            email: req.user.email,
-            name: req.user.name,
-            role: req.user.role,
-            cart: req.user.cart,
-            defaultShipAddrName: req.user.defaultShipAddrName
-        });
-    }
+    res.status(200).json({
+        _id: req._id,
+        id: req.id,
+        isAdmin: req.user.role === 0? false : true,
+        isAuth: true,
+        email: req.user.email,
+        name: req.user.name,
+        role: req.user.role,
+        cart: req.user.cart,
+        defaultShipAddrName: req.user.defaultShipAddrName
+    });
   });
 
 //logout 요청처리
@@ -99,14 +97,13 @@ router.post("/checkEmail", (req,res) => {
 });
 
 router.post("/addToCart", auth, (req, res) => {
-    if(!req.user) res.status(200).json({success: false, message:"need login"})
+
     //먼저  User Collection에 해당 유저의 정보를 가져오기 
     User.findOne({ _id: req.user._id },
         (err, userInfo) => {
-            
 
             // 가져온 정보에서 카트에다 넣으려 하는 상품이 이미 들어 있는지 확인 
-            
+
             let duplicate = false;
             userInfo.cart.forEach((item) => {
                 if (item.id === req.body.productId) {
@@ -118,11 +115,11 @@ router.post("/addToCart", auth, (req, res) => {
             if (duplicate) {
                 User.findOneAndUpdate(
                     { _id: req.user._id, "cart.id": req.body.productId },
-                    { $inc: { "cart.$.quantity": req.body.quantity } },
+                    { $inc: { "cart.$.quantity": 1 } },
                     { new: true },
                     (err, userInfo) => {
                         if (err) return res.status(200).json({ success: false, err })
-                        res.status(200).json({success:true});
+                        res.status(200).send(userInfo.cart)
                     }
                 )
             }
@@ -144,7 +141,7 @@ router.post("/addToCart", auth, (req, res) => {
                     { new: true },
                     (err, userInfo) => {
                         if (err) return res.status(400).json({ success: false, err })
-                        res.status(200).json({success:true});
+                        res.status(200).send(userInfo.cart)
                     }
                 )
             }

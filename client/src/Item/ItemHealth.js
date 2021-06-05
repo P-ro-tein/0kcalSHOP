@@ -69,6 +69,7 @@ function Item() {
       .post("/api/product/products", {
         category: "건강간식",
         sortBy: sort,
+        order: "desc",
         pageNumber: 1,
         filters: {
           price: [lowPrice, highPrice],

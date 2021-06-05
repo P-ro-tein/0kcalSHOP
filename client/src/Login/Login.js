@@ -1,45 +1,43 @@
-import React, {useState,useCallback} from 'react';
+import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import InputWithLabel from "../Register/InputWithLabel";
 import AuthButton from "./AuthButton";
 
-import {useGlobalDispatch} from "../GlobalContext";
-const Box = styled.div `
-display:block;
-width:500px;
-margin:0 auto;
+import { useGlobalDispatch } from "../GlobalContext";
+const Box = styled.div`
+  display: block;
+  width: 500px;
+  margin: 0 auto;
   margin-top: 50px;
-margin-bottom: 100px;
+  margin-bottom: 100px;
 `;
-const Title = styled.div `
-text-align: center;
-width:500px;
-display:block;
-font-size: 30px;
-margin-bottom: 50px;
-`
+const Title = styled.div`
+  text-align: center;
+  width: 500px;
+  display: block;
+  font-size: 30px;
+  margin-bottom: 50px;
+`;
 
+function Login({ history }) {
+  const [id, setId] = useState("");
+  const [pw, setPw] = useState("");
 
-function Login ({history}) {
-    const [id, setId] = useState("");
-    const [pw, setPw] = useState("");
+  const dispatch = useGlobalDispatch();
+  const onToggle = useCallback(() => {
+    dispatch({
+      type: "TOGGLE_USER",
+    });
+  }, [dispatch]);
 
-    const dispatch=useGlobalDispatch();
-    const onToggle=useCallback(()=>{
-        dispatch({
-            type:"TOGGLE_USER"
-        });
-    },[dispatch]);
-
-    const idChangeHandler = (e) => {
-        setId(e.currentTarget.value);
-    }
-    const pwChangeHandler = (e) => {
-        setPw(e.currentTarget.value);
-    }
-    const submitHandler = () => {
-
+  const idChangeHandler = (e) => {
+    setId(e.currentTarget.value);
+  };
+  const pwChangeHandler = (e) => {
+    setPw(e.currentTarget.value);
+  };
+  const submitHandler = () => {
         const data = {
             id: id,
             password: pw
