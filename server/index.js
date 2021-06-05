@@ -37,6 +37,7 @@ app.use('/api/product',require('./routes/product'));
 app.use('/api/notice',require('./routes/notice'));
 app.use('/api/shipAddr',require('./routes/shipAddr'));
 app.use('/api/orderList',require('./routes/orderList'));
+app.use('/api/question',require('./routes/question'));
 
 app.use((err,req,res,next)=>{
   console.error(err);
