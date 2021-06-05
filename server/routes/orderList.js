@@ -144,7 +144,7 @@ router.post("/reviewRegister", auth, (req, res) => {
     {
       $push: {
         reviews: {
-          userID: req.user._id,
+          userID: req.user.name,
           createdDate: Date.now(),
           productRecommand: req.body.productRecommand,
           shipRecommand: req.body.shipRecommand,
