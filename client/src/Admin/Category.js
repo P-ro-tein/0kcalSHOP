@@ -1,7 +1,27 @@
+import React, { useCallback } from "react";
+import { useGlobalDispatch } from "../GlobalContext";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import './Category.css';
 
 export default function Category() {
+    const dispatch = useGlobalDispatch();
+
+    const onToggle = useCallback(() => {
+      dispatch({
+        type: "TOGGLE_USER",
+      });
+    }, [dispatch]);
+
+    const logoutHandler = () => {
+        axios.get("/api/users/logout").then((response) => {
+          if (response.data.success) {
+            alert("로그아웃되었습니다.");
+            onToggle();
+          }
+        });
+      };
+
     return (
         <div className="Menu">
             <details>
@@ -22,7 +42,11 @@ export default function Category() {
 
             <br/>
             
-            <span className="logout"><input type="button" value="로그아웃" /></span>
+            <span className="logout">
+                <Link to="/client">
+                    <button onClick={logoutHandler}>로그아웃</button>
+                </Link>
+            </span>
             
         </div>   
     )

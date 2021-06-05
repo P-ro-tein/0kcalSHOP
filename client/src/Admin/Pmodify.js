@@ -10,6 +10,7 @@ function Pmodify(props) {
     const [shipCharge, setShipCharge] = useState({});
     const [remainStock, setRemainStock] = useState({});
     const [description, setDescription] = useState({});
+    const [images, setImages] = useState({});
 
     useEffect(() => {
         axios.get(`/api/product/products_by_id?id=${productId}&type=single`)
@@ -42,38 +43,91 @@ function Pmodify(props) {
     const descriptionChangeHandler=(e)=>{
         setDescription(e.target.value);
     }
+    const imagesChangeHandler=(e)=>{
+        setImages(e.target.value);
+    }
 
-    const removeHandler=() => {
+    const removeHandler=(event) => {
         const _id = productId;
 
         if(window.confirm('삭제 하시겠습니까?')){
             axios.post('/api/product/removeProduct', {_id})
 
-            alert('삭제 되었습니다')
+            alert('삭제 되었습니다.')
             return window.location.href='/admin/psearch'
+        } else{
+            event.preventDefault();
         }
     }
 
-    const submitHandler =() => {
-        const data = {
-            _id: productId,
-            title: title,
-            category: category,
-            shipCharge: shipCharge,
-            remainStock: remainStock,
-            description: description,
-            price:price
+    const submitHandler =(event) => {
+        if(title.length === 0){
+            event.preventDefault();
+            return alert("상품명을 입력하세요.");
         }
-        axios.post('/api/product/modifyProduct', 
-        {   
-          data
-        }).then(response => {
-            if(response.data.success){
-                alert('수정 완료');
-            } else { 
-                alert('수정 실패');
-            }
-        });
+        if(category.length === 0){
+            event.preventDefault();
+            return alert("카테고리를 입력하세요.");
+        }
+        if(price === 0){
+            event.preventDefault();
+            return alert("가격을 입력하세요.");
+        } else if(price<0){
+            event.preventDefault();
+            return alert("가격은 음수가 될 수 없습니다.");
+        }
+        if(shipCharge === 0){
+            event.preventDefault();
+            return alert("배송비를 입력하세요.");
+        } else if(shipCharge<0){
+            event.preventDefault();
+            return alert("배송비는 음수가 될 수 없습니다.");
+        }
+        if(remainStock === 0){
+            event.preventDefault();
+            return alert("재고량을 입력하세요.");
+        } else if(remainStock<0){
+            event.preventDefault();
+            return alert("재고량은 음수가 될 수 없습니다.");
+        }
+        if(description.length === 0){
+            event.preventDefault();
+            return alert("상세설명을 입력하세요.");
+        }
+        if(!images){
+            event.preventDefault();
+            return alert("이미지를 삽입하세요.");
+        }
+        
+        if(window.confirm('수정 하시겠습니까?')){
+            const _id = productId;
+            const formData = new FormData();
+
+            formData.append('title', title);
+            formData.append('category', category);
+            formData.append('shipCharge', shipCharge);
+            formData.append('remainStock', remainStock);
+            formData.append('description', description);
+            formData.append('price', price);
+
+            axios.post('/api/product/modifyProduct', 
+            {   
+                _id, formData
+            }).then(response => {
+                if(response.data.success){
+                    event.preventDefault();
+                    alert('수정 완료');
+                    return window.location.href='/admin/psearch'
+                } else { 
+                    event.preventDefault();
+                    alert('수정 실패');
+                    return window.location.href='/admin/psearch'
+                }
+            });
+        } else {
+            event.preventDefault();
+        }
+        
     }
 
     return(
@@ -87,7 +141,8 @@ function Pmodify(props) {
                     <td colSpan="2">상품 수정</td>
                 </tr>
                 <tr>
-                    <td className="Tname">상품명</td><td><input type="text" name="title" value={title} onChange={titleChangeHandler}/></td>
+                    <td className="Tname">상품명</td>
+                    <td><input type="text" name="title" value={title} onChange={titleChangeHandler}/></td>
                 </tr>
                 <tr>
                     <td>카테고리명</td>
@@ -113,10 +168,10 @@ function Pmodify(props) {
                 </tr>
                 <tr>
                     <td>상품 소개</td>
-                    <td><input type="text" name="description" name="description" value={description} onChange={descriptionChangeHandler} /></td>
+                    <td><input type="text" name="description" value={description} onChange={descriptionChangeHandler} /></td>
                 </tr>
                 <tr>
-                    <td>대표이미지</td><td><input type="file" name="images" accept="img/*" /></td>
+                    <td>대표이미지</td><td><input type="file" name="images" accept="img/*" onChange={imagesChangeHandler}/></td>
                 </tr>
                 <tr>
                     <td>상품 상세설명</td><td><input type="file" name="images" accept="img/*" multiple/></td>
