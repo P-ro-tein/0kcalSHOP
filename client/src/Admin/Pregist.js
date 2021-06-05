@@ -9,7 +9,7 @@ export default function Pregist(props) {
     const [shipCharge, setShipCharge] = useState("");
     const [remainStock, setRemainStock] = useState("");
     const [description, setDescription] = useState("");
-    const [images, setImages] = useState("");
+    const [images, setImages] = useState([]);
 
     const titleChangeHandler = (e) => {
         setTitle(e.currentTarget.value);
@@ -27,7 +27,7 @@ export default function Pregist(props) {
         setRemainStock(e.currentTarget.value);
     }
     const imagesChangeHandler = (e) => {
-        setImages(e.currentTarget.value);
+        setImages(e.target.images.files[0]);
     }
     const descriptionChangeHandler = (e) => {
         setDescription(e.currentTarget.value)
@@ -35,15 +35,46 @@ export default function Pregist(props) {
     
 
     const submitHandler = (event) => {
-        /*const data = {
-            title: title,
-            category: category,
-            price: price,
-            shipCharge: shipCharge,
-            remainStock: remainStock,
-            description: description,
-            images: images,
-        }*/
+        event.preventDefault();
+
+        if(title.length === 0){
+            event.preventDefault();
+            return alert("상품명을 입력하세요.");
+        }
+        if(category.length === 0){
+            event.preventDefault();
+            return alert("카테고리를 입력하세요.");
+        }
+        if(price === 0){
+            event.preventDefault();
+            return alert("가격을 입력하세요.");
+        } else if(price<0){
+            event.preventDefault();
+            return alert("가격은 음수가 될 수 없습니다.");
+        }
+        if(shipCharge === 0){
+            event.preventDefault();
+            return alert("배송비를 입력하세요.");
+        } else if(shipCharge<0){
+            event.preventDefault();
+            return alert("배송비는 음수가 될 수 없습니다.");
+        }
+        if(remainStock === 0){
+            event.preventDefault();
+            return alert("재고량을 입력하세요.");
+        } else if(remainStock<0){
+            event.preventDefault();
+            return alert("재고량은 음수가 될 수 없습니다.");
+        }
+        if(description.length === 0){
+            event.preventDefault();
+            return alert("상세설명을 입력하세요.");
+        }
+        if(!images){
+            event.preventDefault();
+            return alert("이미지를 삽입하세요.");
+        }
+
         const formData = new FormData(); 
 
         formData.append('title', title);
@@ -52,19 +83,20 @@ export default function Pregist(props) {
         formData.append('shipCharge', shipCharge);
         formData.append('remainStock', remainStock);
         formData.append('description', description);
-        formData.append('images', event.target.images.files[0]);     
-        
-        axios.post(
-            '/api/product/register',
-            {
+        formData.append('images', images);     
+            
+        event.preventDefault();
+
+        axios.post('/api/product/register',{
                 formData
-            }
-        ).then(response => {
+        })
+        .then(response => {
             if(response.data.success){
-                alert('등록완료');
-                props.history.push('/admin/psearch');
+                alert('등록 완료');
+                return window.location.href='/admin/psearch'
             } else { 
-                alert('');
+                alert('등록 실패');
+                return window.location.href='/admin/psearch'
             }
         });
     }
@@ -108,10 +140,10 @@ export default function Pregist(props) {
                 </tr>
                 <tr>
                     <td>상품 소개</td>
-                    <td><input type="text" name="description" name="description" onChange={descriptionChangeHandler} /> </td>
+                    <td><input type="text" name="description" onChange={descriptionChangeHandler} /> </td>
                 </tr>
                 <tr>
-                    <td>대표이미지</td><td><input type="file" name="images" accept="img/*" onChange={imagesChangeHandler}/></td>
+                    <td>대표이미지</td><td><input type="file" name="images" accept="img/*" multiple onChange={imagesChangeHandler}/></td>
                 </tr>
                 <tr>
                     <td>상품 상세설명</td><td><input type="file" name="images" accept="img/*" multiple onChange={imagesChangeHandler}/></td>

@@ -7,7 +7,7 @@ import './Basic.css';
 function Search() {
   const [searchText, setSearch] = useState("");
   const dispatch = useGlobalDispatch();
-
+  
   const onChangeSearch = useCallback(() => {
     dispatch({
       type: "SET_SEARCH",
@@ -18,9 +18,7 @@ function Search() {
   }, [dispatch, searchText]);
 
   const handleChange = (e) => {
-    if (e.target.value !== "") {
       setSearch(e.target.value);
-    }
   };
 
   return (

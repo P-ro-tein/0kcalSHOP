@@ -1,7 +1,10 @@
 import './Basic.css';
 import React, { useState, useEffect } from 'react';
+import { useGlobalState } from "../GlobalContext";
 import styled from 'styled-components';
 import axios from 'axios';
+
+import SearchProduct from './SearchProduct';
 //styled
 const BoxItem=styled.div`
 float:left;
@@ -22,19 +25,50 @@ font-size:15px;
 
 export default function Psearch() {
     const [Products, setProducts] = useState([])
+    const [sort, setSort] = useState("이름");
+    const [category, setCategory] = useState("");
+    const [lowPrice, setlowPrice] = useState(0);
+    const [highPrice, setHighPrice] = useState(1000000);
   
-    useEffect(() => {
-        axios.post('/api/product/products')
-        .then(response => {
-        if(response.data.success) {
-            setProducts(response.data.productInfo)
-            console.log(response.data.productInfo)
-        } else {
-            console.log('상품정보 가져오는데 실패');
-        }
-        })
+    const state = useGlobalState();
+    const Active = state.search;
 
-    }, []);
+    useEffect(() => {
+        axios
+        .post("/api/product/products", {
+            searchTerm: Active,
+            sortBy: sort,
+            order: "desc",
+            category: category,
+            filters: {
+            price: [lowPrice, highPrice],
+        },
+      })
+      .then((response) => {
+        if (response.data.success) {
+          setProducts(response.data.productInfo);
+        } else {
+          console.log("상품정보가져오는데실패");
+        }
+      });
+    }, [Active, sort, category, lowPrice, highPrice]);
+
+    const ChangeSort = (e) => {
+        setSort(e.target.value);
+    };
+
+    const ChangeCategory = (e) => {
+        setCategory(e.target.value);
+    };
+
+    const setlowestPrice = (e) => {
+        setlowPrice(e.target.value);
+    };
+
+    const setHighestPrice = (e) => {
+        setHighPrice(e.target.value);
+    };
+
     return(
         <div className="Page">
             <span><b>상품 관리 &gt; 상품 조회</b></span>
@@ -45,66 +79,54 @@ export default function Psearch() {
                 <tr>
                     <td className="Tname">상품 분류</td>
                     <td>
-                        <select name="description">
+                        <select value={category} onChange={ChangeCategory}>
                             <option selected disabeld hidden>카테고리 선택</option>
-                            <option>식단세트</option>
-                            <option>식사대용</option>
-                            <option>건강간식</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>상품 상태</td>
-                    <td>
-                        <select name="state">
-                            <option selected disabeld hidden>상태 선택</option>
-                            <option>판매 가능</option>
-                            <option>판매 완료</option>
-                            <option>상품 준비중</option>
+                            <option value="식단세트">식단세트</option>
+                            <option value="식사대용">식사대용</option>
+                            <option value="건강간식">건강간식</option>
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <td>가격대</td>
-                    <td><input type="number" /> ~ <input type="number"/></td>
+                    <td><input type="number" onChange={setlowestPrice} value={lowPrice}/> ~ <input type="number" onChange={setHighestPrice}
+          value={highPrice}/></td>
                 </tr>
                 <tr>
                     <td>나열 조건</td>
                     <td>
-                        <select name="state">
+                        <select value={sort} onChange={ChangeSort}>
                             <option selected disabeld hidden>조건 선택</option>
-                            <option>인기순</option>
-                            <option>높은 가격순</option>
-                            <option>낮은 가격순</option>
-                            <option>등록일순</option>
-                            <option>리뷰 많은순</option>
+                            <option value="title">이름순</option>
+                            <option value="price">가격순</option>
+                            <option value="createdAt">최신순</option>
                         </select>
                     </td>
                 </tr>
-                <tr>
-                    <td>검색어</td>
-                    <td>
-                        <input type="text" value=""/>
-                    </td>
-                </tr>
-                <tr>
-                    <td colSpan="2"><input type="submit" value="검색"/></td>
-                </tr>
                 </tbody>
             </table>
-            
+            <SearchProduct/>
+            <span>검색어 : {Active}</span>
             <br/>
+            
+
 
             {Products.map((product) => {
-          return (
-            <a href={`/admin/product/${product._id}`}>
-              <BoxItem>
-                <img key={product._id} src={`http://localhost:9000/uploads/${product.images[0]}`} alt={product.title} width="100%" height="280px"/>
-                <ItemDetail>{product.title}</ItemDetail>
-              </BoxItem>
-            </a>
-          );
-        })}
+        return (
+          <a href={`/admin/product/${product._id}`}>
+            <BoxItem>
+              <img
+                key={product._id}
+                src={`http://ec2-52-79-226-115.ap-northeast-2.compute.amazonaws.com:9000/uploads/${product.images[0]}`}
+                alt={product.title}
+                width="100%"
+                height="280px"
+              />
+              <ItemDetail>{product.title}</ItemDetail>
+            </BoxItem>
+          </a>
+        );
+      })}
         </div>
     )
 }

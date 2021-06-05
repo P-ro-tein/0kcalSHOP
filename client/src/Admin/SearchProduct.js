@@ -9,7 +9,6 @@ function Search() {
   const dispatch = useGlobalDispatch();
 
   const onChangeSearch = useCallback(() => {
-    console.log(searchText);
     dispatch({
       type: "SET_SEARCH",
       searchText,
@@ -19,9 +18,7 @@ function Search() {
   }, [dispatch, searchText]);
 
   const handleChange = (e) => {
-    if (e.target.value !== "") {
       setSearch(e.target.value);
-    }
   };
 
   return (

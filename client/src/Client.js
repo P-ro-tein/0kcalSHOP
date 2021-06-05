@@ -6,9 +6,8 @@ import Navbar from "./Common/Navbar";
 import MainPage from "./Main/MainPage";
 import Register from "./Register/Register";
 import Login from "./Login/Login";
-import { Route } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import styled from "styled-components";
-import { GlobalContext } from "./GlobalContext";
 import ItemSet from "./Item/ItemSet";
 import ItemReplace from "./Item/ItemReplace";
 import ItemHealth from "./Item/ItemHealth";
@@ -23,8 +22,8 @@ const Box = styled.div`
 
 function Client() {
   return (
-    <GlobalContext>
-      <Box>
+    <BrowserRouter>
+     <Box>
         <Header />
         <Navbar />
         <Route path="/client/" component={MainPage} exact={true} />
@@ -40,7 +39,8 @@ function Client() {
         <Route path="/client/order" component={OrderList} />
         <Footer />
       </Box>
-    </GlobalContext>
+    </BrowserRouter>
+     
   );
 }
 
