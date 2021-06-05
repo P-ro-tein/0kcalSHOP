@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const { User } = require("./models/User");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const path = require('path');
+const path = require("path");
 const { auth } = require("./middleware/auth");
 const config = require("./config/key");
 
@@ -30,16 +30,16 @@ mongoose
   })
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
-app.use('/uploads', express.static('uploads'));
+app.use("/uploads", express.static("uploads"));
+app.use("/noticeImageUploads", express.static("noticeImageUploads"));
+app.use("/api/users", require("./routes/users"));
+app.use("/api/product", require("./routes/product"));
+app.use("/api/notice", require("./routes/notice"));
+app.use("/api/shipAddr", require("./routes/shipAddr"));
+app.use("/api/orderList", require("./routes/orderList"));
+app.use("/api/question", require("./routes/question"));
 
-app.use('/api/users', require('./routes/users'));
-app.use('/api/product',require('./routes/product'));
-app.use('/api/notice',require('./routes/notice'));
-app.use('/api/shipAddr',require('./routes/shipAddr'));
-app.use('/api/orderList',require('./routes/orderList'));
-app.use('/api/question',require('./routes/question'));
-
-app.use((err,req,res,next)=>{
+app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).send(err.message);
 });

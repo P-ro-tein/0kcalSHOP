@@ -15,6 +15,7 @@ import ItemHealth from "./Item/ItemHealth";
 import SearchItem from "./Item/SearchItem";
 import CartPage from "./Cart/CartPage";
 import OrderList from "./OrderList/OrderList";
+import Review from "./OrderList/Review";
 
 const Box = styled.div`
   width: 100%;
@@ -38,6 +39,7 @@ function Client() {
         <Route path="/client/SearchItem" component={SearchItem} />
         <Route path="/client/Cart" component={CartPage} />
         <Route path="/client/order" component={OrderList} />
+        <Route path="/client/review/:productId" component={Review} />
         <Footer />
       </Box>
     </GlobalContext>
