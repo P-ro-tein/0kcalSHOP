@@ -7,8 +7,8 @@ import Star from "../Stars/Star";
 const createArray = (length) => Array.from({ length });
 
 function Review(props) {
-  const [category, setCategory] = useState("");
-  const [Delivery, setDelivery] = useState("");
+  const [category, setCategory] = useState("적극추천");
+  const [Delivery, setDelivery] = useState("빠름");
   const productId = props.match.params.productId;
   const [selectedTotalStars, setSelectedTotalStars] = useState(0);
   const [description, setDescription] = useState("");
