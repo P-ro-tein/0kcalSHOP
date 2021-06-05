@@ -82,6 +82,18 @@ const DescriptionContainer = styled.div`
   padding-bottom: 200px;
 `;
 
+const Destination = styled.div`
+  width: 170px;
+  height: 30px;
+  border: 2px solid #ff7777;
+  text-align: right;
+  font-size: 18px;
+  text-align-last: center;
+  text-align: center;
+  -ms-text-align-last: center;
+  -moz-text-align-last: center;
+`;
+
 const StyledSlider = styled(Slider)`
   .slick-slide div {
     outline: none;
