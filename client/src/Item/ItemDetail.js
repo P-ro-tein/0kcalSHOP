@@ -125,10 +125,16 @@ function ItemDetail(props) {
         setProduct(response.data[0]);
       })
       .catch((err) => alert(err));
-    axios.get("/api/users/auth").then((response) => {
-      if (response.data.isAuth)
-        setDefaultShip(response.data.defaultShipAddrName);
-    });
+    axios
+      .post("/api/shipAddr/list", {
+        order: "desc",
+        sortBy: "defaultShip",
+      })
+      .then((response) => {
+        if (response.data.success && response.data.shipAddrInfo)
+          setDefaultShip(response.data.shipAddrInfo[0]);
+        console.log(defaultShip);
+      });
   }, [productId, Product.images]);
 
   const openDeliveryModal = () => {
@@ -227,13 +233,21 @@ function ItemDetail(props) {
             </Container>
             <Container>
               <DetailText>배송지</DetailText>
+              <Destination>{defaultShip.shipAddrName}</Destination>
               <button onClick={openModifyModal} className="modify">
                 수정
               </button>
               <button onClick={openDeliveryModal} className="modify">
                 추가
               </button>
+              <br />
             </Container>
+            <Destination
+              style={{ width: "270px", height: "auto", marginLeft: "115px" }}
+            >
+              {!defaultShip.shipAddrName ? " " : defaultShip.shipAddrDetail}
+            </Destination>
+
             <ShipModifyModal
               open={ModifymodalOpen}
               close={closeModifyModal}
@@ -264,8 +278,13 @@ function ItemDetail(props) {
         </DescriptionContainer>
         <DescriptionBox>상품 리뷰</DescriptionBox>
         <hr></hr>
-        <Review></Review>
-        <ItemReview></ItemReview>
+        {Product.reviews && Product.reviews.length > 0 && (
+          <>
+            {Product.reviews.map((data) => {
+              return <ItemReview product={data}></ItemReview>;
+            })}
+          </>
+        )}
       </Box>
     </>
   );
