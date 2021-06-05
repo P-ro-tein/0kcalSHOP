@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import axios from "axios";
 
+import axios from "axios";
 import ShipAddModal from "../Shipping/ShipAddModal";
 import ShipModifyModal from "../Shipping/ShipModifyModal";
 import Review from "./Review";
-import "../AllCss.css";
 import ItemReview from "./ItemReview";
-
+import "../AllCss.css";
 const DetailText = styled.div`
   width: 100px;
   font-size: 15px;
@@ -96,6 +93,7 @@ const Destination = styled.div`
   -ms-text-align-last: center;
   -moz-text-align-last: center;
 `;
+
 const StyledSlider = styled(Slider)`
   .slick-slide div {
     outline: none;
@@ -119,31 +117,12 @@ function ItemDetail(props) {
     centerMode: false,
     autoplay: true,
   };
-  
-    const openCompleteModal=()=>{
-        console.log(productId);
-        axios.post('/api/users/addToCart',{
-            productId: productId,
-            quantity: number,
-            price: Product.price,
-            ship: Product.shipCharge
-        })
-        .then(res => {
-            if(res.data.success){
-                alert('장바구니에 추가하였습니다');
-            } else {
-                alert('로그인 해주세요');
-            }
-            
-        })
-    }
 
   useEffect(() => {
     axios
       .get(`/api/product/products_by_id?id=${productId}&type=single`)
       .then((response) => {
         setProduct(response.data[0]);
-        console.log(Product.images);
       })
       .catch((err) => alert(err));
     axios.get("/api/users/auth").then((response) => {
@@ -158,6 +137,24 @@ function ItemDetail(props) {
 
   const closeDeliveryModal = () => {
     setDeliveryModalOpen(false);
+  };
+
+  const addToCart = () => {
+    console.log(productId);
+    axios
+      .post("/api/users/addToCart", {
+        productId: productId,
+        quantity: number,
+        price: Product.price,
+        ship: Product.shipCharge,
+      })
+      .then((res) => {
+        if (res.data.success) {
+          alert("장바구니에 추가하였습니다");
+        } else {
+          alert("로그인 해주세요");
+        }
+      });
   };
 
   const openModifyModal = () => {
@@ -248,7 +245,7 @@ function ItemDetail(props) {
               header="배송지 추가"
             ></ShipAddModal>
             <hr></hr>
-            <button className="cart" onClick={openCompleteModal}>
+            <button className="cart" onClick={addToCart}>
               장바구니
             </button>
             <button className="cart">바로구매</button>
@@ -274,4 +271,4 @@ function ItemDetail(props) {
   );
 }
 
-export default React.memo(ItemDetail);
+export default ItemDetail;

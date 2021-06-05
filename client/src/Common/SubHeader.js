@@ -76,7 +76,7 @@ function SubHeader() {
         if (!Active) onToggle();
       }
     });
-  }, [Active, onToggle, CartQuantity]);
+  }, [Active, onToggle]);
   
   return (
     <BoxCategory>
@@ -122,4 +122,4 @@ function SubHeader() {
   );
 }
 
-export default React.memo(SubHeader);
+export default SubHeader;

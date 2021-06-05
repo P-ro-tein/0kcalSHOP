@@ -53,7 +53,7 @@ router.post('/changeOrderState', auth, (req, res) => {
 })
 
 // 주문내역 조회
-router.get('/list', auth, (req, res) => {
+router.post('/list', auth, (req, res) => {
     let order = req.body.order? req.body.order : "desc"; //주문 내역 표시 순서. default 내림차순. 오름차순으로 하고싶은경우 asc로 변경
     let sortBy = "orderDate"; // 주문날짜 기준 정렬
     // pagination을 위한 limit, skip 사용
@@ -110,6 +110,92 @@ router.get('/list', auth, (req, res) => {
                 })
             })
     }
+})
+
+// 상품평 등록
+// 주문 내역화면에서 상품평 버튼 클릭시 상품평이 Product DB에 등록
+router.post('/reviewRegister', auth, (req, res) => {
+    if(!req.user) res.status(200).json({success: false, message:"need login"})
+    //먼저 User Collection에 해당 유저의 정보를 가져오기
+    Product.findOne({ _id: req.body.orderProductID },
+        (err, productInfo) => {
+            // 가져온 정보에서 상품평이 이미 등록되어있는지 확인
+            let duplicate = false;
+            productInfo.reviews.forEach((item) => {
+                if (item.id === req.user._id) {
+                    duplicate = true;
+                }
+            })
+
+            //상품평이 이미 있을때
+            if (duplicate) {
+                res.status(200).json({success:false});
+            }
+            //상품평이 이미 있지 않을때
+            else {
+                const question = new Question(req.body);
+                question.questionName = req.body.questionName;
+                question.questionProductID = req.body.questionProductID;
+                question.orderListProductID = req.body.orderListProductID;
+                question.questionDescription = req.body.questionDescription;
+                question.userID = req.user._id; // 현재 로그인한 ID로 문의 사항 저장
+                question.save((err) => {
+                    if (err) return res.status(400).json({ success: false, err })
+                    return res.status(200).json({success:true});
+                })
+
+                Product.findOneAndUpdate(
+                    { _id: req.body.orderProductID },
+                    {
+                        $push: {
+                            reviews: {
+                                userID : req.user._id,
+                                createdDate : Date.now(),
+                                productRecommand : req.body.productRecommand,
+                                shipRecommand : req.body.shipRecommand,
+                                starRating : req.body.starRating,
+                                description : req.body.description,
+                            }
+                        }
+                    },
+                    { new: true },
+                    (err, userInfo) => {
+                        if (err) return res.status(400).json({ success: false, err })
+                        res.status(200).json({success:true});
+                    }
+                )
+            }
+        })
+});
+
+// 특정 상품평 조회
+router.get('/review_by_id', (req, res) => {
+
+    let type = req.query.type
+    let reviewIds = req.query.id
+
+    if (type === "array") {
+        //id=123123123,324234234,324234234 이거를
+        //productIds = ['123123123', '324234234', '324234234'] 이런식으로 바꿔주기
+        let ids = req.query.id.split(',')
+        noticeIds = ids.map(item => {
+            return item
+        })
+    }
+
+    Product.findOne({ _id: req.body.orderProductID },
+        (err, productInfo) => {
+            // 가져온 정보에서 상품평이 이미 등록되어있는지 확인
+            let duplicate = false;
+            productInfo.reviews.forEach((item) => {
+                if (item.id === req.user._id) {
+                    return res.status(200).json({
+                        success:true,
+                        item});
+                }
+            })
+            return res.status(200).json({ success: false })
+        });
 })
 
 module.exports = router;
