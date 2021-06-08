@@ -100,7 +100,7 @@ function OrderItem({ Item }) {
     <ItemContainer>
       {item.images && item.images.length > 0 && (
         <ItemImg
-          src={`http://ec2-52-79-226-115.ap-northeast-2.compute.amazonaws.com:9000/uploads/${item.images[0]}`}
+          src={`/uploads/${item.images[0]}`}
         ></ItemImg>
       )}
       <ItemName>{item.title}</ItemName>

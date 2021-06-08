@@ -39,7 +39,7 @@ function Event() {
           return (
             <img
               alt={data._id}
-              src={`http://ec2-52-79-226-115.ap-northeast-2.compute.amazonaws.com:9000/noticeImageUploads/${data.images[0]}`}
+              src={`/noticeImageUploads/${data.images[0]}`}
               width="100%"
               height="400"
             ></img>

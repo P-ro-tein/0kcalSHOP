@@ -55,7 +55,7 @@ const DeliveryModal = ( props ) => {
             sortBy:"defaultShip"
         })
         .then(response => {
-        if(response.data.success) {
+        if(response.data.success&&response.data.postSize) {
             setAddress(response.data.shipAddrInfo)
             setSelect(response.data.shipAddrInfo[0]._id);
         }})
@@ -85,14 +85,16 @@ const DeliveryModal = ( props ) => {
                 setSelectAddress(i);
             }
         }
-        setShipAddrName(Address[SelectAddress].shipAddrName);
-        setShipAddrRecipient(Address[SelectAddress].shipAddrRecipient);
-        setContactNumber(Address[SelectAddress].contactNumber);
-        setShipDetailOne(Address[SelectAddress].shipAddrDetail[0]);
-        setShipDetailTwo(Address[SelectAddress].shipAddrDetail[1]);
-        setShipDetailThree(Address[SelectAddress].shipAddrDetail[2]);
-        setDefaultShip(Address[SelectAddress].defaultShip);
-        setDiv(false);
+        if(Address.length){
+            setShipAddrName(Address[SelectAddress].shipAddrName);
+            setShipAddrRecipient(Address[SelectAddress].shipAddrRecipient);
+            setContactNumber(Address[SelectAddress].contactNumber);
+            setShipDetailOne(Address[SelectAddress].shipAddrDetail[0]);
+            setShipDetailTwo(Address[SelectAddress].shipAddrDetail[1]);
+            setShipDetailThree(Address[SelectAddress].shipAddrDetail[2]);
+            setDefaultShip(Address[SelectAddress].defaultShip);
+            setDiv(false);
+        }
     }
 
     const saveModify=()=>{
@@ -183,11 +185,14 @@ const DeliveryModal = ( props ) => {
                         <div className="box">
                             <div className="container">
                                 <div className="text"> 현재 배송지</div>
-                                <div style={{display:"block"}}>
+                                {
+                                    Address.length?
+                                    <div style={{display:"block"}}>
                                     <div className="dstination">{Address[0].shipAddrName}</div>
                                     <div className="destination">{Address[0].shipAddrDetail[0]}</div>
                                     <div className="destination">{Address[0].shipAddrDetail[2]}</div>
                                 </div>
+                                :null}
                             </div>
                             <div>
                                 {Div===true&&

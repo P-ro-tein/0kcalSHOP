@@ -30,6 +30,13 @@ mongoose
   })
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
+
+app.use(express.static(path.resolve(__dirname, '../client/build')));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
+});
+
+
 app.use("/uploads", express.static("uploads"));
 app.use("/noticeImageUploads", express.static("noticeImageUploads"));
 app.use("/api/users", require("./routes/users"));
