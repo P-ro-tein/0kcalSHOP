@@ -204,7 +204,7 @@ function ItemDetail(props) {
                     return (
                       <img
                         alt={data._id}
-                        src={`http://ec2-52-79-226-115.ap-northeast-2.compute.amazonaws.com:9000/uploads/${data}`}
+                        src={`/uploads/${data}`}
                         width="100%"
                         height="400"
                       ></img>
@@ -276,7 +276,7 @@ function ItemDetail(props) {
           {Product.images && Product.images.length > 0 && (
             <img
               alt={Product._id}
-              src={`http://ec2-52-79-226-115.ap-northeast-2.compute.amazonaws.com:9000/uploads/${Product.images[1]}`}
+              src={`/uploads/${Product.images[1]}`}
               width="500"
             ></img>
           )}
