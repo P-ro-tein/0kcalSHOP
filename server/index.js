@@ -32,10 +32,10 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use(express.static(path.resolve(__dirname, '../client/build')));
-app.get("/client", (req, res) => {
+app.use("/client", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
 });
-app.get("/admin", (req, res) => {
+app.use("/admin", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
 });
 
